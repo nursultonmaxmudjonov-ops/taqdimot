@@ -33,21 +33,21 @@
 </head>
 <body class="bg-bg text-txt font-sans min-h-screen flex">
 
-<aside class="w-[260px] min-w-[260px] bg-sidebar border-r border-border flex flex-col p-7 sticky top-0 h-screen hidden md:flex">
+<aside class="w-[260px] min-w-[260px] bg-sidebar border-r border-border flex flex-col p-7 sticky top-0 h-screen">
   <div>
     <div class="text-2xl font-extrabold tracking-[4px] text-gold" style="font-family:Georgia, serif">ZAR</div>
     <div class="text-[10px] tracking-[2px] text-txtfaint uppercase mt-1">Private member</div>
   </div>
 
   <nav class="mt-9 flex flex-col gap-1">
-    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+    <a class="relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#171d29] text-gold text-sm font-semibold">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       Asosiy
+      <span class="absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded"></span>
     </a>
-    <a class="relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#171d29] border border-border text-gold text-sm">
+    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       Qidiruv
-      <span class="absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded"></span>
     </a>
     <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V13M12 19V5M20 19v-7"/></svg>
@@ -86,6 +86,17 @@
     <input id="searchInput" type="text" placeholder="Foydalanuvchi, hashtag yoki so'z kiriting..." autocomplete="off"
       class="flex-1 bg-transparent border-none outline-none text-txt text-sm placeholder:text-txtfaint">
     <button id="clearBtn" class="hidden text-txtfaint text-xs hover:text-txt">Tozalash</button>
+    <button id="micBtn" type="button" class="flex items-center justify-center w-8 h-8 rounded-lg text-txtdim hover:text-gold hover:bg-[#1b2230] transition flex-shrink-0" aria-label="Ovoz bilan qidirish">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
+        <path d="M19 11a7 7 0 0 1-14 0"/>
+        <path d="M12 19v3"/>
+      </svg>
+    </button>
+  </div>
+  <div id="micStatus" class="hidden mt-2 text-xs text-gold flex items-center gap-2 max-w-xl">
+    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+    Tinglanmoqda...
   </div>
 
   <div id="chipRow" class="mt-4 flex gap-2 flex-wrap"></div>
@@ -108,6 +119,17 @@
   </button>
 </main>
 
-<script src="qidiruv.js"></script>
+<div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
+  <div class="relative w-full max-w-3xl">
+    <button id="closeModalBtn" class="absolute -top-10 right-0 text-txt text-sm border border-border rounded-lg px-3 py-1.5 bg-panel hover:border-golddim hover:text-gold">Yopish ✕</button>
+    <div class="w-full aspect-video rounded-xl overflow-hidden bg-panel border border-border">
+      <iframe id="videoFrame" class="w-full h-full" src="" title="video" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script src="../js/qidiruv.js"></script>
 </body>
 </html>
