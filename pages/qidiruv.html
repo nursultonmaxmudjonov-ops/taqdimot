@@ -40,15 +40,19 @@
   </div>
 
   <nav class="mt-9 flex flex-col gap-1">
-    <a class="relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#171d29] text-gold text-sm font-semibold">
+    <!-- Asosiy endi aktiv emas -->
+    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       Asosiy
-      <span class="absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded"></span>
     </a>
-    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+    
+    <!-- QIDIRUV (Aktiv holatga o'tkazildi) -->
+    <a class="relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#171d29] text-gold text-sm font-semibold">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       Qidiruv
+      <span class="absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded"></span>
     </a>
+
     <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V13M12 19V5M20 19v-7"/></svg>
       Reytinglar
@@ -116,7 +120,7 @@
 
   <button id="loadMoreBtn" class="block mx-auto mt-6 px-7 py-2.5 rounded-lg bg-panel border border-border text-txt text-sm hover:border-golddim hover:text-gold transition">
     Yana yuklash
-  </button>
+  </button> 
 </main>
 
 <div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
