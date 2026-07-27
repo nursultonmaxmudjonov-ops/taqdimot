@@ -4,6 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ZAR — Kirish</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/3.4.4/tailwind.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gold1: '#F7CB63',
+          gold2: '#E7A93A',
+          gold3: '#C9861F',
+          bgdeep: '#0a0b13',
+          bgmid: '#12141f',
+          panel: '#171a26',
+          line: '#282c3d',
+          txt: '#F2F1EC',
+          txtdim: '#8d90a3'
+        },
+        keyframes: {
+          navin: {
+            '0%':   { opacity: '0', transform: 'translateY(-10px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' }
+          }
+        },
+        animation: {
+          navin: 'navin .45s cubic-bezier(.2,.8,.2,1) both'
+        }
+      }
+    }
+  }
+</script>
 <style>
   :root{
     --gold-1:#F7CB63;
@@ -565,8 +594,8 @@
   }
   .reel-frame{
     position:relative;
-    width:300px;
-    height:534px;
+    width:400px;
+    height:712px;
     border-radius:22px;
     overflow:hidden;
     background:#000;
@@ -656,10 +685,10 @@
   .reel-modal-overlay.open{ display:flex; }
   .reel-modal-box{
     position:relative;
-    width:360px;
-    max-width:92vw;
-    height:640px;
-    max-height:88vh;
+    width:460px;
+    max-width:94vw;
+    height:800px;
+    max-height:92vh;
     border-radius:20px;
     overflow:hidden;
     background:#000;
@@ -959,7 +988,7 @@
     }
     .balance-card{ margin-top:0; margin-left:auto; white-space:nowrap; }
     .dash-right{ border-left:none; }
-    .reel-frame{ width:260px; height:462px; }
+    .reel-frame{ width:min(92vw, 340px); height:calc(min(92vw, 340px) * 1.78); }
   }
 
   .mobile-nav-overlay{
@@ -1104,19 +1133,21 @@
 
 <!-- ================= DASHBOARD (video feed) ================= -->
 <div class="dash" id="dashboard">
-  <aside class="dash-side">
-    <div class="dash-logo">ZAR</div>
-    <div class="dash-logo-tag">Private member</div>
+  <aside class="dash-side !flex !flex-col md:!p-6 !p-4">
+    <div class="flex items-center gap-2 md:block">
+      <div class="dash-logo">ZAR</div>
+      <div class="dash-logo-tag">Private member</div>
+    </div>
 
     <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
 
     <nav class="dash-nav">
-      <div class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
-      <div class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
-      <div class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
-      <div class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
-      <div class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
-      <div class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
+      <div class="nav-item active animate-navin [animation-delay:0ms]" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
+      <div class="nav-item animate-navin [animation-delay:80ms]" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
+      <div class="nav-item animate-navin [animation-delay:160ms]" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
+      <div class="nav-item animate-navin [animation-delay:240ms]" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
+      <div class="nav-item animate-navin [animation-delay:320ms]" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
+      <div class="nav-item animate-navin [animation-delay:400ms]" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
     </nav>
 
     <div class="balance-card">
@@ -1133,12 +1164,12 @@
         <div class="dash-right-close" id="mobileNavClose">✕</div>
       </div>
       <nav class="dash-nav" id="mobileNavList">
-        <div class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
-        <div class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
-        <div class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
-        <div class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
-        <div class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
-        <div class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
+        <div class="nav-item active animate-navin [animation-delay:0ms]" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
+        <div class="nav-item animate-navin [animation-delay:80ms]" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
+        <div class="nav-item animate-navin [animation-delay:160ms]" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
+        <div class="nav-item animate-navin [animation-delay:240ms]" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
+        <div class="nav-item animate-navin [animation-delay:320ms]" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
+        <div class="nav-item animate-navin [animation-delay:400ms]" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
       </nav>
       <div class="balance-card">
         <div class="balance-label">Hisobingiz</div>
@@ -1522,6 +1553,13 @@
 
   function openMobileNav(){
     document.getElementById('mobileNavOverlay').classList.add('open');
+    // Replay the "one by one" nav item entrance each time the drawer opens
+    const items = document.querySelectorAll('#mobileNavList .nav-item');
+    items.forEach(el => {
+      el.classList.remove('animate-navin');
+      void el.offsetWidth; // restart animation
+      el.classList.add('animate-navin');
+    });
   }
   function closeMobileNav(){
     document.getElementById('mobileNavOverlay').classList.remove('open');
