@@ -31,24 +31,44 @@
   .no-scrollbar::-webkit-scrollbar{ display:none; }
 </style>
 </head>
-<body class="bg-bg text-txt font-sans min-h-screen flex flex-col md:flex-row">
+<body class="bg-bg text-txt font-sans min-h-screen flex">
 
-<!-- SIDBAR (Faqat desktopda ko'rinadi) -->
-<aside class="hidden md:flex w-[260px] min-w-[260px] bg-sidebar border-r border-border flex-col p-7 sticky top-0 h-screen">
+<aside class="w-[260px] min-w-[260px] bg-sidebar border-r border-border flex flex-col p-7 sticky top-0 h-screen">
   <div>
     <div class="text-2xl font-extrabold tracking-[4px] text-gold" style="font-family:Georgia, serif">ZAR</div>
     <div class="text-[10px] tracking-[2px] text-txtfaint uppercase mt-1">Private member</div>
   </div>
 
-  <nav class="mt-9 flex flex-col gap-1">
-    <a href="../index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+  <!-- data-page atributi shu faylning nomiga mos keladi. JS shu asosda aktiv holatni belgilaydi -->
+  <nav id="sideNav" class="mt-9 flex flex-col gap-1">
+    <a href="./index.html" data-page="index.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
       Asosiy
     </a>
-    <a href="./qidiruv.html" class="relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#171d29] text-gold text-sm font-semibold">
+
+    <a href="./qidiruv.html" data-page="qidiruv.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
       <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       Qidiruv
-      <span class="absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded"></span>
+    </a>
+
+    <a href="./reytinglar.html" data-page="reytinglar.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V13M12 19V5M20 19v-7"/></svg>
+      Reytinglar
+    </a>
+
+    <a href="./bildirishnoma.html" data-page="bildirishnoma.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      Bildirishnoma
+    </a>
+
+    <a href="./profil.html" data-page="profil.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      Profil
+    </a>
+
+    <a href="./sozlamalar.html" data-page="sozlamalar.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      Sozlamalar
     </a>
   </nav>
 
@@ -56,44 +76,88 @@
 
   <div class="bg-panel border border-border rounded-xl p-4">
     <div class="text-xs text-txtdim mb-1.5">Hisobingiz</div>
-    <div id="balanceDisplay" class="text-xl font-bold">12 480 <span class="text-sm font-normal text-txtdim">ball</span></div>
+    <div class="text-xl font-bold">12 480 <span class="text-sm font-normal text-txtdim">ball</span></div>
   </div>
 </aside>
 
-<!-- MOBIL PASTI MENYU (Faqat mobil qurilmalarda ko'rinadi) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full bg-sidebar border-t border-border flex justify-around p-3 z-40">
-  <a href="../index.html" class="text-txtdim flex flex-col items-center text-[10px]"><svg class="w-6 h-6 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg> Asosiy</a>
-  <a href="./qidiruv.html" class="text-gold flex flex-col items-center text-[10px]"><svg class="w-6 h-6 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg> Qidiruv</a>
-</nav>
-
-<main class="flex-1 px-4 md:px-9 py-7 pb-24 md:pb-16 min-w-0">
+<main class="flex-1 px-5 md:px-9 py-7 pb-16 min-w-0">
   <div>
     <h1 class="text-xl font-bold">Qidiruv</h1>
     <p class="text-txtdim text-sm mt-1">Videolar, foydalanuvchilar va hashtaglar bo'yicha qidiring</p>
   </div>
 
-  <div class="mt-5 flex items-center gap-2.5 bg-panel border border-border rounded-xl px-4 py-3 w-full max-w-xl">
+  <div class="mt-5 flex items-center gap-2.5 bg-panel border border-border rounded-xl px-4 py-3 max-w-xl">
     <svg class="w-[18px] h-[18px] text-txtfaint flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="searchInput" type="text" placeholder="Qidiruv..." class="flex-1 bg-transparent border-none outline-none text-txt text-sm placeholder:text-txtfaint">
-    <button id="micBtn" type="button" class="text-txtdim hover:text-gold transition">
-      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 19v3"/></svg>
+    <input id="searchInput" type="text" placeholder="Foydalanuvchi, hashtag yoki so'z kiriting..." autocomplete="off"
+      class="flex-1 bg-transparent border-none outline-none text-txt text-sm placeholder:text-txtfaint">
+    <button id="clearBtn" class="hidden text-txtfaint text-xs hover:text-txt">Tozalash</button>
+    <button id="micBtn" type="button" class="flex items-center justify-center w-8 h-8 rounded-lg text-txtdim hover:text-gold hover:bg-[#1b2230] transition flex-shrink-0" aria-label="Ovoz bilan qidirish">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/>
+        <path d="M19 11a7 7 0 0 1-14 0"/>
+        <path d="M12 19v3"/>
+      </svg>
     </button>
+  </div>
+  <div id="micStatus" class="hidden mt-2 text-xs text-gold flex items-center gap-2 max-w-xl">
+    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+    Tinglanmoqda...
   </div>
 
   <div id="chipRow" class="mt-4 flex gap-2 flex-wrap"></div>
 
-  <div id="grid" class="mt-5 grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" style="grid-auto-rows: max-content;"></div>
+  <div class="mt-5 flex justify-between items-center text-txtdim text-sm">
+    <div><b id="resultCount" class="text-txt font-semibold">0</b> ta natija topildi</div>
+    <div>Trend bo'yicha</div>
+  </div>
+
+  <div id="grid" class="mt-3.5 grid gap-4" style="grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));"></div>
+
+  <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-txtdim text-center">
+    <svg class="w-10 h-10 text-txtfaint mb-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <h3 class="text-base text-txt mb-1.5 font-semibold">Hech narsa topilmadi</h3>
+    <div class="text-sm">Boshqa so'z yoki hashtag bilan qayta urinib ko'ring</div>
+  </div>
+
+  <button id="loadMoreBtn" class="block mx-auto mt-6 px-7 py-2.5 rounded-lg bg-panel border border-border text-txt text-sm hover:border-golddim hover:text-gold transition">
+    Yana yuklash
+  </button>
 </main>
 
-<!-- Video Modal o'zgarishsiz -->
 <div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
   <div class="relative w-full max-w-3xl">
     <button id="closeModalBtn" class="absolute -top-10 right-0 text-txt text-sm border border-border rounded-lg px-3 py-1.5 bg-panel hover:border-golddim hover:text-gold">Yopish ✕</button>
     <div class="w-full aspect-video rounded-xl overflow-hidden bg-panel border border-border">
-      <iframe id="videoFrame" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+      <iframe id="videoFrame" class="w-full h-full" src="" title="video" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
     </div>
   </div>
 </div>
+
+<!-- Sidebar aktiv sahifani avtomatik belgilaydi (rasmdagi dizaynga mos: gold chiziq, qalin/tagiga chizilgan matn, gold rangli fon) -->
+<script>
+  (function () {
+    var current = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('#sideNav .nav-link').forEach(function (link) {
+      var isActive = link.dataset.page === current;
+      if (isActive) {
+        link.classList.add('bg-[#171d29]', 'text-gold', 'font-semibold', 'underline');
+        link.classList.remove('text-txtdim');
+        if (!link.querySelector('.active-bar')) {
+          var bar = document.createElement('span');
+          bar.className = 'active-bar absolute -right-7 top-0 bottom-0 w-[3px] bg-gold rounded';
+          link.appendChild(bar);
+        }
+      } else {
+        link.classList.remove('bg-[#171d29]', 'text-gold', 'font-semibold', 'underline');
+        link.classList.add('text-txtdim');
+        var oldBar = link.querySelector('.active-bar');
+        if (oldBar) oldBar.remove();
+      }
+    });
+  })();
+</script>
 
 <script src="../js/qidiruv.js"></script>
 </body>
