@@ -1640,7 +1640,7 @@
     const muteParam = isMuted ? 1 : 0;
     const modalVideoEl = document.getElementById('modalVideo');
     modalVideoEl.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
-    modalVideoEl.innerHTML = `
+    modalVideoEl.innerHTML = `  
       <iframe
         src="https://www.youtube.com/embed/${id}?autoplay=1&mute=${muteParam}&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1662,13 +1662,13 @@
     loadReel(reelIndex); // sync main reel to whatever was last shown in modal
   }
   function modalNext(){
-    reelIndex = (reelIndex + 1) % reelVideoIds.length;
+    reelIndex = (reelIndex + 1) % reelVideoIds  .length;
     loadModalReel(reelIndex);
   }
   function modalPrev(){
     reelIndex = (reelIndex - 1 + reelVideoIds.length) % reelVideoIds.length;
     loadModalReel(reelIndex);
-  }
+  } 
 
   document.getElementById('expandBtn').addEventListener('click', openReelModal);
   document.getElementById('modalCloseBtn').addEventListener('click', closeReelModal);
