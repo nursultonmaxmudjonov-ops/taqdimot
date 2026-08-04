@@ -1,48 +1,166 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qidiruv - ZAR</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ZAR — Dashboard</title>
+<style>
+  :root{
+    --gold-1:#F7CB63;
+    --gold-2:#E7A93A;
+    --gold-3:#C9861F;
+    --ink:#05060a;
+    --bg-deep:#0a0b13;
+    --bg-mid:#12141f;
+    --panel:#171a26;
+    --panel-2:#1d2130;
+    --line:#282c3d;
+    --text:#F2F1EC;
+    --text-dim:#8d90a3;
+    --teal-1:#0d3b3a;
+    --teal-2:#062120;
+    --teal-glow:#37e0c9;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    background:#0a0b13;
+    color:var(--text);
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* Sidebar (Yon panel) */
+  .sidebar{
+    width:240px;
+    background:#0c111c;
+    border-right:1px solid var(--line);
+    padding:24px 18px;
+    display:flex;
+    flex-direction:column;
+    flex-shrink: 0;
+  }
+  .brand{
+    color:var(--gold-1);
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:32px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+  }
+  .nav-menu{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    list-style:none;
+  }
+  .nav-item a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:12px;
+    color:var(--text-dim);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:0.2s;
+  }
+  .nav-item.active a, .nav-item a:hover{
+    background:var(--panel);
+    color:var(--gold-1);
+  }
+
+  /* Asosiy kontent sohasi */
+  .main-wrapper{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+  }
+  .header{
+    padding:20px 32px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#0c111c;
+  }
+  .page-title{
+    font-size:20px;
+    font-weight:700;
+  }
+  .content-body{
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+  }
+
+  /* Karta va panellar */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px;
+  }
+  .balance-card{
+    background:linear-gradient(135deg, #171a26 0%, #0d111d 100%);
+    border:1px solid var(--gold-3);
+  }
+</style>
 </head>
-<body class="bg-gray-900 flex justify-center items-center min-h-screen p-0 sm:p-4">
-  <div class="w-full max-w-sm sm:max-w-md bg-[#0d0d0d] text-white min-h-screen sm:min-h-[844px] sm:h-[844px] sm:rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col border-0 sm:border-8 border-gray-800">
-    
-    <div class="p-6 pb-2 flex items-center space-x-4">
-      <a href="index.html" class="text-gray-400 hover:text-white">
-        <i class="fas fa-arrow-left text-lg"></i>
-      </a>
-      <h2 class="text-xl font-bold text-white">Qidiruv</h2>
-    </div>
+<body>
 
-    <div class="p-6">
-      <div class="relative">
-        <i class="fas fa-search absolute left-4 top-3.5 text-gray-500"></i>
-        <input type="text" placeholder="Xizmatlar yoki amallarni qidirish..." class="w-full bg-gray-800 text-white rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+  <aside class="sidebar">
+    <a href="index.html" class="brand">✨ ZAR</a>
+    <ul class="nav-menu">
+      <li class="nav-item active">
+        <a href="index.html"><span>🏠</span> Asosiy</a>
+      </li>
+      <li class="nav-item">
+        <a href="qidiruv.html"><span>🔍</span> Qidiruv</a>
+      </li>
+      <li class="nav-item">
+        <a href="hamyon.html"><span>💼</span> Hamyon</a>
+      </li>
+      <li class="nav-item">
+        <a href="profil.html"><span>👤</span> Profil</a>
+      </li>
+      <li class="nav-item">
+        <a href="sozlamalar.html"><span>⚙️</span> Sozlamalar</a>
+      </li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="header">
+      <h1 class="page-title">Bosh sahifa</h1>
+      <div>
+        <a href="profil.html" style="color:var(--gold-1); text-decoration:none; font-weight:600;">Profilim</a>
       </div>
-    </div>
+    </header>
 
-    <div class="absolute bottom-0 left-0 right-0 bg-[#121212]/90 backdrop-blur-md border-t border-gray-800/60 px-6 py-3 flex justify-between items-center z-40">
-      <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-home text-lg"></i>
-        <span class="text-[10px] mt-1">Asosiy</span>
-      </a>
-      <a href="qidiruv.html" class="flex flex-col items-center text-yellow-500">
-        <i class="fas fa-search text-lg"></i>
-        <span class="text-[10px] mt-1">Qidiruv</span>
-      </a>
-      <a href="hamyon.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-wallet text-lg"></i>
-        <span class="text-[10px] mt-1">Hamyon</span>
-      </a>
-      <a href="profil.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-user text-lg"></i>
-        <span class="text-[10px] mt-1">Profil</span>
-      </a>
-    </div>
+    <main class="content-body">
+      <div class="card balance-card">
+        <p style="color:var(--text-dim); font-size:14px;">Umumiy Balans</p>
+        <h2 style="font-size:32px; color:var(--gold-1); margin:8px 0;">12 450 000 UZS</h2>
+        <div style="display:flex; gap:12px; margin-top:16px;">
+          <a href="hamyon.html" style="background:var(--gold-2); color:#000; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:700;">Hamyonga o'tish</a>
+        </div>
+      </div>
 
+      <div class="card">
+        <h3>So'nggi faolliklar</h3>
+        <p style="color:var(--text-dim); margin-top:10px; font-size:14px;">Platforma muvaffaqiyatli ishlamoqda.</p>
+      </div>
+    </main>
   </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
