@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ZAR — Kirish</title>
+<title>ZAR — Sozlamalar</title>
 <style>
   :root{
     --gold-1:#F7CB63;
@@ -17,465 +17,32 @@
     --line:#282c3d;
     --text:#F2F1EC;
     --text-dim:#8d90a3;
-    --teal-1:#0d3b3a;
-    --teal-2:#062120;
-    --teal-glow:#37e0c9;
+    --danger:#ff5d6c;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html,body{height:100%;}
   body{
     font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-    background:#e9e9ee;
+    background:var(--bg-deep);
+    color:var(--text);
     display:flex;
-    align-items:center;
     justify-content:center;
     min-height:100vh;
-    padding:24px 12px;
   }
 
-  .device{
-    position:relative;
-    width:375px;
-    max-width:100%;
-    height:780px;
-    max-height:92vh;
-    border-radius:44px;
-    background:#000;
-    padding:12px;
-    box-shadow:0 30px 70px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.05);
-  }
-  .screen-frame{
-    position:relative;
-    width:100%;
-    height:100%;
-    border-radius:34px;
-    overflow:hidden;
-    background:var(--bg-deep);
-  }
-  .notch{
-    position:absolute;
-    top:8px; left:50%;
-    transform:translateX(-50%);
-    width:120px; height:22px;
-    background:#000;
-    border-radius:14px;
-    z-index:50;
-  }
-
-  .screen{
-    position:absolute;
-    inset:0;
-    display:flex;
-    flex-direction:column;
-    opacity:0;
-    pointer-events:none;
-    transform:translateX(24px);
-    transition:opacity .38s ease, transform .38s ease;
-  }
-  .screen.active{
-    opacity:1;
-    pointer-events:auto;
-    transform:translateX(0);
-  }
-
-  /* ---------- SCREEN 1: SPLASH ---------- */
-  #s1{
-    justify-content:center;
-    align-items:center;
-    background:
-      radial-gradient(120% 90% at 15% 0%, #24283c 0%, transparent 55%),
-      linear-gradient(160deg, #1a1d2c 0%, #0c0d15 55%, #000000 100%);
-    cursor:pointer;
-  }
-  .logo-word{
-    font-size:44px;
-    font-weight:800;
-    letter-spacing:.16em;
-    background:linear-gradient(180deg, var(--gold-1), var(--gold-3));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    text-align:center;
-  }
-  .logo-tag{
-    margin-top:8px;
-    font-size:10px;
-    letter-spacing:.32em;
-    color:var(--text-dim);
-    text-align:center;
-    text-transform:uppercase;
-  }
-  .splash-hint{
-    position:absolute;
-    bottom:44px;
-    left:0; right:0;
-    text-align:center;
-    font-size:11px;
-    color:var(--text-dim);
-    letter-spacing:.05em;
-    animation:pulse 1.8s ease-in-out infinite;
-  }
-  @keyframes pulse{ 0%,100%{opacity:.35} 50%{opacity:.9} }
-
-  /* ---------- SCREEN 2: ONBOARDING ---------- */
-  #s2{ background:var(--bg-deep); }
-  .ob-media{
-    position:relative;
-    height:46%;
-    background:
-      radial-gradient(90% 70% at 50% 20%, rgba(55,224,201,.20), transparent 60%),
-      linear-gradient(160deg, var(--teal-1) 0%, var(--teal-2) 100%);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-  .ob-phone{
-    width:150px;
-    height:230px;
-    border-radius:22px;
-    background:linear-gradient(160deg, #0d1220, #050810);
-    border:3px solid #1c2334;
-    box-shadow:0 20px 40px rgba(0,0,0,.5), 0 0 40px rgba(55,224,201,.15);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    position:relative;
-  }
-  .ob-globe{
-    width:56px; height:56px;
-    border-radius:50%;
-    border:2px solid var(--teal-glow);
-    box-shadow:0 0 22px rgba(55,224,201,.55), inset 0 0 14px rgba(55,224,201,.4);
-    position:relative;
-  }
-  .ob-globe::before, .ob-globe::after{
-    content:"";
-    position:absolute;
-    border:1px solid rgba(55,224,201,.5);
-    border-radius:50%;
-  }
-  .ob-globe::before{ inset:8px 0; }
-  .ob-globe::after{ inset:0 14px; }
-  .ob-welcome{
-    color:#fff;
-    font-size:13px;
-    font-weight:700;
-  }
-  .ob-sub{
-    color:#9fb8b6;
-    font-size:8px;
-    text-align:center;
-    padding:0 18px;
-    line-height:1.4;
-  }
-  .ob-btn-mini{
-    margin-top:6px;
-    font-size:8px;
-    color:#04211f;
-    background:var(--teal-glow);
-    padding:5px 16px;
-    border-radius:20px;
-    font-weight:700;
-  }
-
-  .ob-card{
-    flex:1;
-    background:var(--panel);
-    border-radius:26px 26px 0 0;
-    margin-top:-22px;
-    position:relative;
-    z-index:2;
-    padding:26px 24px 22px;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .ob-title{
-    font-size:19px;
-    font-weight:700;
-    color:var(--text);
-  }
-  .ob-desc{
-    font-size:12.5px;
-    line-height:1.55;
-    color:var(--text-dim);
-  }
-  .ob-flags{
-    display:flex;
-    gap:6px;
-    margin-top:2px;
-  }
-  .flag{
-    width:22px; height:15px;
-    border-radius:3px;
-    background:linear-gradient(180deg,#1eb53a 33%, #fff 33%, #fff 66%, #ce1126 66%);
-    opacity:.85;
-  }
-  .flag.uz{ background:linear-gradient(180deg,#1eb53a 30%, #fff 30%, #fff 70%, #0099b5 70%); }
-
-  .ob-footer{
-    margin-top:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-  }
-  .dots{ display:flex; gap:6px; }
-  .dot{ width:6px; height:6px; border-radius:50%; background:var(--line); }
-  .dot.on{ width:18px; background:var(--gold-1); border-radius:4px; }
-
-  .btn-gold{
-    border:none;
-    cursor:pointer;
-    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    color:#2b1c02;
-    font-weight:700;
-    font-size:13.5px;
-    padding:13px 22px;
-    border-radius:14px;
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    box-shadow:0 8px 18px rgba(231,169,58,.35);
-  }
-  .btn-gold:active{ transform:scale(.97); }
-  .btn-gold.full{ width:100%; justify-content:center; }
-
-  /* ---------- SCREEN 3: LOGIN ---------- */
-  #s3{
-    background:linear-gradient(160deg, #171a2b 0%, #0a0b12 60%, #000 100%);
-    padding:26px 24px;
-    gap:22px;
-  }
-  .top-logo{
-    font-size:15px;
-    font-weight:800;
-    letter-spacing:.14em;
-    color:var(--gold-1);
-    text-align:center;
-    margin-top:8px;
-  }
-  .card-title{
-    font-size:21px;
-    font-weight:700;
-    color:var(--text);
-    text-align:center;
-    margin-top:18px;
-  }
-  .card-sub{
-    font-size:12px;
-    color:var(--text-dim);
-    text-align:center;
-    margin-top:4px;
-  }
-  .field{
-    margin-top:26px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 16px;
-  }
-  .field .code{
-    color:var(--text);
-    font-size:14px;
-    font-weight:600;
-    border-right:1px solid var(--line);
-    padding-right:10px;
-  }
-  .field input{
-    background:transparent;
-    border:none;
-    outline:none;
-    color:var(--text);
-    font-size:14px;
-    width:100%;
-    letter-spacing:.02em;
-  }
-  .field input::placeholder{ color:#565a6d; }
-
-  .divider{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top:22px;
-    color:var(--text-dim);
-    font-size:10.5px;
-  }
-  .divider::before, .divider::after{
-    content:"";
-    flex:1;
-    height:1px;
-    background:var(--line);
-  }
-  .google-btn{
-    margin-top:18px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:13px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    color:var(--text);
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-  }
-  .gicon{
-    width:16px; height:16px;
-    border-radius:50%;
-    background:conic-gradient(from 0deg, #4285F4 0deg 90deg, #34A853 90deg 180deg, #FBBC05 180deg 270deg, #EA4335 270deg 360deg);
-  }
-  .legal{
-    margin-top:auto;
-    font-size:9.5px;
-    color:#565a6d;
-    text-align:center;
-    line-height:1.5;
-    padding-bottom:6px;
-  }
-  .legal span{ color:var(--gold-1); }
-
-  /* ---------- SCREEN 4: OTP ---------- */
-  #s4{
-    background:linear-gradient(160deg, #171a2b 0%, #0a0b12 60%, #000 100%);
-    padding:22px 24px 26px;
-  }
-  .back-btn{
-    width:34px; height:34px;
-    border-radius:50%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--text);
-    cursor:pointer;
-    font-size:16px;
-  }
-  #s4 .card-title{ margin-top:34px; text-align:center; }
-  #s4 .card-sub{ text-align:center; }
-  #s4 .card-sub b{ color:var(--text); font-weight:600; }
-
-  .otp-row{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-top:34px;
-  }
-  .otp-box{
-    width:48px; height:56px;
-    border-radius:14px;
-    background:#fff;
-    color:#141520;
-    font-size:20px;
-    font-weight:700;
-    text-align:center;
-    border:none;
-    outline:none;
-  }
-  .otp-box:focus{ box-shadow:0 0 0 2px var(--gold-1); }
-
-  .resend{
-    margin-top:26px;
-    text-align:center;
-    font-size:11.5px;
-    color:var(--text-dim);
-  }
-  .resend b{ color:var(--gold-1); font-weight:600; cursor:pointer; }
-
-  .demo-code{
-    margin-top:14px;
-    text-align:center;
-    font-size:11px;
-    color:var(--text-dim);
-    background:var(--panel);
-    border:1px dashed var(--line);
-    border-radius:10px;
-    padding:8px;
-    letter-spacing:.04em;
-  }
-  .demo-code b{
-    color:var(--gold-1);
-    font-weight:700;
-    letter-spacing:.2em;
-  }
-  .otp-error{
-    display:none;
-    margin-top:10px;
-    text-align:center;
-    font-size:11.5px;
-    color:#ff5d6c;
-  }
-  .otp-error.show{ display:block; }
-  .otp-row.shake{ animation:shake .35s ease; }
-  @keyframes shake{
-    0%,100%{ transform:translateX(0); }
-    25%{ transform:translateX(-6px); }
-    75%{ transform:translateX(6px); }
-  }
-
-  #s4 .btn-gold.full{ margin-top:auto; }
-
-  /* ---------- SCREEN 5: SUCCESS ---------- */
-  #s5{
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    background:
-      radial-gradient(90% 60% at 50% 30%, rgba(247,203,99,.16), transparent 60%),
-      linear-gradient(160deg, #171a2b 0%, #0a0b12 60%, #000 100%);
-    gap:14px;
-    padding:0 30px;
-  }
-  .check{
-    width:74px; height:74px;
-    border-radius:50%;
-    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:6px;
-    box-shadow:0 10px 30px rgba(231,169,58,.4);
-  }
-  .check svg{ width:32px; height:32px; }
-  #s5 .card-title{ margin:0; }
-  #s5 .card-sub{ margin:0; max-width:240px; }
-  #s5 .btn-gold{ margin-top:22px; }
-
-  .restart{
-    position:fixed;
-    bottom:14px; right:14px;
-    font-size:11px;
-    color:#666;
-    background:#fff;
-    border:1px solid #ddd;
-    padding:6px 12px;
-    border-radius:20px;
-    cursor:pointer;
-    z-index:200;
-  }
-
-  /* ================= DASHBOARD ================= */
+  /* Layout Base */
   .dash{
-    display:none;
-    position:fixed;
-    inset:0;
+    display:grid;
+    grid-template-columns:240px 1fr;
+    width:100%;
+    max-width:1400px;
+    min-height:100vh;
     background:
       radial-gradient(120% 90% at 10% 0%, #191c2c 0%, transparent 55%),
       linear-gradient(160deg, #12141f 0%, #08090f 60%, #000 100%);
-    grid-template-columns:220px 1fr;
-    z-index:100;
-    overflow:auto;
   }
-  .dash.open{ display:grid; }
 
+  /* Sidebar Navigation (Desktop) */
   .dash-side{
     padding:26px 20px;
     border-right:1px solid var(--line);
@@ -483,7 +50,7 @@
     flex-direction:column;
   }
   .dash-logo{
-    font-size:22px;
+    font-size:24px;
     font-weight:800;
     letter-spacing:.12em;
     background:linear-gradient(180deg, var(--gold-1), var(--gold-3));
@@ -500,1271 +67,458 @@
     margin-top:30px;
     display:flex;
     flex-direction:column;
-    gap:4px;
+    gap:6px;
   }
   .nav-item{
     display:flex;
     align-items:center;
     gap:12px;
-    padding:11px 14px;
-    border-radius:10px;
+    padding:12px 14px;
+    border-radius:12px;
     color:var(--text-dim);
-    font-size:13px;
-    cursor:pointer;
-    position:relative;
-    transition:background .15s ease, color .15s ease;
+    font-size:13.5px;
+    text-decoration:none;
+    transition:all .15s ease;
   }
   .nav-item:hover{ background:var(--panel); color:var(--text); }
   .nav-item.active{
     background:linear-gradient(90deg, rgba(247,203,99,.14), transparent);
     color:var(--gold-1);
     font-weight:600;
+    border-right:2px solid var(--gold-1);
   }
-  .nav-item.active::after{
-    content:"";
-    position:absolute;
-    right:0; top:8px; bottom:8px;
-    width:2px;
-    background:var(--gold-1);
-    border-radius:2px;
-  }
-  .nav-ico{ width:16px; text-align:center; font-size:14px; }
+  .nav-ico{ width:18px; text-align:center; font-size:15px; }
 
-  .balance-card{
-    margin-top:20px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:14px 16px;
-  }
-  .balance-label{ font-size:11px; color:var(--text-dim); }
-  .balance-val{
-    margin-top:4px;
-    font-size:18px;
-    font-weight:800;
-    color:var(--text);
-  }
-  .balance-val span{ font-size:11px; color:var(--gold-1); font-weight:600; }
-  .balance-val.som{ color:#37e0a0; font-size:15px; margin-top:2px; }
-  .balance-val.som span{ color:#37e0a0; }
-
-  .dash-main{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:30px 10px;
-  }
-  .reel-wrap{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:10px;
-  }
-  .reel-row{
-    display:flex;
-    align-items:flex-end;
-    gap:14px;
-  }
-  .reel-frame{
-    position:relative;
-    width:300px;
-    height:534px;
-    border-radius:22px;
-    overflow:hidden;
-    background:#000;
-    border:1px solid var(--line);
-    box-shadow:0 30px 60px rgba(0,0,0,.5);
-  }
-  .reel-video{
-    position:absolute; inset:0;
-  }
-  .reel-video iframe{
-    width:100%; height:100%; border:0;
-    pointer-events:none;
-  }
-  .reel-topbtn{
-    position:absolute;
-    top:14px; left:14px;
-    width:34px; height:34px;
-    border-radius:50%;
-    background:rgba(0,0,0,.55);
-    border:1px solid rgba(255,255,255,.15);
-    display:flex; align-items:center; justify-content:center;
-    color:#fff;
-    font-size:14px;
-    cursor:pointer;
-    z-index:5;
-    backdrop-filter:blur(4px);
-  }
-  .reel-reward{
-    position:absolute;
-    top:14px; left:14px;
-    z-index:5;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-  }
-  .reel-reward-icon{
-    width:34px; height:34px;
-    border-radius:50%;
-    background:rgba(0,0,0,.55);
-    border:1px solid rgba(255,255,255,.15);
-    display:flex; align-items:center; justify-content:center;
-    color:var(--gold-1);
-    font-size:15px;
-    backdrop-filter:blur(4px);
-  }
-  .reel-reward-badge{
-    background:rgba(0,0,0,.55);
-    border:1px solid rgba(255,255,255,.15);
-    color:var(--gold-1);
-    font-size:10px;
-    font-weight:700;
-    padding:2px 8px;
-    border-radius:10px;
-    backdrop-filter:blur(4px);
-  }
-  .reel-topright{
-    position:absolute;
-    top:14px; right:14px;
-    z-index:5;
-    display:flex;
-    gap:8px;
-  }
-  .reel-topright .reel-topbtn{ position:static; }
-  .reel-topbtn.pulse{
-    animation:mutePulse 1.6s ease-in-out infinite;
-  }
-  @keyframes mutePulse{
-    0%,100%{ box-shadow:0 0 0 0 rgba(247,203,99,.5); }
-    50%{ box-shadow:0 0 0 6px rgba(247,203,99,0); }
-  }
-  .reel-frame{ cursor:grab; user-select:none; }
-  .reel-frame.dragging{ cursor:grabbing; }
-  .reel-video, .reel-video iframe{ pointer-events:none; }
-
-  /* ================= REWARD TOAST ================= */
-  .reward-toast{
-    position:fixed;
-    top:22px;
-    left:50%;
-    transform:translateX(-50%) translateY(-30px);
-    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    color:#2b1c02;
-    font-weight:800;
-    font-size:14px;
-    padding:12px 22px;
-    border-radius:30px;
-    box-shadow:0 14px 30px rgba(231,169,58,.45);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .3s ease, transform .3s ease;
-    z-index:600;
-  }
-  .reward-toast.show{
-    opacity:1;
-    transform:translateX(-50%) translateY(0);
-  }
-
-  /* ================= FULLSCREEN MODAL ================= */
-  .reel-modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.92);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:500;
-    padding:20px;
-  }
-  .reel-modal-overlay.open{ display:flex; }
-  .reel-modal-box{
-    position:relative;
-    width:360px;
-    max-width:92vw;
-    height:640px;
-    max-height:88vh;
-    border-radius:20px;
-    overflow:hidden;
-    background:#000;
-    border:1px solid var(--line);
-    cursor:grab;
-    user-select:none;
-    box-shadow:0 30px 80px rgba(0,0,0,.6);
-  }
-  .reel-modal-box.dragging{ cursor:grabbing; }
-  .reel-modal-box iframe{
-    width:100%; height:100%; border:0;
-    pointer-events:none;
-  }
-  .reel-modal-close{
-    position:absolute;
-    top:-46px; right:0;
-    width:36px; height:36px;
-    border-radius:50%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:#fff;
-    font-size:18px;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    z-index:10;
-  }
-  .reel-modal-close:hover{ background:var(--gold-1); color:#2b1c02; }
-  .reel-modal-info{
-    position:absolute;
-    left:16px; right:16px; bottom:16px;
-    z-index:4;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    gap:9px;
-  }
-  .reel-modal-progress{
-    position:absolute;
-    left:0; right:0; top:0;
-    height:3px;
-    background:rgba(255,255,255,.15);
-    z-index:6;
-  }
-  .reel-modal-progress-fill{
-    height:100%;
-    background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
-    width:0%;
-    transition:width .2s ease;
-  }
-  .reel-bottom{
-    position:absolute;
-    left:0; right:0; bottom:14px;
-    padding:0 16px;
-    z-index:4;
-  }
-  .reel-user{ display:flex; align-items:center; gap:9px; }
-  .reel-avatar{
-    width:32px; height:32px;
-    border-radius:50%;
-    background:linear-gradient(135deg, var(--gold-1), var(--gold-3));
-    border:2px solid rgba(255,255,255,.3);
-    flex-shrink:0;
-  }
-  .reel-username{ color:#fff; font-size:13px; font-weight:700; }
-  .reel-caption{ color:#d8d9de; font-size:11px; margin-top:2px; }
-  .reel-progress{
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height:3px;
-    background:rgba(255,255,255,.15);
-    z-index:5;
-  }
-  .reel-progress-fill{
-    height:100%;
-    width:0%;
-    background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
-  }
-
-  .reel-actions{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-    padding-bottom:6px;
-  }
-  .ract{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:5px;
-    font-size:10.5px;
-    color:var(--text-dim);
-    cursor:pointer;
-  }
-  .ract-circle{
-    width:42px; height:42px;
-    border-radius:50%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    font-size:16px;
-    color:var(--text);
-    transition:transform .15s ease, background .15s ease, color .15s ease;
-  }
-  .ract:hover .ract-circle{ transform:translateY(-2px); }
-  .ract.liked .ract-circle{ background:var(--gold-1); color:#2b1c02; }
-
-  .reel-hint{
-    display:flex;
-    gap:16px;
-    font-size:10px;
-    color:#565a6d;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .reel-hint b{ color:var(--text-dim); }
-
-  .dash-right{
-    position:fixed;
-    top:0; right:0; bottom:0;
-    width:340px;
-    max-width:88vw;
-    background:var(--bg-mid);
-    border-left:1px solid var(--line);
-    padding:24px 20px;
-    display:flex;
-    flex-direction:column;
-    transform:translateX(100%);
-    transition:transform .3s ease;
-    z-index:150;
-    box-shadow:-20px 0 50px rgba(0,0,0,.4);
-  }
-  .dash-right.open{ transform:translateX(0); }
-  .dash-right-overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.5);
-    z-index:140;
-  }
-  .dash-right-overlay.open{ display:block; }
-  .dash-right-close{
-    align-self:flex-end;
-    width:32px; height:32px;
-    border-radius:50%;
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--text);
-    font-size:15px;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-    margin-bottom:10px;
-  }
-  .dash-right-close:hover{ background:var(--gold-1); color:#2b1c02; }
-  .today-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:14px 16px;
-  }
-  .today-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:12px;
-    color:var(--text-dim);
-  }
-  .today-top b{ color:#37e0a0; font-size:12px; }
-  .today-bars{
-    display:flex;
-    gap:4px;
-    margin-top:10px;
-  }
-  .bar{
-    flex:1; height:5px;
-    border-radius:3px;
-    background:var(--line);
-  }
-  .bar.on{ background:linear-gradient(90deg, var(--gold-1), var(--gold-2)); }
-  .today-days{
-    display:flex;
-    justify-content:space-between;
-    margin-top:6px;
-    font-size:8.5px;
-    color:#565a6d;
-    letter-spacing:.03em;
-  }
-  .today-days .cur{ color:var(--gold-1); font-weight:700; }
-
-  .comments-head{
-    margin-top:22px;
-    font-size:15px;
-    font-weight:700;
-    color:var(--text);
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  .comments-head span{
-    font-size:10.5px;
-    font-weight:700;
-    color:var(--gold-1);
-    background:rgba(247,203,99,.14);
-    padding:2px 8px;
-    border-radius:20px;
-  }
-  .comments-list{
-    margin-top:14px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    flex:1;
+  /* Main Settings Container */
+  .settings-container{
+    padding:32px;
+    max-width:800px;
+    width:100%;
+    margin:0 auto;
     overflow-y:auto;
   }
-  .comment{
+  .page-title{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:24px;
     display:flex;
-    gap:10px;
-    align-items:flex-start;
-  }
-  .c-avatar{
-    width:28px; height:28px;
-    border-radius:50%;
-    flex-shrink:0;
-    background:linear-gradient(135deg, #3a3f55, #21232f);
-  }
-  .c-body{ flex:1; min-width:0; }
-  .c-name{ font-size:12px; font-weight:700; color:var(--text); }
-  .c-time{ font-size:10px; color:#565a6d; font-weight:400; margin-left:6px; }
-  .c-text{ font-size:12px; color:#c3c5d1; margin-top:3px; line-height:1.45; }
-  .c-reply{ font-size:10.5px; color:var(--gold-1); margin-top:4px; cursor:pointer; font-weight:600; }
-  .c-like{
-    flex-shrink:0;
-    display:flex;
-    flex-direction:column;
     align-items:center;
-    gap:2px;
-    color:var(--text-dim);
-    cursor:pointer;
-    padding-top:2px;
+    gap:10px;
   }
-  .c-like svg{ width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:1.8; }
-  .c-like span{ font-size:9.5px; }
-  .c-like.liked{ color:var(--gold-1); }
-  .c-like.liked svg{ fill:var(--gold-1); stroke:var(--gold-1); }
 
-  .comment-input{
-    margin-top:16px;
+  /* Settings Card / Section */
+  .settings-section{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:24px;
+  }
+  .section-title{
+    font-size:15px;
+    font-weight:700;
+    color:var(--gold-1);
+    margin-bottom:16px;
     display:flex;
     align-items:center;
     gap:8px;
-    background:#fff;
-    border-radius:24px;
-    padding:6px 6px 6px 16px;
   }
-  .comment-input input{
-    flex:1;
-    border:none;
-    outline:none;
-    font-size:12.5px;
-    background:transparent;
-    color:#111;
+
+  /* Profile Avatar Editor */
+  .profile-edit{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:20px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--line);
   }
-  .comment-input button{
-    width:32px; height:32px;
+  .avatar-wrap{
+    position:relative;
+    width:70px; height:70px;
+  }
+  .avatar-img{
+    width:100%; height:100%;
     border-radius:50%;
-    border:none;
-    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
-    color:#2b1c02;
-    font-size:13px;
+    background:linear-gradient(135deg, var(--gold-1), var(--gold-3));
+    display:flex; align-items:center; justify-content:center;
+    font-size:28px; color:#000; font-weight:bold;
+    object-fit:cover;
+  }
+  .avatar-upload-btn{
+    position:absolute; bottom:0; right:0;
+    width:24px; height:24px;
+    background:var(--gold-2);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; color:#000;
     cursor:pointer;
+    border:2px solid var(--panel);
   }
 
-  .mobile-menu-btn{ display:none; }
-
-  @media (max-width:900px){
-    .dash{ grid-template-columns:1fr; }
-    .dash-side{
-      flex-direction:row;
-      align-items:center;
-      border-right:none;
-      border-bottom:1px solid var(--line);
-      padding:14px 16px;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .dash-logo-tag{ display:none; }
-    .dash-nav{ display:none; }
-    .mobile-menu-btn{
-      display:flex;
-      width:34px; height:34px;
-      border-radius:10px;
-      background:var(--panel);
-      border:1px solid var(--line);
-      align-items:center;
-      justify-content:center;
-      color:var(--gold-1);
-      font-size:16px;
-      cursor:pointer;
-    }
-    /* pul (balans) kartasi yuqoriga, header qatoriga chiqadi */
-    .balance-card{
-      order:-1;
-      margin-top:0;
-      margin-left:auto;
-      white-space:nowrap;
-      padding:10px 14px;
-    }
-    .dash-right{ border-left:none; }
-
-    /* telefon-qolipi (frame) olib tashlandi — video butun ekranga yaqin, kattaroq */
-    .dash-main{ padding:8px; }
-    .reel-row{ width:100%; }
-    .reel-frame{
-      width:100%;
-      max-width:520px;
-      height:calc(100vh - 150px);
-      max-height:none;
-      border-radius:0;
-      border:none;
-      box-shadow:none;
-      margin:0 auto;
-    }
-    .reel-actions{
-      gap:14px;
-    }
+  /* Input Fields */
+  .input-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
   }
-
-  .mobile-nav-overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.6);
-    z-index:300;
-  }
-  .mobile-nav-overlay.open{ display:block; }
-  .mobile-nav-modal{
-    position:fixed;
-    top:0; left:0; bottom:0;
-    width:280px;
-    max-width:82vw;
-    background:var(--bg-mid);
-    border-right:1px solid var(--line);
-    padding:22px 18px;
+  .field-group{
     display:flex;
     flex-direction:column;
-    gap:18px;
-    box-shadow:20px 0 60px rgba(0,0,0,.5);
-    transform:translateX(-100%);
-    transition:transform .3s ease;
+    gap:6px;
   }
-  .mobile-nav-overlay.open .mobile-nav-modal{
-    transform:translateX(0);
+  .field-group.full{ grid-column:span 2; }
+  .field-label{ font-size:12px; color:var(--text-dim); }
+  .field-input, .field-select{
+    background:var(--bg-mid);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:11px 14px;
+    color:var(--text);
+    font-size:13.5px;
+    outline:none;
+    transition:border-color .2s;
   }
-  .mobile-nav-head{
+  .field-input:focus, .field-select:focus{
+    border-color:var(--gold-2);
+  }
+
+  /* Switch Toggle Option Row */
+  .setting-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
   }
-  .mobile-nav-modal .dash-nav{
+  .setting-row:last-child{ border-bottom:none; }
+  .setting-info{
     display:flex;
     flex-direction:column;
-    margin-top:0;
+    gap:2px;
   }
-  .mobile-nav-modal .nav-item span:not(.nav-ico){ display:inline; }
-  .mobile-nav-modal .balance-card{ margin-top:0; order:0; }
+  .setting-name{ font-size:13.5px; font-weight:600; }
+  .setting-desc{ font-size:11px; color:var(--text-dim); }
+
+  /* UI Toggle Switch */
+  .switch{
+    position:relative;
+    display:inline-block;
+    width:44px; height:24px;
+  }
+  .switch input{ opacity:0; width:0; height:0; }
+  .slider{
+    position:absolute; cursor:pointer;
+    inset:0; background-color:var(--line);
+    transition:.3s; border-radius:24px;
+  }
+  .slider:before{
+    position:absolute; content:"";
+    height:18px; width:18px;
+    left:3px; bottom:3px;
+    background-color:#fff;
+    transition:.3s; border-radius:50%;
+  }
+  input:checked + .slider{ background:linear-gradient(180deg, var(--gold-1), var(--gold-2)); }
+  input:checked + .slider:before{ transform:translateX(20px); background-color:#2b1c02; }
+
+  /* Buttons */
+  .btn-gold{
+    border:none; cursor:pointer;
+    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
+    color:#2b1c02; font-weight:700; font-size:13.5px;
+    padding:12px 24px; border-radius:12px;
+    display:inline-flex; align-items:center; gap:6px;
+    box-shadow:0 6px 16px rgba(231,169,58,.25);
+    transition:transform .15s ease;
+  }
+  .btn-gold:active{ transform:scale(.97); }
+
+  .btn-danger{
+    background:rgba(255, 93, 108, 0.1);
+    color:var(--danger);
+    border:1px solid var(--danger);
+    padding:10px 18px; border-radius:10px;
+    font-size:12px; font-weight:600;
+    cursor:pointer; transition:background .2s;
+  }
+  .btn-danger:hover{ background:var(--danger); color:#fff; }
+
+  /* Mobile Responsive Navigation & Header */
+  .mobile-header{
+    display:none;
+    padding:16px;
+    background:var(--bg-mid);
+    border-bottom:1px solid var(--line);
+    align-items:center; 
+    justify-content:space-between;
+  }
+  .menu-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--gold-1);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* CHAPDAN CHIQADIGAN MODAL (SIDEBAR DRAWER) STYLES */
+  .drawer-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .mobile-drawer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 260px;
+    height: 100%;
+    background: var(--bg-mid);
+    border-right: 1px solid var(--line);
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+  }
+  .mobile-drawer.active {
+    transform: translateX(0);
+  }
+  .drawer-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  @media (max-width:800px){
+    .dash{ grid-template-columns:1fr; }
+    .dash-side{ display:none; }
+    .mobile-header{ display:flex; }
+    .settings-container{ padding:18px 14px; }
+    .input-grid{ grid-template-columns:1fr; }
+    .field-group.full{ grid-column:span 1; }
+  }
 </style>
 </head>
 <body>
 
-<div class="device">
-  <div class="notch"></div>
-  <div class="screen-frame">
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<aside class="mobile-drawer" id="mobileDrawer">
+  <button class="drawer-close-btn" onclick="closeDrawer()">✕</button>
+  <div class="dash-logo">ZAR</div>
+  <div class="dash-logo-tag">Private member</div>
 
-    <!-- SCREEN 1: SPLASH -->
-    <div class="screen active" id="s1">
-      <div class="logo-word">ZAR</div>
-      <div class="logo-tag">Ko'proq sari ko'payadi</div>
-      <div class="splash-hint">Davom etish uchun bosing</div>
-    </div>
+  <nav class="dash-nav">
+    <a href="../index.html" class="nav-item"><span class="nav-ico">⌂</span>Asosiy</a>
+    <a href="./qidiruv.html" class="nav-item"><span class="nav-ico">⌕</span>Qidiruv</a>
+    <a href="./hamyon.html" class="nav-item"><span class="nav-ico">▤</span>Reytinglar</a>
+    <a href="./bildirishnomalar.html" class="nav-item"><span class="nav-ico">◔</span>Bildirishnoma</a>
+    <a href="./profil.html" class="nav-item"><span class="nav-ico">☺</span>Profil</a>
+    <a href="./sozlamalar.html" class="nav-item active"><span class="nav-ico">⚙</span>Sozlamalar</a>
+  </nav>
+</aside>
 
-    <!-- SCREEN 2: ONBOARDING -->
-    <div class="screen" id="s2">
-      <div class="ob-media">
-        <div class="ob-phone">
-          <div class="ob-globe"></div>
-          <div class="ob-welcome">Welcome to Nova</div>
-          <div class="ob-sub">Sizni yangi imkoniyatlar dunyosiga taklif qilamiz</div>
-          <div class="ob-btn-mini">Continue</div>
-        </div>
-      </div>
-      <div class="ob-card">
-        <div class="ob-title">Videolarni ko'ring</div>
-        <div class="ob-desc">Qisqa brendlarning 1-3 daqiqalik roliklarini tomosha qiling. Reklama tugagach har bir video uchun mukofot oling.</div>
-        <div class="ob-flags">
-          <div class="flag uz"></div>
-          <div class="flag"></div>
-        </div>
-        <div class="ob-footer">
-          <div class="dots">
-            <div class="dot on"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-          <button class="btn-gold" onclick="go('s3')">Davom etish →</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCREEN 3: LOGIN -->
-    <div class="screen" id="s3">
-      <div class="top-logo">ZAR</div>
-      <div class="card-title">Xush kelibsiz</div>
-      <div class="card-sub">Telefon raqamingizni kiriting</div>
-
-      <div class="field">
-        <span class="code">+998</span>
-        <input id="phoneInput" type="tel" placeholder="90 123 45 67" maxlength="12" inputmode="numeric">
-      </div>
-
-      <button class="btn-gold full" style="margin-top:22px;" onclick="submitPhone()">Kod olish</button>
-
-      <div class="divider">yoki quyidagi orqali kiring</div>
-
-      <div class="google-btn">
-        <span class="gicon"></span>
-        Google orqali kirish
-      </div>
-
-      <div class="legal">Davom etish orqali siz <span>Foydalanish shartlari</span> va <span>Maxfiylik siyosati</span>ga rozilik bildirasiz.</div>
-    </div>
-
-    <!-- SCREEN 4: OTP -->
-    <div class="screen" id="s4">
-      <div class="back-btn" onclick="go('s3')">‹</div>
-      <div class="card-title">Tasdiqlash kodi</div>
-      <div class="card-sub">+998 <b id="phoneEcho">90 123 45 67</b> raqamiga yuborildi</div>
-      <div class="demo-code">Demo kod: <b id="demoCodeVal">•••••</b></div>
-      <div class="otp-error" id="otpError">Kod noto'g'ri, qaytadan urinib ko'ring</div>
-
-      <div class="otp-row">
-        <input class="otp-box" maxlength="1" inputmode="numeric">
-        <input class="otp-box" maxlength="1" inputmode="numeric">
-        <input class="otp-box" maxlength="1" inputmode="numeric">
-        <input class="otp-box" maxlength="1" inputmode="numeric">
-        <input class="otp-box" maxlength="1" inputmode="numeric">
-      </div>
-
-      <div class="resend">Kod kelmadimi? <b onclick="resendCode()">Qayta yuborish</b></div>
-
-      <button class="btn-gold full" onclick="verifyCode()">Tasdiqlash</button>
-    </div>
-
-    <!-- SCREEN 5: SUCCESS -->
-    <div class="screen" id="s5">
-      <div class="check">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#2b1c02" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="card-title">Tasdiqlandi!</div>
-      <div class="card-sub">Hisobingiz muvaffaqiyatli faollashtirildi. Endi videolarni tomosha qilib mukofot yig'ishingiz mumkin.</div>
-      <button class="btn-gold" onclick="openDashboard()">Boshlash</button>
-    </div>
-
-  </div>
-</div>
-
-<button class="restart" onclick="closeDashboard(); go('s1'); resetAll();">↺ Qayta boshlash</button>
-
-<!-- ================= DASHBOARD (video feed) ================= -->
-<div class="dash" id="dashboard">
+<div class="dash">
   <aside class="dash-side">
     <div class="dash-logo">ZAR</div>
     <div class="dash-logo-tag">Private member</div>
 
-    <div class="balance-card">
-      <div class="balance-label">Hisobingiz</div>
-      <div class="balance-val">12 480 <span>ball</span></div>
-      <div class="balance-val som" id="somBalanceMain">0 <span>so'm</span></div>
-    </div>
-
-    <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
-
     <nav class="dash-nav">
-      <a href="./index.html" class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</a>
-      <a href="./js/qidiruv.js" class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</a>
-      <a href=""  class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</a>
-      <a href=""  class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</a>
-      <a href=""  class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</a>
-      <a href=""  class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</a>
+      <a href="./index.html" class="nav-item"><span class="nav-ico">⌂</span>Asosiy</a>
+      <a href="./qidiruv.html" class="nav-item"><span class="nav-ico">⌕</span>Qidiruv</a>
+      <a href="./hamyon.html" class="nav-item"><span class="nav-ico">▤</span>Reytinglar</a>
+      <a href="./bildirishnomalar.html" class="nav-item"><span class="nav-ico">◔</span>Bildirishnoma</a>
+      <a href="./profil.html" class="nav-item"><span class="nav-ico">☺</span>Profil</a>
+      <a href="./sozlamalar.html" class="nav-item active"><span class="nav-ico">⚙</span>Sozlamalar</a>
     </nav>
   </aside>
 
-  <!-- Mobile nav modal -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay">
-    <div class="mobile-nav-modal">
-      <div class="mobile-nav-head">
-        <div class="dash-logo">ZAR</div>
-        <div class="dash-right-close" id="mobileNavClose">✕</div>
-      </div>
-      <div class="balance-card">
-        <div class="balance-label">Hisobingiz</div>
-        <div class="balance-val">12 480 <span>ball</span></div>
-        <div class="balance-val som" id="somBalanceMenu">0 <span>so'm</span></div>
-      </div>
-      <nav class="dash-nav" id="mobileNavList">
-        <div class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
-        <div class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
-        <div class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
-        <div class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
-        <div class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
-        <div class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
-      </nav>
+  <main style="display:flex; flex-direction:column; width:100%;">
+    
+    <div class="mobile-header">
+      <button class="menu-toggle-btn" onclick="openDrawer()">☰</button>
+      <div class="dash-logo">ZAR</div>
+      <a href="./index.html" style="color:var(--gold-1); text-decoration:none; font-size:13px;">← Orqaga</a>
     </div>
-  </div>
 
-  <main class="dash-main">
-    <div class="reel-wrap">
-      <div class="reel-row">
-        <div class="reel-frame" id="reelFrame">
-          <div class="reel-video" id="reelVideo"></div>
+    <div class="settings-container">
+      <h1 class="page-title">⚙ Sozlamalar</h1>
 
-          <div class="reel-reward">
-            <div class="reel-reward-icon">⚡</div>
-            <div class="reel-reward-badge">+15</div>
+      <div class="settings-section">
+        <div class="section-title">👤 Shaxsiy Ma'lumotlar</div>
+        
+        <div class="profile-edit">
+          <div class="avatar-wrap">
+            <div class="avatar-img" id="avatarText">Z</div>
+            <label class="avatar-upload-btn" title="Rasm yuklash">
+              📷
+              <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+            </label>
           </div>
-
-          <div class="reel-topright">
-            <div class="reel-topbtn" id="muteBtn" title="Ovozni yoqish/o'chirish">🔊</div>
-            <div class="reel-topbtn" id="expandBtn" title="Kattalashtirish">⛶</div>
+          <div>
+            <div style="font-weight:700; font-size:15px;" id="profileNameDisplay">Foydalanuvchi</div>
+            <div style="font-size:11px; color:var(--text-dim);">ID: 8841920</div>
           </div>
+        </div>
 
-          <div class="reel-bottom">
-            <div class="reel-user">
-              <div class="reel-avatar"></div>
-              <div>
-                <div class="reel-username" id="reelUser">@shoxrux_official</div>
-                <div class="reel-caption" id="reelCaption">Zamonaviy loyiha • #arxitektura #uy</div>
-              </div>
+        <form id="profileForm" onsubmit="saveProfile(event)">
+          <div class="input-grid">
+            <div class="field-group">
+              <label class="field-label">Ism va Familiya</label>
+              <input type="text" class="field-input" id="userName" value="Jasur Rahimov" required>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Telefon Raqam</label>
+              <input type="tel" class="field-input" id="userPhone" value="+998 90 123 45 67" disabled>
+            </div>
+            <div class="field-group full">
+              <label class="field-label">Email (Ixtiyoriy)</label>
+              <input type="email" class="field-input" id="userEmail" placeholder="example@mail.com">
             </div>
           </div>
+          <button type="submit" class="btn-gold" style="margin-top:16px;">Saqlash</button>
+        </form>
+      </div>
 
-          <div class="reel-progress"><div class="reel-progress-fill" id="reelProgress"></div></div>
+      <div class="settings-section">
+        <div class="section-title">🔔 Bildirishnomalar</div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-name">Push-bildirishnomalar</div>
+            <div class="setting-desc">Yangi videolar va aksiyalar haqida xabar berish</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pushNotify" checked>
+            <span class="slider"></span>
+          </label>
         </div>
 
-        <div class="reel-actions">
-          <div class="ract" id="likeBtn"><div class="ract-circle">♥</div><span id="likeCount">42.9k</span></div>
-          <div class="ract" id="commentToggleBtn"><div class="ract-circle">💬</div><span>1.2k</span></div>
-          <div class="ract"><div class="ract-circle">↗</div><span>Ulashish</span></div>
-          <div class="ract"><div class="ract-circle">⇧</div><span>Saqlash</span></div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-name">SMS Ogohlantirishlar</div>
+            <div class="setting-desc">Hisobingizdagi to'lovlar va baland o'zgarishlar haqida SMS</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="smsNotify">
+            <span class="slider"></span>
+          </label>
         </div>
       </div>
 
-      <div class="reel-hint">
-        <span><b>↑ ↓</b> — videoni almashtirish</span>
-        <span><b>Bo'shliq</b> — pauza</span>
-        <span><b>M</b> — ovoz</span>
+      <div class="settings-section">
+        <div class="section-title">🌐 Tizim & Interfeys</div>
+
+        <div class="input-grid">
+          <div class="field-group">
+            <label class="field-label">Ilova Tili</label>
+            <select class="field-select" id="appLanguage">
+              <option value="uz" selected>O'zbekcha</option>
+              <option value="ru">Русский</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Mavzu (Theme)</label>
+            <select class="field-select" id="appTheme">
+              <option value="dark" selected>Tungi (Tavsiya etiladi)</option>
+              <option value="light">Kungi (Tez kunda)</option>
+            </select>
+          </div>
+        </div>
       </div>
+
+      <div class="settings-section">
+        <div class="section-title">🔒 Xavfsizlik</div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-name">PIN-kod / Biometriya</div>
+            <div class="setting-desc">Kirishda barmoq izi yoki PIN so'rash</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pinSecurity" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px;">
+          <button class="btn-danger" onclick="logout()">Chiqish (Logout)</button>
+          <button class="btn-danger" style="border-color:#666; color:#aaa; background:transparent;" onclick="deleteAccount()">Hisobni o'chirish</button>
+        </div>
+      </div>
+
     </div>
   </main>
-
-  <aside class="dash-right" id="dashRight">
-    <div class="dash-right-close" id="dashRightClose">✕</div>
-    <div class="today-card">
-      <div class="today-top">
-        <span>Bugungi natija</span>
-        <b>+540 ball</b>
-      </div>
-      <div class="today-bars">
-        <span class="bar on"></span><span class="bar on"></span><span class="bar on"></span>
-        <span class="bar on"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
-      </div>
-      <div class="today-days">
-        <span>DU</span><span>SE</span><span>CHO</span><span class="cur">PAY</span><span>JU</span><span>SHA</span><span>YA</span>
-      </div>
-    </div>
-
-    <div class="comments-head">Izohlar <span>1.2k</span></div>
-
-    <div class="comments-list" id="commentsList"></div>
-
-    <div class="comment-input">
-      <input type="text" id="commentInput" placeholder="Izoh qoldiring...">
-      <button onclick="postComment()">➤</button>
-    </div>
-  </aside>
-  <div class="dash-right-overlay" id="dashRightOverlay"></div>
 </div>
-
-<!-- ================= FULLSCREEN REEL MODAL ================= -->
-<div class="reel-modal-overlay" id="reelModalOverlay">
-  <div class="reel-modal-box" id="reelModalBox">
-    <div class="reel-modal-progress"><div class="reel-modal-progress-fill" id="modalProgress"></div></div>
-    <div class="reel-modal-close" id="modalCloseBtn">✕</div>
-    <div class="reel-video" id="modalVideo"></div>
-    <div class="reel-modal-info">
-      <div class="reel-avatar"></div>
-      <div>
-        <div class="reel-username" id="modalUser">@shoxrux_official</div>
-        <div class="reel-caption" id="modalCaption">Zamonaviy loyiha • #arxitektura #uy</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Video tugaganda soxta so'm mukofoti -->
-<div class="reward-toast" id="rewardToast">+300 000 so'm</div>
 
 <script>
-  function go(id){
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+  // Modal (Drawer) boshqaruvi
+  function openDrawer() {
+    document.getElementById('mobileDrawer').classList.add('active');
+    document.getElementById('drawerOverlay').classList.add('active');
   }
 
-  // Splash tap-to-continue
-  document.getElementById('s1').addEventListener('click', () => go('s2'));
-
-  // Auto-advance splash after a short delay too
-  setTimeout(() => {
-    if(document.getElementById('s1').classList.contains('active')) go('s2');
-  }, 2600);
-
-  let currentCode = '';
-
-  function generateCode(){
-    currentCode = String(Math.floor(10000 + Math.random() * 90000)); // 5 xonali tasodifiy kod
-    document.getElementById('demoCodeVal').textContent = currentCode;
-    return currentCode;
+  function closeDrawer() {
+    document.getElementById('mobileDrawer').classList.remove('active');
+    document.getElementById('drawerOverlay').classList.remove('active');
   }
 
-  function submitPhone(){
-    const val = document.getElementById('phoneInput').value.trim();
-    document.getElementById('phoneEcho').textContent = val ? val : '90 123 45 67';
-    generateCode();
-    go('s4');
-    setTimeout(() => {
-      fillOtpWithCode();
-    }, 400);
-  }
-
-  function fillOtpWithCode(){
-    const digits = currentCode.split('');
-    otpBoxes.forEach((box, i) => { box.value = digits[i] || ''; });
-    otpBoxes[otpBoxes.length - 1].focus();
-  }
-
-  function resendCode(){
-    generateCode();
-    const el = document.querySelector('.resend b');
-    el.textContent = 'Yuborildi ✓';
-    setTimeout(() => el.textContent = 'Qayta yuborish', 1800);
-  }
-
-  function verifyCode(){
-    const entered = Array.from(otpBoxes).map(o => o.value).join('');
-    const errorEl = document.getElementById('otpError');
-    const rowEl = document.querySelector('.otp-row');
-
-    if(entered.length < 5){
-      errorEl.textContent = "Barcha katakchalarni to'ldiring";
-      errorEl.classList.add('show');
-      rowEl.classList.remove('shake'); void rowEl.offsetWidth; rowEl.classList.add('shake');
-      return;
-    }
-
-    if(entered === currentCode){
-      errorEl.classList.remove('show');
-      go('s5');
-    } else {
-      errorEl.textContent = "Kod noto'g'ri, qaytadan urinib ko'ring";
-      errorEl.classList.add('show');
-      rowEl.classList.remove('shake'); void rowEl.offsetWidth; rowEl.classList.add('shake');
-    }
-  }
-
-  function resetAll(){
-    document.getElementById('phoneInput').value = '';
-    document.querySelectorAll('.otp-box').forEach(o => o.value = '');
-    document.getElementById('otpError').classList.remove('show');
-    document.getElementById('demoCodeVal').textContent = '•••••';
-    currentCode = '';
-  }
-
-  // OTP auto-advance focus
-  const otpBoxes = document.querySelectorAll('.otp-box');
-  otpBoxes.forEach((box, i) => {
-    box.addEventListener('input', () => {
-      box.value = box.value.replace(/[^0-9]/g, '');
-      if(box.value && i < otpBoxes.length - 1){
-        otpBoxes[i+1].focus();
+  // Rasm yuklanganda yangilash
+  document.getElementById('avatarInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const avatarText = document.getElementById('avatarText');
+        avatarText.innerText = '';
+        avatarText.style.backgroundImage = `url(${evt.target.result})`;
+        avatarText.style.backgroundSize = 'cover';
       }
-    });
-    box.addEventListener('keydown', (e) => {
-      if(e.key === 'Backspace' && !box.value && i > 0){
-        otpBoxes[i-1].focus();
-      }
-    });
-  });
-
-  // Phone input formatting (simple grouping)
-  document.getElementById('phoneInput').addEventListener('input', (e) => {
-    let v = e.target.value.replace(/\D/g,'').slice(0,9);
-    let parts = [];
-    if(v.length > 0) parts.push(v.slice(0,2));
-    if(v.length > 2) parts.push(v.slice(2,5));
-    if(v.length > 5) parts.push(v.slice(5,7));
-    if(v.length > 7) parts.push(v.slice(7,9));
-    e.target.value = parts.join(' ');
-  });
-
-  /* ================= DASHBOARD LOGIC ================= */
-
-  const reelVideoIds = [
-    "0Pj5KvK3BGE","BUG4SoXFhpk","sKwx-h6rAiA","YsgiMsuApLk","_xkvev33Ffo",
-    "YAUMkE6-tkY","2KuC8X4WfH0","kY29aBerY3w","dEtW-bQjRlI","5kRKjDL8ivE",
-    "uPIXwjSdtDI","Ix5cKThAa3E","h7ac2ujO6uA","eEJ8_1TqHvU","NisYWhLPXY8",
-    "8VW7Mhb48gc","kRAsPkosZ94","EkmxLfuKC-Y","DNG-sp9mJKU","sQ9ltirbWhE",
-    "2ANEDyDR-68"
-  ];
-
-  const reelUsers = [
-    "@shoxrux_official","@dilnoza.travel","@zar_luxury","@oybek_arch","@madina_style",
-    "@bekzod_moto","@sarvinoz_life","@jasur_estate","@nigora_food","@aziz_drive",
-    "@kamola_art","@sherzod_yacht","@feruza_home","@ulugbek_watch","@nodira_fashion",
-    "@davron_realty","@malika_view","@rustam_cars","@gulnora_trend","@sanjar_pro",
-    "@yulduz_official"
-  ];
-
-  const reelCaptions = [
-    "Zamonaviy loyiha • #arxitektura #uy",
-    "Bugungi sayohat lavhalari • #travel",
-    "Hashamatli hayot tarzi • #luxury",
-    "Yangi qurilish loyihasi • #arxitektura",
-    "Uslub va did • #fashion",
-    "Yo'lda • #moto #adventure",
-    "Kunning eng yaxshi lahzasi • #life",
-    "Ko'chmas mulk yangiligi • #estate",
-    "Mazali tansiq • #food",
-    "Tezlik ishqibozlari uchun • #drive",
-    "Ijodiy kayfiyat • #art",
-    "Dengiz sayri • #yacht",
-    "Issiq va shinam • #home",
-    "Vaqt — bu qadriyat • #watch",
-    "Yangi kolleksiya • #fashion",
-    "Orzuingizdagi uy • #realty",
-    "Manzara nafas oldiradi • #view",
-    "Kuch va tezlik • #cars",
-    "Bugungi trend • #trend",
-    "Professional yondashuv • #pro",
-    "Rasmiy sahifa • #official"
-  ];
-
-  let reelIndex = 0;
-  let isMuted = true; // brauzer siyosati: ovozli avtoplay bloklanmasligi uchun boshida ovozsiz boshlanadi
-  let liked = false;
-
-  /* ---- Soxta so'm balansi: har bir video "tugaganda" +300 000 so'm ---- */
-  let fakeSomBalance = 0;
-  let videoFinishTimer = null;
-
-  function addFakeSom(amount){
-    fakeSomBalance += amount;
-    const formatted = fakeSomBalance.toLocaleString('ru-RU') + " so'm";
-    const mainEl = document.getElementById('somBalanceMain');
-    const menuEl = document.getElementById('somBalanceMenu');
-    if(mainEl) mainEl.innerHTML = fakeSomBalance.toLocaleString('ru-RU') + ' <span>so\'m</span>';
-    if(menuEl) menuEl.innerHTML = fakeSomBalance.toLocaleString('ru-RU') + ' <span>so\'m</span>';
-  }
-
-  function showRewardToast(){
-    const t = document.getElementById('rewardToast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  function scheduleVideoFinish(){
-    if(videoFinishTimer) clearTimeout(videoFinishTimer);
-    // videoning "tugashi" taxminiy simulyatsiya qilinadi (soxta hisoblash uchun)
-    const simulatedDuration = 14000 + Math.random() * 8000; // 14-22 soniya
-    videoFinishTimer = setTimeout(() => {
-      addFakeSom(300000);
-      showRewardToast();
-    }, simulatedDuration);
-  }
-
-  const commentNames = ["Mansur S.","Aziza_71","Olor Travel","Dilnoza K.","Sherzod M.","Kamola R.","Bekzod_77","Nodira T.","Jasur A.","Malika S.","Rustam B.","Feruza N.","Ulug'bek D.","Sanjar_pro","Gulnora M."];
-  const commentTexts = [
-    "Juda chiroyli manzara bo'libdi! Bizning yurtda shunday joylar borligidan faxrlanaman.",
-    "ZAR platformasidagi ilk videolarimdan biri. Zo'r chiqibdi!",
-    "Bu qaysi manzilda joylashgan? Manzili bormi?",
-    "Sifat va operator ishi zo'r, davom eting!",
-    "Har kuni shu ilovada video ko'rib ball yig'yapman, foydali ekan.",
-    "Wow, bunday joyni birinchi marta ko'ryapman!",
-    "Montaj juda professional qilingan.",
-    "Do'stlarimga ham tavsiya qildim, hammaga yoqdi.",
-    "Qachon keyingi qism chiqadi?",
-    "Musiqasi ham juda mos tanlangan.",
-    "Bunaqasini ko'rmagandim, ajoyib!",
-    "Manzil va narxlari haqida ma'lumot bera olasizmi?",
-    "Zo'r loyiha, muvaffaqiyatlar tilayman.",
-    "Bunday ijodkorlarni qo'llab-quvvatlash kerak.",
-    "Sifatli kontent, obuna bo'ldim."
-  ];
-  const commentTimes = ["12 daqiqa oldin","1 soat oldin","2 soat oldin","5 soat oldin","1 kun oldin","2 kun oldin"];
-
-  function seededRand(seed){
-    let x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
-  }
-
-  const commentsByReel = reelVideoIds.map((_, ri) => {
-    const count = 3;
-    const list = [];
-    for(let i = 0; i < count; i++){
-      const seed = ri * 37 + i * 13 + 7;
-      const nameIdx = Math.floor(seededRand(seed) * commentNames.length);
-      const textIdx = Math.floor(seededRand(seed + 1) * commentTexts.length);
-      const timeIdx = Math.floor(seededRand(seed + 2) * commentTimes.length);
-      list.push({
-        name: commentNames[nameIdx],
-        text: commentTexts[textIdx],
-        time: commentTimes[timeIdx],
-        verified: seededRand(seed + 3) > 0.5,
-        likes: Math.floor(seededRand(seed + 4) * 300) + 4,
-        liked: false
-      });
+      reader.readAsDataURL(file);
     }
-    return list;
   });
 
-  function renderComments(index){
-    const list = document.getElementById('commentsList');
-    const comments = commentsByReel[index];
-    list.innerHTML = comments.map((c, ci) => `
-      <div class="comment">
-        <div class="c-avatar"></div>
-        <div class="c-body">
-          <span class="c-name">${c.name}${c.verified ? ' ✓' : ''}</span><span class="c-time">${c.time}</span>
-          <div class="c-text">${c.text}</div>
-          <div class="c-reply">Javob berish</div>
-        </div>
-        <div class="c-like ${c.liked ? 'liked' : ''}" onclick="toggleCommentLike(${index}, ${ci})">
-          <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.1C.8 9.9 2 6.3 5.4 5.3c2-.6 3.9.2 5.1 1.9.3.4.5.7.5.7s.2-.3.5-.7c1.2-1.7 3.1-2.5 5.1-1.9 3.4 1 4.6 4.6 2.7 7.6C18.7 16.65 12 21 12 21z"/></svg>
-          <span>${c.likes}</span>
-        </div>
-      </div>
-    `).join('');
+  // Profil Saqlash Funksiyasi
+  function saveProfile(e) {
+    e.preventDefault();
+    const name = document.getElementById('userName').value;
+    document.getElementById('profileNameDisplay').innerText = name;
+    alert("Sozlamalar muvaffaqiyatli saqlandi!");
   }
 
-  function toggleCommentLike(reelI, commentI){
-    const c = commentsByReel[reelI][commentI];
-    c.liked = !c.liked;
-    c.likes += c.liked ? 1 : -1;
-    renderComments(reelI);
-  }
-
-  function loadReel(index){
-    const id = reelVideoIds[index];
-    const muteParam = isMuted ? 1 : 0;
-    const reelVideoEl = document.getElementById('reelVideo');
-    reelVideoEl.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
-    reelVideoEl.innerHTML = `
-      <iframe
-        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=${muteParam}&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    `;
-    document.getElementById('reelUser').textContent = reelUsers[index];
-    document.getElementById('reelCaption').textContent = reelCaptions[index];
-    document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
-    document.getElementById('muteBtn').classList.toggle('pulse', isMuted);
-    document.getElementById('reelProgress').style.width = ((index+1)/reelVideoIds.length*100) + '%';
-    liked = false;
-    document.getElementById('likeBtn').classList.remove('liked');
-    document.getElementById('likeCount').textContent = (42.9 + index*0.3).toFixed(1) + 'k';
-    renderComments(index);
-    scheduleVideoFinish();
-  }
-
-  function nextReel(){
-    reelIndex = (reelIndex + 1) % reelVideoIds.length;
-    loadReel(reelIndex);
-  }
-  function prevReel(){
-    reelIndex = (reelIndex - 1 + reelVideoIds.length) % reelVideoIds.length;
-    loadReel(reelIndex);
-  }
-
-  document.getElementById('muteBtn').addEventListener('click', () => {
-    isMuted = !isMuted;
-    loadReel(reelIndex);
-  });
-
-  document.getElementById('likeBtn').addEventListener('click', () => {
-    liked = !liked;
-    document.getElementById('likeBtn').classList.toggle('liked', liked);
-    const base = 42.9 + reelIndex*0.3;
-    document.getElementById('likeCount').textContent = (liked ? (base + 0.1) : base).toFixed(1) + 'k';
-  });
-
-  function openComments(){
-    document.getElementById('dashRight').classList.add('open');
-    document.getElementById('dashRightOverlay').classList.add('open');
-  }
-  function closeComments(){
-    document.getElementById('dashRight').classList.remove('open');
-    document.getElementById('dashRightOverlay').classList.remove('open');
-  }
-  document.getElementById('commentToggleBtn').addEventListener('click', openComments);
-  document.getElementById('dashRightClose').addEventListener('click', closeComments);
-  document.getElementById('dashRightOverlay').addEventListener('click', closeComments);
-
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const navId = item.dataset.nav;
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.querySelectorAll(`.nav-item[data-nav="${navId}"]`).forEach(n => n.classList.add('active'));
-      closeMobileNav();
-    });
-  });
-
-  function openMobileNav(){
-    document.getElementById('mobileNavOverlay').classList.add('open');
-  }
-  function closeMobileNav(){
-    document.getElementById('mobileNavOverlay').classList.remove('open');
-  }
-  document.getElementById('mobileMenuBtn').addEventListener('click', openMobileNav);
-  document.getElementById('mobileNavClose').addEventListener('click', closeMobileNav);
-  document.getElementById('mobileNavOverlay').addEventListener('click', (e) => {
-    if(e.target.id === 'mobileNavOverlay') closeMobileNav();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if(document.getElementById('reelModalOverlay').classList.contains('open')){
-      if(e.key === 'ArrowDown'){ e.preventDefault(); modalNext(); }
-      if(e.key === 'ArrowUp'){ e.preventDefault(); modalPrev(); }
-      if(e.key === 'Escape'){ closeReelModal(); }
-      return;
+  // Chiqish
+  function logout() {
+    if (confirm("Haqiqatdan ham hisobdan chiqmoqchimisiz?")) {
+      window.location.href = "./index.html";
     }
-    if(!document.getElementById('dashboard').classList.contains('open')) return;
-    if(e.key === 'ArrowDown'){ e.preventDefault(); nextReel(); }
-    if(e.key === 'ArrowUp'){ e.preventDefault(); prevReel(); }
-    if(e.key.toLowerCase() === 'm'){ document.getElementById('muteBtn').click(); }
-  });
+  }
 
-  // ---- Universal swipe/drag helper: works with touch AND mouse (PC) ----
-  function addSwipeNav(el, onNext, onPrev){
-    let startY = 0, startX = 0, dragging = false, moved = false;
-
-    function start(y, x){
-      dragging = true; moved = false;
-      startY = y; startX = x;
-      el.classList.add('dragging');
+  // Hisobni o'chirish
+  function deleteAccount() {
+    if (confirm("Diqqat! Hisobingiz va to'plangan ballaringiz butunlay o'chib ketadi. Rozimisiz?")) {
+      alert("Hisob o'chirildi.");
+      window.location.href = "./index.html";
     }
-    function move(y, x){
-      if(!dragging) return;
-      if(Math.abs(y - startY) > 8 || Math.abs(x - startX) > 8) moved = true;
-    }
-    function end(y){
-      if(!dragging) return;
-      dragging = false;
-      el.classList.remove('dragging');
-      const dy = startY - y;
-      if(moved && Math.abs(dy) > 40){
-        if(dy > 0) onNext(); else onPrev();
-      }
-    }
-
-    // Touch (mobile)
-    el.addEventListener('touchstart', (e) => {
-      const t = e.touches[0];
-      start(t.clientY, t.clientX);
-    }, {passive:true});
-    el.addEventListener('touchmove', (e) => {
-      const t = e.touches[0];
-      move(t.clientY, t.clientX);
-    }, {passive:true});
-    el.addEventListener('touchend', (e) => {
-      end(e.changedTouches[0].clientY);
-    });
-
-    // Mouse (PC drag)
-    el.addEventListener('mousedown', (e) => {
-      start(e.clientY, e.clientX);
-      e.preventDefault();
-    });
-    window.addEventListener('mousemove', (e) => {
-      if(dragging) move(e.clientY, e.clientX);
-    });
-    window.addEventListener('mouseup', (e) => {
-      if(dragging) end(e.clientY);
-    });
-
-    // Mouse wheel (PC trackpad/scroll)
-    let wheelLock = false;
-    el.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      if(wheelLock) return;
-      wheelLock = true;
-      if(e.deltaY > 0) onNext(); else onPrev();
-      setTimeout(() => wheelLock = false, 500);
-    }, {passive:false});
   }
-
-  addSwipeNav(document.getElementById('reelFrame'), nextReel, prevReel);
-
-
-  function postComment(){
-    const input = document.getElementById('commentInput');
-    const val = input.value.trim();
-    if(!val) return;
-    commentsByReel[reelIndex].unshift({name:"Siz", time:"hozir", text: val, verified:false, likes:0, liked:false});
-    renderComments(reelIndex);
-    input.value = '';
-  }
-  document.getElementById('commentInput').addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') postComment();
-  });
-
-  function openDashboard(){
-    document.querySelector('.device').style.display = 'none';
-    document.querySelector('.restart').style.display = 'none';
-    document.getElementById('dashboard').classList.add('open');
-    reelIndex = 0;
-    loadReel(reelIndex);
-  }
-
-  function closeDashboard(){
-    document.getElementById('dashboard').classList.remove('open');
-    document.getElementById('reelVideo').innerHTML = '';
-    if(videoFinishTimer) clearTimeout(videoFinishTimer);
-    document.querySelector('.device').style.display = '';
-    document.querySelector('.restart').style.display = '';
-  }
-
-  /* ---- Fullscreen modal (works via expand button; swipe/drag/wheel/keys) ---- */
-  function loadModalReel(index){
-    const id = reelVideoIds[index];
-    const muteParam = isMuted ? 1 : 0;
-    const modalVideoEl = document.getElementById('modalVideo');
-    modalVideoEl.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
-    modalVideoEl.innerHTML = `  
-      <iframe
-        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=${muteParam}&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    `;
-    document.getElementById('modalUser').textContent = reelUsers[index];
-    document.getElementById('modalCaption').textContent = reelCaptions[index];
-    document.getElementById('modalProgress').style.width = ((index+1)/reelVideoIds.length*100) + '%';
-    scheduleVideoFinish();
-  }
-
-  function openReelModal(){
-    document.getElementById('reelModalOverlay').classList.add('open');
-    loadModalReel(reelIndex);
-  }
-  function closeReelModal(){
-    document.getElementById('reelModalOverlay').classList.remove('open');
-    document.getElementById('modalVideo').innerHTML = '';
-    loadReel(reelIndex); // sync main reel to whatever was last shown in modal
-  }
-  function modalNext(){
-    reelIndex = (reelIndex + 1) % reelVideoIds  .length;
-    loadModalReel(reelIndex);
-  }
-  function modalPrev(){
-    reelIndex = (reelIndex - 1 + reelVideoIds.length) % reelVideoIds.length;
-    loadModalReel(reelIndex);
-  } 
-
-  document.getElementById('expandBtn').addEventListener('click', openReelModal);
-  document.getElementById('modalCloseBtn').addEventListener('click', closeReelModal);
-
-  document.getElementById('reelModalOverlay').addEventListener('click', (e) => {
-    if(e.target.id === 'reelModalOverlay') closeReelModal();
-  });
-
-  addSwipeNav(document.getElementById('reelModalBox'), modalNext, modalPrev);
 </script>
-
 </body>
 </html>
