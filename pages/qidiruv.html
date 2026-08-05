@@ -1,223 +1,260 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAR Platform - Qidiruv</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'zar-dark': '#070a12',
-                        'zar-bg': '#05070e',
-                        'zar-card': '#0d111d',
-                        'zar-card-hover': '#13192b',
-                        'zar-gold': '#e3b353',
-                        'zar-gray': '#182030',
-                    }
-                }
-            }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZAR — Qidiruv</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0a0d12', sidebar: '#0d1119', panel: '#12161f', card: '#141a24', 
+          border: '#232936', gold: '#e8b64a', golddim: '#a9812f', txt: '#eef0f3', 
+          txtdim: '#8b93a1', txtfaint: '#5b6472'
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #05070e; color: white; margin: 0; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #070a12; }
-        ::-webkit-scrollbar-thumb { background: #182030; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #e3b353; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+      }
+    }
+  }
+</script>
+<style>
+  ::placeholder{ color:#5b6472; }
+  .card-thumb{ aspect-ratio: 9/16; }
+  .no-scrollbar::-webkit-scrollbar{ display:none; }
+  /* Faqat shu qism responsive uchun */
+  @media (max-width: 1024px) {
+    #sidebar { position: fixed; left: -256px; height: 100%; z-index: 50; transition: 0.3s; }
+    #sidebar.active { left: 0; }
+  }
+</style>
 </head>
-<body class="flex min-h-screen bg-[#05070e]">
+<body class="bg-bg text-txt font-sans min-h-screen flex">
 
-    <aside class="w-64 bg-[#070a12] border-r border-gray-800/60 p-6 flex flex-col justify-between hidden md:flex sticky top-0 h-screen z-30">
-        <div>
-            <div class="mb-8">
-                <h1 class="text-2xl font-black tracking-wider text-zar-gold">ZAR</h1>
-                <p class="text-[9px] text-gray-500 tracking-widest font-semibold uppercase">PRIVATE MEMBER</p>
-            </div>
-            <nav class="space-y-2">
-                <a href="../index.html" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-white rounded-lg text-sm transition">Asosiy</a>
-                <a href="qidiruv.html" class="flex items-center gap-4 px-4 py-3 bg-zar-gray/80 text-zar-gold border-r-2 border-zar-gold rounded-l-lg font-semibold text-sm transition">Qidiruv</a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-white rounded-lg text-sm transition">Hamyon</a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-white rounded-lg text-sm transition">Bildirishnoma</a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-white rounded-lg text-sm transition">Profil</a>
-            </nav>
+<!-- Mobil menyu tugmasi -->
+<button onclick="document.getElementById('sidebar').classList.add('active')" class="lg:hidden fixed top-5 left-5 z-40 p-2 bg-panel rounded-lg border border-border">
+  <svg class="w-6 h-6 text-txt" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+</button>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="w-64 shrink-0 bg-sidebar border-r border-border">
+<div class="sticky top-0 h-screen flex flex-col justify-between p-7">
+  <div>
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-extrabold tracking-[4px] text-gold" style="font-family:Georgia, serif">ZAR</div>
+        <button onclick="document.getElementById('sidebar').classList.remove('active')" class="lg:hidden text-txt">✕</button>
+    </div>
+    <div class="text-[10px] tracking-[2px] text-txtfaint uppercase mt-1">Private member</div>
+  </div>
+
+  <nav id="sideNav" class="mt-9 flex flex-col gap-1">
+    <a href="../index.html" data-page="index.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+      Asosiy
+    </a>
+    <a href="./qidiruv.html" data-page="qidiruv.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Qidiruv
+    </a>
+    <a href="./hamyon.html" data-page="hamyon.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V13M12 19V5M20 19v-7"/></svg>
+      Reytinglar
+    </a>
+    <a href="./bildirishnomalar.html" data-page="bildirishnoma.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      Bildirishnoma
+    </a>
+    <a href="./profil.html" data-page="profil.html" class="nav-link relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-txtdim text-sm hover:bg-[#151b26] hover:text-txt transition">
+      <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+      Profil
+    </a>
+  </nav>
+
+  <div class="flex-1"></div>
+  <div class="bg-panel border border-border rounded-xl p-4">
+    <div class="text-xs text-txtdim mb-1.5">Hisobingiz</div>
+    <div class="text-xl font-bold">12 480 <span class="text-sm font-normal text-txtdim">ball</span></div>
+  </div>
+</div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 px-5 md:px-9 py-7 pb-16 min-w-0">
+  <div class="mt-10 lg:mt-0">
+    <h1 class="text-xl font-bold">Qidiruv</h1>
+    <p class="text-txtdim text-sm mt-1">Videolar, foydalanuvchilar va hashtaglar bo'yicha qidiring</p>
+  </div>
+
+  <div class="mt-5 flex items-center gap-2.5 bg-panel border border-border rounded-xl px-4 py-3 max-w-xl">
+    <svg class="w-[18px] h-[18px] text-txtfaint flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="searchInput" type="text" placeholder="Foydalanuvchi, hashtag yoki so'z kiriting..." autocomplete="off" class="flex-1 bg-transparent border-none outline-none text-txt text-sm placeholder:text-txtfaint">
+    <button id="clearBtn" class="hidden text-txtfaint text-xs hover:text-txt">Tozalash</button>
+    <button id="micBtn" type="button" class="flex items-center justify-center w-8 h-8 rounded-lg text-txtdim hover:text-gold hover:bg-[#1b2230] transition flex-shrink-0"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 19v3"/></svg></button>
+  </div>
+  <div id="micStatus" class="hidden mt-2 text-xs text-gold flex items-center gap-2 max-w-xl">
+    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+    Tinglanmoqda...
+  </div>
+
+  <div id="chipRow" class="mt-4 flex gap-2 flex-wrap"></div>
+
+  <div class="mt-5 flex justify-between items-center text-txtdim text-sm">
+    <div><b id="resultCount" class="text-txt font-semibold">0</b> ta natija topildi</div>
+  </div>
+
+  <div id="grid" class="mt-3.5 grid gap-4" style="grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));"></div>
+
+  <div id="emptyState" class="hidden flex-col items-center justify-center py-20 text-txtdim text-center">
+    <h3 class="text-base text-txt mb-1.5 font-semibold">Hech narsa topilmadi</h3>
+  </div>
+
+  <button id="loadMoreBtn" class="block mx-auto mt-6 px-7 py-2.5 rounded-lg bg-panel border border-border text-txt text-sm hover:border-golddim hover:text-gold transition">Yana yuklash</button>
+</main>
+
+<div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
+  <div class="relative w-full max-w-3xl">
+    <button id="closeModalBtn" class="absolute -top-10 right-0 text-txt text-sm border border-border rounded-lg px-3 py-1.5 bg-panel hover:border-golddim hover:text-gold">Yopish ✕</button>
+    <div class="w-full aspect-video rounded-xl overflow-hidden bg-panel border border-border">
+      <iframe id="videoFrame" class="w-full h-full" src="" title="video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  // JS KODI
+  const USERNAMES = ["Bek_vines","dilnoza.travel","Ozodbek_official","Sardor_life","Kamola_beauty","Jasur_sport","Nigora_cook","Aziz_moto","Malika_dance","Shaxzod_gym","Feruza_style","Otabek_music","Sevinch_art","Diyor_travel","Gulnoza_fit","Bahrom_food","Zarina_makeup","Umid_football","Madina_vlog","Sherzod_car"];
+  const HASHTAGS = ["seriya","izlanish","tabiat","sport","kulgu","sayohat","oshxona","futbol","raqs","fitness","moda","musiqa","avto","gozallik","kundalik","yangilik","trend","viral","dostlik","motivatsiya"];
+  const CATEGORIES = ["Barchasi","Trend","Yangi","Sport","Sayohat","Oshxona","Moda","Kulgu","Musiqa"];
+  const VIDEO_IDS = ["dQw4w9WgXcQ", "jNQXAC9IVRw", "kJQP7kiw5Fk", "9bZkp7q19f0"];
+
+  function rand(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function fmt(n){
+    if(n >= 1000000) return (n/1000000).toFixed(1).replace(".0","") + "M";
+    if(n >= 1000) return (n/1000).toFixed(1).replace(".0","") + "K";
+    return n;
+  }
+
+  const items = Array.from({length: 1000}, (_, i) => ({
+    id: i,
+    user: USERNAMES[rand(0, USERNAMES.length-1)] + (Math.random() > 0.5 ? "" : rand(1,99)),
+    tag: HASHTAGS[rand(0, HASHTAGS.length-1)],
+    category: CATEGORIES[rand(1, CATEGORIES.length-1)],
+    likes: rand(120, 890000),
+    comments: rand(3, 12000),
+    live: Math.random() < 0.06,
+    seed: i,
+    vidId: VIDEO_IDS[rand(0, VIDEO_IDS.length-1)]
+  }));
+
+  const grid = document.getElementById('grid');
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultCount = document.getElementById('resultCount');
+  const emptyState = document.getElementById('emptyState');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  const chipRow = document.getElementById('chipRow');
+  const videoModal = document.getElementById('videoModal');
+  const videoFrame = document.getElementById('videoFrame');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const micBtn = document.getElementById('micBtn');
+  const micStatus = document.getElementById('micStatus');
+
+  let activeCategory = "Barchasi";
+  let query = "";
+  let visibleCount = 60;
+  const PAGE = 60;
+
+  // --- Ovoz orqali qidiruv (mavjud bo'lsa) ---
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (SpeechRecognition) {
+    const recognition = new SpeechRecognition();
+    recognition.lang = "uz-UZ";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => { micStatus.classList.remove('hidden'); };
+    recognition.onend = () => { micStatus.classList.add('hidden'); };
+    recognition.onerror = () => { micStatus.classList.add('hidden'); };
+    recognition.onresult = (e) => {
+      const transcript = e.results[0][0].transcript;
+      searchInput.value = transcript;
+      query = transcript;
+      visibleCount = PAGE;
+      render();
+    };
+
+    micBtn.addEventListener('click', () => {
+      try { recognition.start(); } catch (err) { /* allaqachon ishga tushgan */ }
+    });
+  } else {
+    micBtn.classList.add('hidden');
+  }
+
+  // --- Kartochkani ochish ---
+  function openModal(vidId) {
+    videoFrame.src = `https://www.youtube.com/embed/${vidId}?autoplay=1`;
+    videoModal.classList.remove('hidden');
+    videoModal.classList.add('flex');
+  }
+  function closeModal() {
+    videoFrame.src = "";
+    videoModal.classList.add('hidden');
+    videoModal.classList.remove('flex');
+  }
+  closeModalBtn.addEventListener('click', closeModal);
+  videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeModal(); });
+
+  // --- Render / filtrlash ---
+  function render() {
+    const filtered = items.filter(it => {
+      const matchesCat = activeCategory === "Barchasi" || it.category === activeCategory;
+      const q = query.toLowerCase().trim();
+      const matchesQuery = !q || it.user.toLowerCase().includes(q) || it.tag.toLowerCase().includes(q);
+      return matchesCat && matchesQuery;
+    });
+
+    resultCount.textContent = filtered.length;
+    grid.innerHTML = filtered.slice(0, visibleCount).map(it => `
+      <div onclick="openModal('${it.vidId}')" class="card-thumb relative rounded-xl overflow-hidden bg-card border border-border cursor-pointer hover:-translate-y-0.5 hover:border-golddim transition">
+        <img src="https://picsum.photos/seed/zar${it.seed}/300/500" loading="lazy" class="w-full h-full object-cover">
+        <div class="absolute top-2 left-2 ${it.live ? 'bg-red-500' : 'hidden'} text-[10px] font-bold px-1.5 py-0.5 rounded text-white">JONLI</div>
+        <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent">
+          <div class="text-xs font-semibold truncate">${it.user}</div>
+          <div class="text-[10px] text-txtdim">#${it.tag} • ${fmt(it.likes)} layk</div>
         </div>
-        <div class="bg-gradient-to-br from-zar-gray to-[#0d121f] p-4 rounded-xl border border-gray-800">
-            <div class="text-[10px] text-gray-400">Hisobingiz</div>
-            <div class="text-xl font-bold text-white mt-1"><span id="sidebarBalance">0</span> <span class="text-xs text-zar-gold font-normal">so'm</span></div>
-        </div>
-    </aside>
+      </div>`).join('');
 
-    <main class="flex-grow flex flex-col p-4 md:p-8 max-w-7xl mx-auto w-full gap-6">
+    emptyState.classList.toggle('hidden', filtered.length !== 0);
+    grid.classList.toggle('hidden', filtered.length === 0);
+    loadMoreBtn.classList.toggle('hidden', visibleCount >= filtered.length);
+    clearBtn.classList.toggle('hidden', query === "");
+  }
 
-        <header class="flex items-center justify-between gap-4">
-            <div class="relative flex-grow max-w-xl">
-                <input type="text" id="searchInput" placeholder="Brendlar, videolar yoki foydalanuvchilar..." class="w-full bg-[#0d111d] border border-gray-800/80 rounded-2xl pl-11 pr-4 py-3 text-sm focus:border-zar-gold outline-none transition text-white placeholder-gray-500">
-                <svg class="w-5 h-5 absolute left-4 top-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <button class="w-10 h-10 rounded-xl bg-[#0d111d] border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white transition relative">
-                    🔔
-                    <span class="w-2 h-2 rounded-full bg-zar-gold absolute top-2 right-2"></span>
-                </button>
-                <a href="./profil.html" class="w-10 h-10 rounded-xl border border-zar-gold overflow-hidden cursor-pointer">
-                    <img src="https://i.pravatar.cc/100?img=33" class="w-full h-full object-cover">
-                </a>
-            </div>
-        </header>
+  CATEGORIES.forEach(cat => {
+    const div = document.createElement('div');
+    div.className = "px-3.5 py-1.5 rounded-full border cursor-pointer text-sm transition" + (cat === activeCategory ? " bg-gold/10 border-golddim text-gold" : " border-border text-txtdim");
+    div.textContent = cat;
+    div.onclick = () => {
+      activeCategory = cat;
+      document.querySelectorAll('#chipRow div').forEach(c => {
+        const isActive = c.textContent === cat;
+        c.classList.toggle('bg-gold/10', isActive);
+        c.classList.toggle('border-golddim', isActive);
+        c.classList.toggle('text-gold', isActive);
+        c.classList.toggle('border-border', !isActive);
+        c.classList.toggle('text-txtdim', !isActive);
+      });
+      visibleCount = PAGE;
+      render();
+    };
+    chipRow.appendChild(div);
+  });
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            
-            <div class="lg:col-span-3 space-y-6">
-                
-                <div class="relative w-full h-56 md:h-64 rounded-3xl overflow-hidden border border-gray-800/80 group cursor-pointer">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#05070e] via-[#05070e]/40 to-transparent p-6 flex flex-col justify-end">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="px-3 py-1 bg-zar-gold text-black text-[10px] font-extrabold rounded-full uppercase tracking-wider">Tavsiya etiladi</span>
-                        </div>
-                        <h2 class="text-xl md:text-2xl font-black text-white">Archituba Studio Design</h2>
-                        <p class="text-xs text-gray-300 mt-1 max-w-md">Zamonaviy va premium me'morchilik loyihalari hamda eksklyuziv dizayn ishlanmalari.</p>
-                        <div class="mt-4 flex gap-3">
-                            <button class="px-5 py-2 bg-zar-gold text-black rounded-xl font-bold text-xs hover:opacity-90 transition">Ko'rish</button>
-                        </div>
-                    </div>
-                </div>
+  searchInput.addEventListener('input', (e) => { query = e.target.value; visibleCount = PAGE; render(); });
+  clearBtn.addEventListener('click', () => { searchInput.value = ""; query = ""; render(); });
+  loadMoreBtn.addEventListener('click', () => { visibleCount += PAGE; render(); });
 
-                <div>
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Ommabop Yo'nalishlar</h3>
-                    <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-                        <div class="flex flex-col items-center gap-2 cursor-pointer min-w-[70px]">
-                            <div class="w-16 h-16 rounded-full border-2 border-zar-gold p-0.5 overflow-hidden bg-gray-800">
-                                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=150" class="w-full h-full object-cover rounded-full">
-                            </div>
-                            <span class="text-[11px] text-gray-300 font-medium">Kosmetika</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 cursor-pointer min-w-[70px]">
-                            <div class="w-16 h-16 rounded-full border-2 border-gray-700 p-0.5 overflow-hidden bg-gray-800 hover:border-zar-gold transition">
-                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=150" class="w-full h-full object-cover rounded-full">
-                            </div>
-                            <span class="text-[11px] text-gray-300 font-medium">Soatlar</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 cursor-pointer min-w-[70px]">
-                            <div class="w-16 h-16 rounded-full border-2 border-gray-700 p-0.5 overflow-hidden bg-gray-800 hover:border-zar-gold transition">
-                                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=150" class="w-full h-full object-cover rounded-full">
-                            </div>
-                            <span class="text-[11px] text-gray-300 font-medium">Avto</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-2 cursor-pointer min-w-[70px]">
-                            <div class="w-16 h-16 rounded-full border-2 border-gray-700 p-0.5 overflow-hidden bg-gray-800 hover:border-zar-gold transition">
-                                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=150" class="w-full h-full object-cover rounded-full">
-                            </div>
-                            <span class="text-[11px] text-gray-300 font-medium">Moda</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Trenddagilar</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4" id="exploreGrid">
-                        
-                        <div class="bg-zar-card rounded-2xl overflow-hidden border border-gray-800/60 hover:border-zar-gold transition cursor-pointer group flex flex-col">
-                            <div class="relative h-72 overflow-hidden bg-black">
-                                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                                    <div class="w-12 h-12 rounded-full bg-zar-gold/90 text-black flex items-center justify-center font-bold text-lg">▶</div>
-                                </div>
-                                <span class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold text-zar-gold">PROMO</span>
-                            </div>
-                            <div class="p-3">
-                                <p class="text-xs font-bold text-white line-clamp-1">The Unboxing Wireless Master</p>
-                                <p class="text-[10px] text-gray-400 mt-1">@shoxrux_official • 14.2K ko'rilgan</p>
-                            </div>
-                        </div>
-
-                        <div class="bg-zar-card rounded-2xl overflow-hidden border border-gray-800/60 hover:border-zar-gold transition cursor-pointer group flex flex-col">
-                            <div class="relative h-72 overflow-hidden bg-black">
-                                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                                    <div class="w-12 h-12 rounded-full bg-zar-gold/90 text-black flex items-center justify-center font-bold text-lg">▶</div>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <p class="text-xs font-bold text-white line-clamp-1">Luxury Fashion Week Show</p>
-                                <p class="text-[10px] text-gray-400 mt-1">@dior_travel • 8.9K ko'rilgan</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="space-y-6">
-                
-                <div class="bg-zar-card p-5 rounded-2xl border border-gray-800/80 flex flex-col gap-4">
-                    <div class="flex justify-between items-center">
-                        <h4 class="text-xs font-bold text-gray-300">Bugungi natija</h4>
-                        <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">+340 ball</span>
-                    </div>
-
-                    <div class="flex items-end justify-between gap-1 h-16 pt-2 border-b border-gray-800/60 pb-3">
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-6"></div><span class="text-[9px] text-gray-500">DU</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-8"></div><span class="text-[9px] text-gray-500">SE</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-5"></div><span class="text-[9px] text-gray-500">CHO</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-zar-gold rounded-t h-12"></div><span class="text-[9px] text-zar-gold font-bold">PAY</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-7"></div><span class="text-[9px] text-gray-500">JUM</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-9"></div><span class="text-[9px] text-gray-500">SHA</span></div>
-                        <div class="flex flex-col items-center gap-1"><div class="w-3 bg-gray-800 rounded-t h-4"></div><span class="text-[9px] text-gray-500">YAK</span></div>
-                    </div>
-
-                    <div class="text-[11px] text-gray-400">
-                        Har kuni video ko'rish orqali ball va pul mukofotlarini qo'lga kiriting.
-                    </div>
-                </div>
-
-                <div class="bg-zar-card p-5 rounded-2xl border border-gray-800/80 flex flex-col gap-3">
-                    <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-1">Ommabop Hashtaglar</h4>
-                    
-                    <a href="#" class="flex justify-between items-center p-2.5 rounded-xl hover:bg-zar-gray transition group">
-                        <span class="text-xs font-bold text-gray-300 group-hover:text-zar-gold">#luxury</span>
-                        <span class="text-[10px] text-gray-500">14.2K</span>
-                    </a>
-                    <a href="#" class="flex justify-between items-center p-2.5 rounded-xl hover:bg-zar-gray transition group">
-                        <span class="text-xs font-bold text-gray-300 group-hover:text-zar-gold">#samarqand</span>
-                        <span class="text-[10px] text-gray-500">8.9K</span>
-                    </a>
-                    <a href="#" class="flex justify-between items-center p-2.5 rounded-xl hover:bg-zar-gray transition group">
-                        <span class="text-xs font-bold text-gray-300 group-hover:text-zar-gold">#zar_platform</span>
-                        <span class="text-[10px] text-gray-500">25.1K</span>
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // LocalStorage'dan foydalanuvchi balansini yuklash va chiqarish
-            const balance = localStorage.getItem('zar_user_balance');
-            const formattedBalance = balance ? parseInt(balance).toLocaleString('uz-UZ') : '0';
-            document.getElementById('sidebarBalance').textContent = formattedBalance;
-
-            // Qidiruv klaviatura hodisasi
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    alert(`Qidirilmoqda: ${searchInput.value}`);
-                }
-            });
-        });
-    </script>
+  render();
+</script>
 </body>
 </html>
