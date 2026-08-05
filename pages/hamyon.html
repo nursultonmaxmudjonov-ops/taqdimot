@@ -1,49 +1,729 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hamyon - ZAR</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZAR — Hamyon Dashboard</title>
+<style>
+  :root {
+    --bg: #090c15;
+    --sidebar-bg: #0d111d;
+    --card-bg: #131926;
+    --card-bg-2: #182030;
+    --border: #1f283d;
+    --gold: #e5b23e;
+    --gold-light: #f3c968;
+    --gold-gradient: linear-gradient(135deg, #e5b23e, #b8831a);
+    --text: #f0f3f8;
+    --muted: #7e899d;
+    --green: #22c55e;
+    --red: #ef4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR (Chap menyu) */
+  .sidebar {
+    width: 240px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .brand small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+
+  .nav-list {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+  }
+
+  .nav-item a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .nav-item.active a {
+    background: linear-gradient(90deg, rgba(229, 178, 62, 0.15), rgba(229, 178, 62, 0.02));
+    color: var(--gold-light);
+    border-left: 3px solid var(--gold);
+  }
+
+  .nav-item a:hover:not(.active) {
+    background: var(--card-bg);
+    color: var(--text);
+  }
+
+  .add-funds-btn {
+    margin-top: auto;
+    background: var(--gold-gradient);
+    color: #0d0a03;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* MAIN CONTENT */
+  .main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 36px;
+  }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .icon-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .connect-wallet-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #334155;
+    overflow: hidden;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    padding: 0 36px 36px 36px;
+  }
+
+  /* LEFT COLUMN */
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Main Balance Card */
+  .balance-card {
+    background: linear-gradient(135deg, #e5b23e 0%, #d99b26 50%, #b87b14 100%);
+    border-radius: 20px;
+    padding: 28px;
+    color: #1a1203;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bal-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  .bal-amount {
+    font-size: 38px;
+    font-weight: 800;
+    margin: 8px 0;
+  }
+
+  .bal-amount span {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .bal-converted {
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 0.85;
+  }
+
+  .bal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bal-btn {
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .bal-btn.primary {
+    background: #fef08a;
+    color: #1a1203;
+  }
+
+  .bal-btn.secondary {
+    background: rgba(0, 0, 0, 0.15);
+    color: #1a1203;
+  }
+
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 180px 180px 1fr;
+    gap: 16px;
+  }
+
+  .mini-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .mini-title {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .mini-value {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .mini-value.green { color: #34d399; }
+
+  .chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .chart-svg {
+    width: 100%;
+    height: 80px;
+  }
+
+  /* Recent Transactions */
+  .transactions-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .trans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .trans-title { font-weight: 700; font-size: 16px; }
+  .trans-link { color: var(--gold); font-size: 12px; text-decoration: none; }
+
+  .trans-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .trans-table th {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    padding-bottom: 14px;
+  }
+
+  .trans-table td {
+    padding: 12px 0;
+    border-top: 1px solid rgba(255,255,255,0.03);
+    font-size: 13px;
+  }
+
+  .tx-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tx-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--card-bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tx-name { font-weight: 600; font-size: 13px; }
+  .tx-sub { font-size: 10px; color: var(--muted); }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  .badge.success { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+  .badge.danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+  .amount-plus { color: #34d399; font-weight: 700; }
+  .amount-minus { color: #f87171; font-weight: 700; }
+
+  /* RIGHT COLUMN */
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .transfer-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .transfer-title { font-weight: 700; font-size: 15px; }
+  .transfer-sub { font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+
+  .cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .card-item {
+    background: var(--card-bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-item.active {
+    border-color: rgba(229, 178, 62, 0.4);
+  }
+
+  .card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-chip {
+    width: 32px;
+    height: 20px;
+    border-radius: 4px;
+    background: #6366f1;
+  }
+
+  .card-chip.uzcard { background: #2563eb; }
+
+  .card-num { font-size: 11px; color: var(--muted); }
+  .card-name { font-size: 12px; font-weight: 600; }
+
+  .check-icon {
+    width: 18px;
+    height: 18px;
+    background: var(--gold);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .input-group {
+    margin-bottom: 16px;
+  }
+
+  .input-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .amount-input-wrap {
+    background: var(--card-bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .amount-input-wrap input {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 700;
+    width: 100%;
+    outline: none;
+  }
+
+  .amount-input-wrap span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .quick-amounts {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .q-btn {
+    flex: 1;
+    background: var(--card-bg-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 0;
+    border-radius: 8px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .q-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--gold-gradient);
+    color: #1a1203;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .promo-banner {
+    background: linear-gradient(180deg, rgba(20, 26, 38, 0.4), rgba(13, 17, 29, 0.9)), 
+                url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80');
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .promo-tag {
+    background: var(--gold);
+    color: #000;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+    margin-bottom: 8px;
+  }
+
+  .promo-text {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+</style>
 </head>
-<body class="bg-gray-900 flex justify-center items-center min-h-screen p-0 sm:p-4">
-  <div class="w-full max-w-sm sm:max-w-md bg-[#0d0d0d] text-white min-h-screen sm:min-h-[844px] sm:h-[844px] sm:rounded-[40px] shadow-2xl relative overflow-hidden flex flex-col border-0 sm:border-8 border-gray-800">
-    
-    <div class="p-6 pb-2 flex items-center space-x-4">
-      <a href="index.html" class="text-gray-400 hover:text-white">
-        <i class="fas fa-arrow-left text-lg"></i>
-      </a>
-      <h2 class="text-xl font-bold text-white">Mening Hamyonim</h2>
+<body>
+
+  <!-- SIDEBAR (Chap menu) -->
+  <aside class="sidebar">
+    <div class="brand">
+      ZAR
+      <small>Private Member</small>
     </div>
 
-    <div class="p-6">
-      <div class="p-6 rounded-3xl bg-gradient-to-r from-yellow-600 to-yellow-500 text-black">
-        <p class="text-xs font-semibold uppercase tracking-wider opacity-80">Karta Balansi</p>
-        <h3 class="text-2xl font-black mt-2 mb-6">12,450,000 UZS</h3>
-        <p class="text-sm font-mono tracking-widest">**** **** **** 8888</p>
+    <ul class="nav-list">
+      <li class="nav-item"><a href="#"><span>⌂</span> Asosiy</a></li>
+      <li class="nav-item"><a href="#"><span>⌕</span> Qidiruv</a></li>
+      <li class="nav-item active"><a href="#"><span>💳</span> Hamyon</a></li>
+      <li class="nav-item"><a href="#"><span>🔔</span> Bildirishnomalar</a></li>
+      <li class="nav-item"><a href="#"><span>👤</span> Profil</a></li>
+      <li class="nav-item"><a href="#"><span>⚙</span> Sozlamalar</a></li>
+    </ul>
+
+    <button class="add-funds-btn">
+      <span>+</span> Hisobni to‘ldirish
+    </button>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="main-wrapper">
+    <!-- Header -->
+    <header class="top-header">
+      <h1 class="page-title">Hamyon Dashboard</h1>
+      <div class="header-actions">
+        <button class="icon-btn">?</button>
+        <button class="icon-btn">🌐</button>
+        <button class="connect-wallet-btn">Connect Wallet</button>
+        <div class="user-avatar"></div>
+      </div>
+    </header>
+
+    <!-- Content Grid -->
+    <div class="dashboard-grid">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Main Gold Balance Card -->
+        <div class="balance-card">
+          <div>
+            <div class="bal-label">MAVJUD BALANS</div>
+            <div class="bal-amount">12 480 <span>ball</span></div>
+            <div class="bal-converted">≈ 124 800 so‘m</div>
+          </div>
+          <div class="bal-actions">
+            <button class="bal-btn primary">⇆ Pulga o‘tkazish</button>
+            <button class="bal-btn secondary">🕒 Batafsil ko‘rish</button>
+          </div>
+        </div>
+
+        <!-- Mini Stats & Chart -->
+        <div class="stats-row">
+          <div class="mini-card">
+            <div class="mini-title">Bugun ishlab olindi</div>
+            <div class="mini-value green">+340 ball</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-title">Haftalik o‘sish</div>
+            <div class="mini-value">+2 150 ball</div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <span>Daromad tahlili</span>
+              <span style="color:var(--muted); font-size:10px;">● Ballar  ● So'm</span>
+            </div>
+            <!-- Dynamic SVG Wave Chart -->
+            <svg class="chart-svg" viewBox="0 0 200 60" preserveAspectRatio="none">
+              <path d="M 0 40 Q 40 10, 80 35 T 160 20 T 200 10" fill="none" stroke="#e5b23e" stroke-width="2"/>
+              <path d="M 0 50 Q 50 30, 100 45 T 170 30 T 200 25" fill="none" stroke="#2dd4bf" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="transactions-card">
+          <div class="trans-header">
+            <div class="trans-title">So‘nggi amallar</div>
+            <a href="#" class="trans-link">Barcha tranzaksiyalar</a>
+          </div>
+
+          <table class="trans-table">
+            <thead>
+              <tr>
+                <th>Tranzaksiya turi</th>
+                <th>Sana va vaqt</th>
+                <th>Status</th>
+                <th style="text-align: right;">Qiymat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="tx-info">
+                    <div class="tx-icon">🎬</div>
+                    <div>
+                      <div class="tx-name">Artel Media mukofoti</div>
+                      <div class="tx-sub">Video ko'rish uchun bonus</div>
+                    </div>
+                  </div>
+                </td>
+                <td style="color:var(--muted);">Bugun, 14:20</td>
+                <td><span class="badge success">BAJARILDI</span></td>
+                <td style="text-align: right;" class="amount-plus">+45 ball</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-info">
+                    <div class="tx-icon">💸</div>
+                    <div>
+                      <div class="tx-name">Payme yechib olish</div>
+                      <div class="tx-sub">Shaxsiy kartaga o'tkazma</div>
+                    </div>
+                  </div>
+                </td>
+                <td style="color:var(--muted);">Kecha, 09:15</td>
+                <td><span class="badge danger">CHIQIM</span></td>
+                <td style="text-align: right;" class="amount-minus">-50 000 s.</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-info">
+                    <div class="tx-icon">👥</div>
+                    <div>
+                      <div class="tx-name">Referal tizimi</div>
+                      <div class="tx-sub">Azizbek'dan kelgan bonus</div>
+                    </div>
+                  </div>
+                </td>
+                <td style="color:var(--muted);">12 Okt, 18:45</td>
+                <td><span class="badge success">BAJARILDI</span></td>
+                <td style="text-align: right;" class="amount-plus">+200 ball</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Quick Transfer Box -->
+        <div class="transfer-box">
+          <div class="transfer-title">Tezkor o‘tkazma</div>
+          <div class="transfer-sub">Privat bank xizmatlari tarmog‘i</div>
+
+          <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <span style="font-size:11px; color:var(--muted);">MENING KARTALARIM</span>
+            <span style="font-size:11px; color:var(--gold); cursor:pointer;">+ Yangi</span>
+          </div>
+
+          <div class="cards-list">
+            <div class="card-item active">
+              <div class="card-left">
+                <div class="card-chip"></div>
+                <div>
+                  <div class="card-name">Humo Private</div>
+                  <div class="card-num">**** 6621</div>
+                </div>
+              </div>
+              <div class="check-icon">✓</div>
+            </div>
+
+            <div class="card-item">
+              <div class="card-left">
+                <div class="card-chip uzcard"></div>
+                <div>
+                  <div class="card-name">UzCard Classic</div>
+                  <div class="card-num">**** 8600</div>
+                </div>
+              </div>
+              <span style="color:var(--muted);">⋮</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">O‘TKAZMA SUMMASI</label>
+            <div class="amount-input-wrap">
+              <input type="text" value="50 000">
+              <span>so‘m</span>
+            </div>
+          </div>
+
+          <div class="quick-amounts">
+            <button class="q-btn">20k</button>
+            <button class="q-btn active">50k</button>
+            <button class="q-btn">100k</button>
+          </div>
+
+          <button class="submit-btn">O‘tkazmani tasdiqlash</button>
+        </div>
+
+        <!-- Ad / Promo Banner -->
+        <div class="promo-banner">
+          <span class="promo-tag">EXCLUSIVE</span>
+          <div class="promo-text">Yangi Artel mahsulotlari bilan hamyoningizni boyiting</div>
+        </div>
       </div>
     </div>
-
-    <div class="absolute bottom-0 left-0 right-0 bg-[#121212]/90 backdrop-blur-md border-t border-gray-800/60 px-6 py-3 flex justify-between items-center z-40">
-      <a href="index.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-home text-lg"></i>
-        <span class="text-[10px] mt-1">Asosiy</span>
-      </a>
-      <a href="qidiruv.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-search text-lg"></i>
-        <span class="text-[10px] mt-1">Qidiruv</span>
-      </a>
-      <a href="hamyon.html" class="flex flex-col items-center text-yellow-500">
-        <i class="fas fa-wallet text-lg"></i>
-        <span class="text-[10px] mt-1">Hamyon</span>
-      </a>
-      <a href="profil.html" class="flex flex-col items-center text-gray-500 hover:text-gray-300">
-        <i class="fas fa-user text-lg"></i>
-        <span class="text-[10px] mt-1">Profil</span>
-      </a>
-    </div>
-
   </div>
+
 </body>
 </html>
