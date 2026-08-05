@@ -1142,65 +1142,6 @@ a:hover{
   .mobile-nav-modal .nav-item span:not(.nav-ico){ display:inline; }
   .mobile-nav-modal .balance-card{ margin-top:auto; }
 </style>
-<style>
-  /* Menyu uchun maxsus va aniq stillar */
-  .dash-nav {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 240px;
-    background-color: #0c111c; /* To'q fon */
-    border-radius: 14px;
-    padding: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  }
-
-  .dash-nav li {
-    margin-bottom: 4px;
-  }
-
-  .dash-nav li:last-child {
-    margin-bottom: 0;
-  }
-
-  .dash-nav a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    color: #8d90a3; /* Ocherk va nofaol matn rangi */
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: all 0.2s ease-in-out;
-  }
-
-  /* Hover (Sichqoncha olib borilgandagi holat) */
-  .dash-nav a:hover {
-    color: #ffffff;
-    background-color: #171a26;
-  }
-
-  /* Faol (Active) link stili (Rasmdagi kabi tilla/sariq va belgilangan) */
-  .dash-nav a.active,
-  .dash-nav li:first-child a { 
-    color: #05060a;
-    background: linear-gradient(135deg, #F7CB63 0%, #E7A93A 100%);
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(231, 169, 58, 0.25);
-  }
-
-  /* Ikonkalar uchun o'lcham va joylashuv */
-  .dash-nav a span.icon {
-    font-size: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-  }
-</style>
 </head>
 <body>
 
@@ -1308,42 +1249,12 @@ a:hover{
     <div class="mobile-menu-btn" id="mobileMenuBtn">☰</div>
 
 <ul class="dash-nav">
-  <li>
-    <a href="./index.html" class="active">
-      <span class="icon">⌂</span>
-      <span>Asosiy</span>
-    </a>
-  </li>
-  <li>
-    <a href="./pages/qidiruv.html">
-      <span class="icon">⌕</span>
-      <span>Qidiruv</span>
-    </a>
-  </li>
-  <li>
-    <a href="./pages/hamyon.html">
-      <span class="icon">▤</span>
-      <span>Hamyon</span>
-    </a>
-  </li>
-  <li>
-    <a href="./pages/bildirishnomalar.html">
-      <span class="icon">◔</span>
-      <span>Bildirishnoma</span>
-    </a>
-  </li>
-  <li>
-    <a href="./pages/profil.html">
-      <span class="icon">☺</span>
-      <span>Profil</span>
-    </a>
-  </li>
-  <li>
-    <a href="./pages/sozlamalar.html">
-      <span class="icon">⚙</span>
-      <span>Sozlamalar</span>
-    </a>
-  </li>
+    <li><a href="./index.html">⌂ Asosiy</a></li>
+    <li><a href="./pages/qidiruv.html">⌕ Qidiruv</a></li>
+    <li><a href="./pages/hamyon.html">▤ Hamyon</a></li>
+    <li><a href="./pages/bildirishnomalar.html">◔ Bildirishnoma</a></li>
+    <li><a href="./pages/profil.html">☺ Profil</a></li>
+    <li><a href="./pages/sozlamalar.html">⚙ Sozlamalar</a></li>
 </ul>
     <div class="balance-card">git ad 
       <div class="balance-label">Hisobingiz</div>
