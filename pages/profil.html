@@ -1,352 +1,597 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
-<meta charset="UTF-8">
-<title>ZAR — Profil</title>
-<style>
-  :root{
-    --bg:#0a0e17;
-    --panel:#141a26;
-    --panel-2:#1a2130;
-    --border:#232b3d;
-    --gold:#e8b64a;
-    --gold-2:#f4c95d;
-    --text:#f2f3f5;
-    --muted:#8890a0;
-    --muted-2:#5f6879;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Segoe UI', Arial, sans-serif;
-    display:flex;
-    min-height:100vh;
-  }
+  <meta charset="UTF-8">
+  <title>ZAR — Profil</title>
+  <style>
+    :root {
+      --bg: #0a0e17;
+      --panel: #141a26;
+      --panel-2: #1a2130;
+      --border: #232b3d;
+      --gold: #e8b64a;
+      --gold-2: #f4c95d;
+      --text: #f2f3f5;
+      --muted: #8890a0;
+      --muted-2: #5f6879;
+    }
 
-  /* Sidebar (Yon panel) */
-  .sidebar{
-    width:240px;
-    background:#0c111c;
-    border-right:1px solid var(--border);
-    padding:24px 18px;
-    display:flex;
-    flex-direction:column;
-    flex-shrink: 0;
-  }
-  .brand{
-    color:var(--gold);
-    font-size:22px;
-    font-weight:700;
-    letter-spacing:1px;
-  }
-  .brand small{
-    display:block;
-    color:var(--muted-2);
-    font-size:11px;
-    font-weight:400;
-    margin-top:2px;
-    letter-spacing:0.5px;
-  }
-  nav{
-    margin-top:36px;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    flex:1;
-  }
-  .nav-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:11px 12px;
-    border-radius:8px;
-    color:var(--muted);
-    font-size:14px;
-    cursor:pointer;
-  }
-  .nav-ico{
-    width:18px;
-    display:inline-block;
-    text-align:center;
-  }
-  .nav-item.active{
-    background:linear-gradient(90deg, rgba(232,182,74,0.18), rgba(232,182,74,0.03));
-    color:var(--gold-2);
-    border:1px solid rgba(232,182,74,0.25);
-  }
-  .nav-item:hover:not(.active){
-    background:#151c29;
-    color:var(--text);
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* Main (Asosiy qism) */
-  .main{
-    flex:1;
-    padding:48px 40px;
-    max-width:960px;
-    margin:0 auto;
-  }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
 
-  .profile-header{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-bottom:32px;
-  }
-  .avatar-wrap{
-    position:relative;
-    width:110px; height:110px;
-    margin-bottom:14px;
-  }
-  .avatar-ring{
-    width:110px; height:110px;
-    border-radius:50%;
-    border:3px solid var(--gold);
-    background:linear-gradient(160deg,#1c2233,#0a0e17);
-    display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 0 4px rgba(232,182,74,0.08);
-    font-size: 32px;
-  }
-  .badge-tag{
-    position:absolute;
-    bottom:-2px; left:50%;
-    transform:translateX(-50%);
-    background:var(--gold);
-    color:#1a1305;
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:0.5px;
-    padding:3px 10px;
-    border-radius:6px;
-    white-space:nowrap;
-  }
-  .name{
-    font-size:22px;
-    font-weight:700;
-  }
-  .handle{
-    color:var(--muted);
-    font-size:13px;
-    margin-top:2px;
-  }
+    /* Sidebar (Yon panel) */
+    .sidebar {
+      width: 240px;
+      background: #0c111c;
+      border-right: 1px solid var(--border);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
 
-  /* Stats */
-  .stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-    margin-bottom:24px;
-  }
-  .stat-card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px;
-    text-align:center;
-  }
-  .stat-label{
-    color:var(--muted-2);
-    font-size:11px;
-    letter-spacing:1.5px;
-    font-weight:600;
-    margin-bottom:8px;
-  }
-  .stat-value{
-    font-size:26px;
-    font-weight:700;
-  }
-  .stat-value.gold{ color:var(--gold-2); }
+    .brand {
+      color: var(--gold);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
 
-  /* Level progress */
-  .level-card{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:24px 26px;
-    margin-bottom:24px;
-  }
-  .level-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    margin-bottom:18px;
-  }
-  .level-title{
-    font-size:16px;
-    font-weight:700;
-    margin-bottom:4px;
-  }
-  .level-sub{
-    color:var(--muted);
-    font-size:13px;
-  }
-  .level-sub b{ color:var(--gold-2); font-weight:600;}
-  .level-pct{
-    color:var(--gold-2);
-    font-weight:700;
-    font-size:15px;
-  }
-  .progress-track{
-    width:100%;
-    height:8px;
-    background:#0c111c;
-    border-radius:6px;
-    overflow:hidden;
-    margin-bottom:26px;
-  }
-  .progress-fill{
-    height:100%;
-    width:79%;
-    background:linear-gradient(90deg, var(--gold), var(--gold-2));
-    border-radius:6px;
-  }
-  .tiers{
-    display:flex;
-    justify-content:space-between;
-  }
-  .tier{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    flex:1;
-  }
-  .tier-ic{
-    width:52px; height:52px;
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background:#0c111c;
-    border:1px solid var(--border);
-    font-size:20px;
-  }
-  .tier.done .tier-ic{ border-color:var(--gold); color:var(--gold-2);}
-  .tier.current .tier-ic{
-    border:2px solid var(--gold-2);
-    color:var(--gold-2);
-    box-shadow:0 0 0 3px rgba(232,182,74,0.12);
-  }
-  .tier.locked .tier-ic{ color:var(--muted-2); }
-  .tier-label{
-    font-size:11px;
-    color:var(--muted);
-  }
-  .tier.current .tier-label{ color:var(--gold-2); font-weight:600; }
-  .tier.locked .tier-label{ color:var(--muted-2); }
+    .brand small {
+      display: block;
+      color: var(--muted-2);
+      font-size: 11px;
+      font-weight: 400;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
 
-  /* Bottom grid */
-  .bottom-grid{
-    display:grid;
-    grid-template-columns:1.6fr 1fr;
-    gap:20px;
-  }
-  .panel{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:22px 24px;
-  }
-  .panel-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-  }
-  .panel-title{
-    font-size:15px;
-    font-weight:700;
-  }
-  .panel-link{
-    color:var(--gold-2);
-    font-size:12px;
-    font-weight:600;
-    cursor:pointer;
-  }
-  .achievements{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-  }
-  .ach{
-    background:var(--panel-2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:16px 8px;
-    text-align:center;
-  }
-  .ach-ic{
-    width:40px; height:40px;
-    border-radius:50%;
-    background:#0c111c;
-    display:flex; align-items:center; justify-content:center;
-    margin:0 auto 8px;
-    font-size:17px;
-  }
-  .ach.gold .ach-ic{ background:var(--gold-2); color:#1a1305; }
-  .ach-label{
-    font-size:11px;
-    color:var(--muted);
-  }
-  .ach.locked{ opacity:0.45; }
-  .ach.locked .ach-label{ font-size:10px; }
+    .dash-nav {
+      list-style: none;
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+    }
 
-  .invite-box{
-    background:#0c111c;
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 14px;
-    margin-bottom:16px;
-    font-size:13px;
-  }
-  .invite-box .h{ color:var(--muted); margin-bottom:8px; }
-  .invite-box .h b{ color:var(--gold-2); font-weight:600; }
-  .invite-link{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:#141a26;
-    border-radius:7px;
-    padding:9px 12px;
-    font-size:12.5px;
-    color:var(--text);
-  }
-  .copy-ic{
-    background:var(--gold-2);
-    color:#1a1305;
-    width:20px; height:20px;
-    border-radius:5px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:11px;
-  }
-  .reward-tracker{
-    font-size:11px;
-    color:var(--muted-2);
-    letter-spacing:0.5px;
-    margin-bottom:6px;
-    display:flex;
-    justify-content:space-between;
-  }
-  .reward-track{
-    width:100%;
-    height:6px;
-    background:#0c111c;
-    border-radius:4px;
-    overflow:hidden;
-    margin-bottom:6px;
-  }
-  .reward-fill{
-    height:100%;
-    width:60%;
-    background:linear-gradient(90deg,#3ddc97,#2bb888);
-    border-radius:4px;
-  }
-  .reward-note{
-    font-size:11px;
-    color:var(--muted-2);
-  }
-</style>
+    .dash-nav li {
+      display: block;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-ico {
+      width: 18px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(232, 182, 74, 0.18), rgba(232, 182, 74, 0.03));
+      color: var(--gold-2);
+      border: 1px solid rgba(232, 182, 74, 0.25);
+    }
+
+    .nav-item:hover:not(.active) {
+      background: #151c29;
+      color: var(--text);
+    }
+
+    /* Main (Asosiy qism) */
+    .main {
+      flex: 1;
+      padding: 48px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin-bottom: 14px;
+    }
+
+    .avatar-ring {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      background: linear-gradient(160deg, #1c2233, #0a0e17);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 4px rgba(232, 182, 74, 0.08);
+      font-size: 32px;
+      color: var(--gold-2);
+      font-weight: 700;
+      overflow: hidden;
+    }
+
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .badge-tag {
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #1a1305;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .handle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-label {
+      color: var(--muted-2);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .stat-value.gold {
+      color: var(--gold-2);
+    }
+
+    /* Level progress */
+    .level-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 26px;
+      margin-bottom: 24px;
+    }
+
+    .level-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .level-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .level-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .level-sub b {
+      color: var(--gold-2);
+      font-weight: 600;
+    }
+
+    .level-pct {
+      color: var(--gold-2);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #0c111c;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 26px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 79%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      border-radius: 6px;
+    }
+
+    .tiers {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .tier {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .tier-ic {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0c111c;
+      border: 1px solid var(--border);
+      font-size: 20px;
+    }
+
+    .tier.done .tier-ic {
+      border-color: var(--gold);
+      color: var(--gold-2);
+    }
+
+    .tier.current .tier-ic {
+      border: 2px solid var(--gold-2);
+      color: var(--gold-2);
+      box-shadow: 0 0 0 3px rgba(232, 182, 74, 0.12);
+    }
+
+    .tier.locked .tier-ic {
+      color: var(--muted-2);
+    }
+
+    .tier-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tier.current .tier-label {
+      color: var(--gold-2);
+      font-weight: 600;
+    }
+
+    .tier.locked .tier-label {
+      color: var(--muted-2);
+    }
+
+    /* Bottom grid */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .panel-link {
+      color: var(--gold-2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .achievements {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .ach {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 8px;
+      text-align: center;
+    }
+
+    .ach-ic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #0c111c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-size: 17px;
+    }
+
+    .ach.gold .ach-ic {
+      background: var(--gold-2);
+      color: #1a1305;
+    }
+
+    .ach-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ach.locked {
+      opacity: 0.45;
+    }
+
+    .ach.locked .ach-label {
+      font-size: 10px;
+    }
+
+    .invite-box {
+      background: #0c111c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    .invite-box .h {
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .invite-box .h b {
+      color: var(--gold-2);
+      font-weight: 600;
+    }
+
+    .invite-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #141a26;
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      color: var(--text);
+    }
+
+    .copy-ic {
+      background: var(--gold-2);
+      color: #1a1305;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .reward-tracker {
+      font-size: 11px;
+      color: var(--muted-2);
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .reward-track {
+      width: 100%;
+      height: 6px;
+      background: #0c111c;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .reward-fill {
+      height: 100%;
+      width: 60%;
+      background: linear-gradient(90deg, #3ddc97, #2bb888);
+      border-radius: 4px;
+    }
+
+    .reward-note {
+      font-size: 11px;
+      color: var(--muted-2);
+    }
+
+    /* Ro'yxatdan o'tish modal oynasi */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 7, 12, 0.75);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.hidden {
+      display: none;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 380px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 30px 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-brand {
+      color: var(--gold);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .modal-sub {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .field input {
+      width: 100%;
+      background: #0c111c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 12px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--gold);
+    }
+
+    .field-error {
+      color: #e8615a;
+      font-size: 11.5px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .modal-submit {
+      width: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      color: #1a1305;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .modal-submit:hover {
+      filter: brightness(1.05);
+    }
+
+    .modal-note {
+      color: var(--muted-2);
+      font-size: 11px;
+      text-align: center;
+      margin-top: 14px;
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- Ro'yxatdan o'tish modali -->
+  <div class="modal-overlay" id="regOverlay">
+    <div class="modal-box">
+      <div class="modal-brand">ZAR</div>
+      <div class="modal-sub">Davom etish uchun ro‘yxatdan o‘ting</div>
+      <div id="regForm">
+        <div class="field">
+          <label for="regName">Ismingiz</label>
+          <input type="text" id="regName" placeholder="Masalan: Alisher" autocomplete="name">
+          <div class="field-error" id="errName">Iltimos, ismingizni kiriting</div>
+        </div>
+        <div class="field">
+          <label for="regHandle">Foydalanuvchi nomi (@)</label>
+          <input type="text" id="regHandle" placeholder="Masalan: alisher01" autocomplete="username">
+          <div class="field-error" id="errHandle">Iltimos, foydalanuvchi nomini kiriting</div>
+        </div>
+        <div class="field">
+          <label for="regPhone">Telefon raqam</label>
+          <input type="tel" id="regPhone" placeholder="+998 90 123 45 67" autocomplete="tel">
+          <div class="field-error" id="errPhone">Iltimos, telefon raqamingizni kiriting</div>
+        </div>
+        <button type="button" id="regSubmitBtn" class="modal-submit">Ro‘yxatdan o‘tish</button>
+      </div>
+      <div class="modal-note">Ma’lumotlaringiz shu qurilmada saqlanadi</div>
+    </div>
+  </div>
 
   <!-- Yon panel to'g'ri o'raldi -->
   <aside class="sidebar">
@@ -354,13 +599,38 @@
       ZAR
       <small>PLATFORM</small>
     </div>
-    <nav class="dash-nav">
-      <div  class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
-      <div class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
-      <div class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
-      <div class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
-      <div class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
-      <div class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
+    <nav>
+      <ul class="dash-nav">
+        <li><a href="../index.html" class="nav-item " data-nav="1">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M3 11l9-8 9 8'/><path d='M5 10v10h14V10'/></svg>"
+              alt="">Asosiy</a></li>
+
+        <li><a href="./qidiruv.html" class="nav-item" data-nav="2">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.35-4.35'/></svg>"
+              alt="">Qidiruv</a></li>
+
+        <li><a href="./hamyon.html" class="nav-item" data-nav="3">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M4 6h16v12H4z'/><path d='M4 10h16'/></svg>"
+              alt="">Reytinglar</a></li>
+
+        <li><a href="./bildirishnomalar.html" class="nav-item" data-nav="4">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><path d='M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>"
+              alt="">Bildirishnoma</a></li>
+
+        <li><a href="#" class="nav-item  active" data-nav="5">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='8' r='4'/><path d='M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8'/></svg>"
+              alt="">Profil</a></li>
+
+        <li><a href="./sozlamalar.html" class="nav-item" data-nav="6">
+            <img class="nav-ico"
+              src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z'/></svg>"
+              alt="">Sozlamalar</a></li>
+      </ul>
     </nav>
   </aside>
 
@@ -368,11 +638,11 @@
   <main class="main">
     <div class="profile-header">
       <div class="avatar-wrap">
-        <div class="avatar-ring"></div>
+        <div class="avatar-ring" id="avatarRing"></div>
         <div class="badge-tag">OLTIN DARAJA</div>
       </div>
-      <div class="name">Alisher Navoiy</div>
-      <div class="handle"></div>
+      <div class="name" id="profileName">Mehmon</div>
+      <div class="handle" id="profileHandle">@mehmon</div>
     </div>
 
     <div class="stats">
@@ -398,7 +668,9 @@
         </div>
         <div class="level-pct">79%</div>
       </div>
-      <div class="progress-track"><div class="progress-fill"></div></div>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
       <div class="tiers">
         <div class="tier done">
           <div class="tier-ic">🥈</div>
@@ -452,19 +724,155 @@
         <div class="invite-box">
           <div class="h">Do‘stlaringizni taklif qiling va har biriga <b>500 Ball</b> oling.</div>
           <div class="invite-link">
-            <span>zar.uz/r/alisher</span>
-            <div class="copy-ic">⧉</div>
+            <span id="inviteLinkText">zar.uz/r/alisher</span>
+            <div class="copy-ic" id="copyBtn">⧉</div>
           </div>
         </div>
         <div class="reward-tracker">
           <span>REWARD TRACKER</span>
           <span>12/20</span>
         </div>
-        <div class="reward-track"><div class="reward-fill"></div></div>
+        <div class="reward-track">
+          <div class="reward-fill"></div>
+        </div>
         <div class="reward-note">Keyingi maqsad: Premium Badge</div>
       </div>
     </div>
   </main>
 
+  <script>
+    const STORAGE_KEY = 'zar_user';       // hozirgi (faol) foydalanuvchi
+    const ALL_USERS_KEY = 'zar_users';    // ro'yxatdan o'tgan barcha odamlar ro'yxati
+
+    function getInitial(name) {
+      return (name || '?').trim().charAt(0).toUpperCase() || '?';
+    }
+
+    function renderProfile(user) {
+      document.getElementById('profileName').textContent = user.name;
+      document.getElementById('profileHandle').textContent = '@' + user.handle;
+      document.getElementById('avatarRing').textContent = getInitial(user.name);
+      document.getElementById('inviteLinkText').textContent = 'zar.uz/r/' + user.handle;
+    }
+
+    // Ro'yxatdan o'tgan har bir odamni alohida ro'yxatga qo'shib boradi
+    function saveUserToList(user) {
+      let allUsers = [];
+      try {
+        const raw = localStorage.getItem(ALL_USERS_KEY);
+        if (raw) allUsers = JSON.parse(raw);
+        if (!Array.isArray(allUsers)) allUsers = [];
+      } catch (e) {
+        allUsers = [];
+      }
+
+      // Agar shu handle bilan avval ro'yxatdan o'tgan bo'lsa, ma'lumotini yangilaydi
+      const existingIndex = allUsers.findIndex(u => u.handle === user.handle);
+      if (existingIndex !== -1) {
+        allUsers[existingIndex] = user;
+      } else {
+        allUsers.push(user);
+      }
+
+      try {
+        localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+      } catch (err) {
+        console.error('Foydalanuvchilar ro\'yxatini saqlashda xatolik:', err);
+      }
+    }
+
+    function showModal() {
+      document.getElementById('regOverlay').classList.remove('hidden');
+    }
+    function hideModal() {
+      document.getElementById('regOverlay').classList.add('hidden');
+    }
+
+    // Sahifa yuklanganda: agar foydalanuvchi ma'lumotlari saqlanmagan bo'lsa, modalni ko'rsatish
+    document.addEventListener('DOMContentLoaded', () => {
+      let stored = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) stored = JSON.parse(raw);
+      } catch (e) {
+        stored = null;
+      }
+
+      if (stored && stored.name && stored.handle) {
+        renderProfile(stored);
+        hideModal();
+      } else {
+        showModal();
+      }
+    });
+
+    // Ro'yxatdan o'tish tugmasi bosilganda ishlaydigan funksiya
+    function handleRegister() {
+      const nameInput = document.getElementById('regName');
+      const handleInput = document.getElementById('regHandle');
+      const phoneInput = document.getElementById('regPhone');
+
+      const name = nameInput.value.trim();
+      const handle = handleInput.value.trim().replace(/^@/, '');
+      const phone = phoneInput.value.trim();
+
+      let valid = true;
+      document.getElementById('errName').style.display = 'none';
+      document.getElementById('errHandle').style.display = 'none';
+      document.getElementById('errPhone').style.display = 'none';
+
+      if (!name) {
+        document.getElementById('errName').style.display = 'block';
+        valid = false;
+      }
+      if (!handle) {
+        document.getElementById('errHandle').style.display = 'block';
+        valid = false;
+      }
+      if (!phone) {
+        document.getElementById('errPhone').style.display = 'block';
+        valid = false;
+      }
+      if (!valid) return;
+
+      const user = {
+        name,
+        handle,
+        phone,
+        registeredAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      } catch (err) {
+        console.error('localStorage-ga saqlashda xatolik:', err);
+      }
+
+      // Har bir ro'yxatdan o'tgan odamni umumiy ro'yxatga ham saqlaydi
+      saveUserToList(user);
+
+      renderProfile(user);
+      hideModal();
+    }
+
+    // Tugma bosilganda ro'yxatdan o'tish funksiyasini chaqiradi
+    document.getElementById('regSubmitBtn').addEventListener('click', handleRegister);
+
+    // Enter tugmasi bosilganda ham ishlashi uchun
+    document.getElementById('regForm').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleRegister();
+      }
+    });
+
+    // Taklif havolasini nusxalash
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const text = document.getElementById('inviteLinkText').textContent;
+      navigator.clipboard?.writeText(text).catch(() => { });
+    });
+  </script>
+
 </body>
+
 </html>
