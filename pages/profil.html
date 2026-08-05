@@ -48,12 +48,16 @@
     margin-top:2px;
     letter-spacing:0.5px;
   }
-  nav{
+  .dash-nav{
+    list-style:none;
     margin-top:36px;
     display:flex;
     flex-direction:column;
     gap:4px;
     flex:1;
+  }
+  .dash-nav li{
+    display:block;
   }
   .nav-item{
     display:flex;
@@ -64,6 +68,7 @@
     color:var(--muted);
     font-size:14px;
     cursor:pointer;
+    text-decoration:none;
   }
   .nav-ico{
     width:18px;
@@ -107,6 +112,15 @@
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 0 0 4px rgba(232,182,74,0.08);
     font-size: 32px;
+    color:var(--gold-2);
+    font-weight:700;
+    overflow:hidden;
+  }
+  .avatar-ring img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
   }
   .badge-tag{
     position:absolute;
@@ -317,6 +331,7 @@
     border-radius:5px;
     display:flex; align-items:center; justify-content:center;
     font-size:11px;
+    cursor:pointer;
   }
   .reward-tracker{
     font-size:11px;
@@ -344,9 +359,122 @@
     font-size:11px;
     color:var(--muted-2);
   }
+
+  /* Ro'yxatdan o'tish modal oynasi */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(5,7,12,0.75);
+    backdrop-filter:blur(3px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+  }
+  .modal-overlay.hidden{ display:none; }
+  .modal-box{
+    width:100%;
+    max-width:380px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:30px 28px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .modal-brand{
+    color:var(--gold);
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin-bottom:6px;
+    text-align:center;
+  }
+  .modal-sub{
+    color:var(--muted);
+    font-size:13px;
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .field{
+    margin-bottom:14px;
+  }
+  .field label{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-bottom:6px;
+    letter-spacing:0.3px;
+  }
+  .field input{
+    width:100%;
+    background:#0c111c;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:11px 12px;
+    color:var(--text);
+    font-size:14px;
+    outline:none;
+  }
+  .field input:focus{
+    border-color:var(--gold);
+  }
+  .field-error{
+    color:#e8615a;
+    font-size:11.5px;
+    margin-top:5px;
+    display:none;
+  }
+  .modal-submit{
+    width:100%;
+    background:linear-gradient(90deg, var(--gold), var(--gold-2));
+    color:#1a1305;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:8px;
+  }
+  .modal-submit:hover{
+    filter:brightness(1.05);
+  }
+  .modal-note{
+    color:var(--muted-2);
+    font-size:11px;
+    text-align:center;
+    margin-top:14px;
+  }
 </style>
 </head>
 <body>
+
+  <!-- Ro'yxatdan o'tish modali -->
+  <div class="modal-overlay" id="regOverlay">
+    <div class="modal-box">
+      <div class="modal-brand">ZAR</div>
+      <div class="modal-sub">Davom etish uchun ro‘yxatdan o‘ting</div>
+      <div id="regForm">
+        <div class="field">
+          <label for="regName">Ismingiz</label>
+          <input type="text" id="regName" placeholder="Masalan: Alisher" autocomplete="name">
+          <div class="field-error" id="errName">Iltimos, ismingizni kiriting</div>
+        </div>
+        <div class="field">
+          <label for="regHandle">Foydalanuvchi nomi (@)</label>
+          <input type="text" id="regHandle" placeholder="Masalan: alisher01" autocomplete="username">
+          <div class="field-error" id="errHandle">Iltimos, foydalanuvchi nomini kiriting</div>
+        </div>
+        <div class="field">
+          <label for="regPhone">Telefon raqam</label>
+          <input type="tel" id="regPhone" placeholder="+998 90 123 45 67" autocomplete="tel">
+          <div class="field-error" id="errPhone">Iltimos, telefon raqamingizni kiriting</div>
+        </div>
+        <button type="button" id="regSubmitBtn" class="modal-submit">Ro‘yxatdan o‘tish</button>
+      </div>
+      <div class="modal-note">Ma’lumotlaringiz shu qurilmada saqlanadi</div>
+    </div>
+  </div>
 
   <!-- Yon panel to'g'ri o'raldi -->
   <aside class="sidebar">
@@ -354,13 +482,15 @@
       ZAR
       <small>PLATFORM</small>
     </div>
-    <nav class="dash-nav">
-      <div  class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</div>
-      <div class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</div>
-      <div class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</div>
-      <div class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</div>
-      <div class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</div>
-      <div class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</div>
+    <nav>
+      <ul class="dash-nav">
+        <li><a href="../index.html" class="nav-item active" data-nav="1"><span class="nav-ico">⌂</span>Asosiy</a></li>
+        <li><a href="./qidiruv.html" class="nav-item" data-nav="2"><span class="nav-ico">⌕</span>Qidiruv</a></li>
+        <li><a href="./hamyon.html" class="nav-item" data-nav="3"><span class="nav-ico">▤</span>Reytinglar</a></li>
+        <li><a href="./bildirishnomalar.html" class="nav-item" data-nav="4"><span class="nav-ico">◔</span>Bildirishnoma</a></li>
+        <li><a href="#" class="nav-item" data-nav="5"><span class="nav-ico">☺</span>Profil</a></li>
+        <li><a href="./sozlamalar.html" class="nav-item" data-nav="6"><span class="nav-ico">⚙</span>Sozlamalar</a></li>
+      </ul>
     </nav>
   </aside>
 
@@ -368,11 +498,11 @@
   <main class="main">
     <div class="profile-header">
       <div class="avatar-wrap">
-        <div class="avatar-ring"></div>
+        <div class="avatar-ring" id="avatarRing"></div>
         <div class="badge-tag">OLTIN DARAJA</div>
       </div>
-      <div class="name">Alisher Navoiy</div>
-      <div class="handle"></div>
+      <div class="name" id="profileName">Mehmon</div>
+      <div class="handle" id="profileHandle">@mehmon</div>
     </div>
 
     <div class="stats">
@@ -452,8 +582,8 @@
         <div class="invite-box">
           <div class="h">Do‘stlaringizni taklif qiling va har biriga <b>500 Ball</b> oling.</div>
           <div class="invite-link">
-            <span>zar.uz/r/alisher</span>
-            <div class="copy-ic">⧉</div>
+            <span id="inviteLinkText">zar.uz/r/alisher</span>
+            <div class="copy-ic" id="copyBtn">⧉</div>
           </div>
         </div>
         <div class="reward-tracker">
@@ -465,6 +595,139 @@
       </div>
     </div>
   </main>
+
+  <script>
+    const STORAGE_KEY = 'zar_user';       // hozirgi (faol) foydalanuvchi
+    const ALL_USERS_KEY = 'zar_users';    // ro'yxatdan o'tgan barcha odamlar ro'yxati
+
+    function getInitial(name){
+      return (name || '?').trim().charAt(0).toUpperCase() || '?';
+    }
+
+    function renderProfile(user){
+      document.getElementById('profileName').textContent = user.name;
+      document.getElementById('profileHandle').textContent = '@' + user.handle;
+      document.getElementById('avatarRing').textContent = getInitial(user.name);
+      document.getElementById('inviteLinkText').textContent = 'zar.uz/r/' + user.handle;
+    }
+
+    // Ro'yxatdan o'tgan har bir odamni alohida ro'yxatga qo'shib boradi
+    function saveUserToList(user){
+      let allUsers = [];
+      try {
+        const raw = localStorage.getItem(ALL_USERS_KEY);
+        if (raw) allUsers = JSON.parse(raw);
+        if (!Array.isArray(allUsers)) allUsers = [];
+      } catch (e) {
+        allUsers = [];
+      }
+
+      // Agar shu handle bilan avval ro'yxatdan o'tgan bo'lsa, ma'lumotini yangilaydi
+      const existingIndex = allUsers.findIndex(u => u.handle === user.handle);
+      if (existingIndex !== -1) {
+        allUsers[existingIndex] = user;
+      } else {
+        allUsers.push(user);
+      }
+
+      try {
+        localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+      } catch (err) {
+        console.error('Foydalanuvchilar ro\'yxatini saqlashda xatolik:', err);
+      }
+    }
+
+    function showModal(){
+      document.getElementById('regOverlay').classList.remove('hidden');
+    }
+    function hideModal(){
+      document.getElementById('regOverlay').classList.add('hidden');
+    }
+
+    // Sahifa yuklanganda: agar foydalanuvchi ma'lumotlari saqlanmagan bo'lsa, modalni ko'rsatish
+    document.addEventListener('DOMContentLoaded', () => {
+      let stored = null;
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) stored = JSON.parse(raw);
+      } catch (e) {
+        stored = null;
+      }
+
+      if (stored && stored.name && stored.handle) {
+        renderProfile(stored);
+        hideModal();
+      } else {
+        showModal();
+      }
+    });
+
+    // Ro'yxatdan o'tish tugmasi bosilganda ishlaydigan funksiya
+    function handleRegister() {
+      const nameInput = document.getElementById('regName');
+      const handleInput = document.getElementById('regHandle');
+      const phoneInput = document.getElementById('regPhone');
+
+      const name = nameInput.value.trim();
+      const handle = handleInput.value.trim().replace(/^@/, '');
+      const phone = phoneInput.value.trim();
+
+      let valid = true;
+      document.getElementById('errName').style.display = 'none';
+      document.getElementById('errHandle').style.display = 'none';
+      document.getElementById('errPhone').style.display = 'none';
+
+      if (!name) {
+        document.getElementById('errName').style.display = 'block';
+        valid = false;
+      }
+      if (!handle) {
+        document.getElementById('errHandle').style.display = 'block';
+        valid = false;
+      }
+      if (!phone) {
+        document.getElementById('errPhone').style.display = 'block';
+        valid = false;
+      }
+      if (!valid) return;
+
+      const user = {
+        name,
+        handle,
+        phone,
+        registeredAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+      } catch (err) {
+        console.error('localStorage-ga saqlashda xatolik:', err);
+      }
+
+      // Har bir ro'yxatdan o'tgan odamni umumiy ro'yxatga ham saqlaydi
+      saveUserToList(user);
+
+      renderProfile(user);
+      hideModal();
+    }
+
+    // Tugma bosilganda ro'yxatdan o'tish funksiyasini chaqiradi
+    document.getElementById('regSubmitBtn').addEventListener('click', handleRegister);
+
+    // Enter tugmasi bosilganda ham ishlashi uchun
+    document.getElementById('regForm').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleRegister();
+      }
+    });
+
+    // Taklif havolasini nusxalash
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const text = document.getElementById('inviteLinkText').textContent;
+      navigator.clipboard?.writeText(text).catch(() => {});
+    });
+  </script>
 
 </body>
 </html>

@@ -1,964 +1,964 @@
-<!DOCTYPE html>
-<html lang="uz">
+    <!DOCTYPE html>
+    <html lang="uz">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Sozlamalar</title>
-    <style>
-        :root {
-            --bg: #17100f;
-            --bg-card: #1f1614;
-            --bg-card-2: #241a17;
-            --border: #2e211d;
-            --text: #f3e9e4;
-            --text-dim: #a89791;
-            --text-faint: #6f5f59;
-            --accent: #8a1f2b;
-            --accent-bright: #c8323f;
-            --gold: #d9a441;
-            --green: #3fae5c;
-            --danger: #e05257;
-            --toggle-off: #3a2c28;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <title>Sozlamalar</title>
+        <style>
+            :root {
+                --bg: #17100f;
+                --bg-card: #1f1614;
+                --bg-card-2: #241a17;
+                --border: #2e211d;
+                --text: #f3e9e4;
+                --text-dim: #a89791;
+                --text-faint: #6f5f59;
+                --accent: #8a1f2b;
+                --accent-bright: #c8323f;
+                --gold: #d9a441;
+                --green: #3fae5c;
+                --danger: #e05257;
+                --toggle-off: #3a2c28;
+            }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+            * {
+                box-sizing: border-box;
+                -webkit-tap-highlight-color: transparent;
+            }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
 
-        body {
-            background: radial-gradient(120% 100% at 50% 0%, #241614 0%, #17100f 55%, #120c0b 100%);
-            font-family: "SF Pro Text", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 18px 0 60px;
-        }
+            body {
+                background: radial-gradient(120% 100% at 50% 0%, #241614 0%, #17100f 55%, #120c0b 100%);
+                font-family: "SF Pro Text", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+                color: var(--text);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                padding: 18px 0 60px;
+            }
 
-        #app {
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            min-height: 700px;
-        }
+            #app {
+                width: 100%;
+                max-width: 420px;
+                position: relative;
+                min-height: 700px;
+            }
 
-        .screen {
-            display: none;
-            animation: fadeIn .22s ease;
-        }
+            .screen {
+                display: none;
+                animation: fadeIn .22s ease;
+            }
 
-        .screen.active {
-            display: block;
-        }
+            .screen.active {
+                display: block;
+            }
 
-        @keyframes fadeIn {
-            from {
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(8px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 4px 18px 18px;
+            }
+
+            .topbar h1 {
+                font-size: 17px;
+                font-weight: 600;
+                margin: 0;
+                letter-spacing: .2px;
+            }
+
+            .back-btn {
+                background: none;
+                border: none;
+                color: var(--gold);
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 15px;
+                cursor: pointer;
+                padding: 6px 4px;
+            }
+
+            .back-btn svg {
+                width: 9px;
+                height: 15px;
+            }
+
+            .avatar-btn {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #3a2723, #241614);
+                border: 1px solid var(--border);
+            }
+
+            .spacer30 {
+                width: 30px;
+            }
+
+            .section-label {
+                font-size: 11.5px;
+                color: var(--text-faint);
+                text-transform: uppercase;
+                letter-spacing: .6px;
+                margin: 22px 18px 8px;
+            }
+
+            .section-label:first-of-type {
+                margin-top: 6px;
+            }
+
+            .card {
+                background: var(--bg-card);
+                margin: 0 14px;
+                border-radius: 14px;
+                overflow: hidden;
+                border: 1px solid var(--border);
+            }
+
+            .row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 13px 14px;
+                min-height: 48px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                width: 100%;
+                text-align: left;
+                color: var(--text);
+                font-family: inherit;
+                font-size: 14.5px;
+            }
+
+            .row+.row {
+                border-top: 1px solid var(--border);
+            }
+
+            .row-left {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .row-icon {
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                background: var(--bg-card-2);
+            }
+
+            .row-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .row-title {
+                font-size: 14.5px;
+                color: var(--text);
+            }
+
+            .row-sub {
+                font-size: 12px;
+                color: var(--text-faint);
+                margin-top: 2px;
+            }
+
+            .row-right {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                color: var(--text-dim);
+                font-size: 13.5px;
+                flex-shrink: 0;
+            }
+
+            .chev {
+                width: 7px;
+                height: 12px;
+                opacity: .55;
+                flex-shrink: 0;
+            }
+
+            .badge {
+                font-size: 11px;
+                background: var(--bg-card-2);
+                color: var(--text-dim);
+                padding: 2px 8px;
+                border-radius: 20px;
+                border: 1px solid var(--border);
+            }
+
+            .row:active {
+                background: var(--bg-card-2);
+            }
+
+            /* toggle switch */
+            .toggle {
+                width: 46px;
+                height: 27px;
+                border-radius: 20px;
+                background: var(--toggle-off);
+                position: relative;
+                flex-shrink: 0;
+                border: none;
+                cursor: pointer;
+                transition: background .18s ease;
+                padding: 0;
+            }
+
+            .toggle.on {
+                background: var(--accent-bright);
+            }
+
+            .toggle .knob {
+                position: absolute;
+                top: 2.5px;
+                left: 2.5px;
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                background: #fff;
+                transition: transform .18s ease;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+            }
+
+            .toggle.on .knob {
+                transform: translateX(19px);
+            }
+
+            .verified-pill {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                background: rgba(63, 174, 92, .15);
+                color: var(--green);
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 12.5px;
+                border: 1px solid rgba(63, 174, 92, .3);
+            }
+
+            .verified-pill.off {
+                background: rgba(224, 82, 87, .13);
+                color: var(--danger);
+                border-color: rgba(224, 82, 87, .3);
+            }
+
+            .dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: currentColor;
+            }
+
+            .logout-wrap {
+                margin: 30px 14px 8px;
+            }
+
+            .logout-btn {
+                width: 100%;
+                background: rgba(224, 82, 87, .10);
+                border: 1px solid rgba(224, 82, 87, .35);
+                color: var(--danger);
+                font-size: 15px;
+                font-weight: 600;
+                padding: 14px;
+                border-radius: 14px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                font-family: inherit;
+            }
+
+            .logout-btn:active {
+                background: rgba(224, 82, 87, .18);
+            }
+
+            .version {
+                text-align: center;
+                font-size: 12px;
+                color: var(--text-faint);
+                margin-top: 14px;
+            }
+
+            /* option list (language / theme) */
+            .option-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px;
+                font-size: 14.5px;
+                cursor: pointer;
+                background: none;
+                border: none;
+                width: 100%;
+                text-align: left;
+                color: var(--text);
+                font-family: inherit;
+            }
+
+            .option-row+.option-row {
+                border-top: 1px solid var(--border);
+            }
+
+            .check {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                border: 1.5px solid var(--text-faint);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .check.checked {
+                border-color: var(--accent-bright);
+                background: var(--accent-bright);
+            }
+
+            .check svg {
+                width: 11px;
+                height: 11px;
+            }
+
+            .info-block {
+                margin: 8px 18px 0;
+                color: var(--text-dim);
+                font-size: 13.5px;
+                line-height: 1.6;
+            }
+
+            .toast {
+                position: fixed;
+                left: 50%;
+                bottom: 26px;
+                transform: translateX(-50%) translateY(20px);
+                background: #241614;
+                border: 1px solid var(--border);
+                color: var(--text);
+                padding: 12px 18px;
+                border-radius: 12px;
+                font-size: 13.5px;
                 opacity: 0;
-                transform: translateX(8px);
+                transition: all .25s ease;
+                pointer-events: none;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+                z-index: 50;
+                max-width: 320px;
+                text-align: center;
             }
 
-            to {
+            .toast.show {
                 opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4px 18px 18px;
-        }
-
-        .topbar h1 {
-            font-size: 17px;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: .2px;
-        }
-
-        .back-btn {
-            background: none;
-            border: none;
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 15px;
-            cursor: pointer;
-            padding: 6px 4px;
-        }
-
-        .back-btn svg {
-            width: 9px;
-            height: 15px;
-        }
-
-        .avatar-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3a2723, #241614);
-            border: 1px solid var(--border);
-        }
-
-        .spacer30 {
-            width: 30px;
-        }
-
-        .section-label {
-            font-size: 11.5px;
-            color: var(--text-faint);
-            text-transform: uppercase;
-            letter-spacing: .6px;
-            margin: 22px 18px 8px;
-        }
-
-        .section-label:first-of-type {
-            margin-top: 6px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            margin: 0 14px;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 13px 14px;
-            min-height: 48px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 14.5px;
-        }
-
-        .row+.row {
-            border-top: 1px solid var(--border);
-        }
-
-        .row-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .row-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            background: var(--bg-card-2);
-        }
-
-        .row-icon svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .row-title {
-            font-size: 14.5px;
-            color: var(--text);
-        }
-
-        .row-sub {
-            font-size: 12px;
-            color: var(--text-faint);
-            margin-top: 2px;
-        }
-
-        .row-right {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-dim);
-            font-size: 13.5px;
-            flex-shrink: 0;
-        }
-
-        .chev {
-            width: 7px;
-            height: 12px;
-            opacity: .55;
-            flex-shrink: 0;
-        }
-
-        .badge {
-            font-size: 11px;
-            background: var(--bg-card-2);
-            color: var(--text-dim);
-            padding: 2px 8px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .row:active {
-            background: var(--bg-card-2);
-        }
-
-        /* toggle switch */
-        .toggle {
-            width: 46px;
-            height: 27px;
-            border-radius: 20px;
-            background: var(--toggle-off);
-            position: relative;
-            flex-shrink: 0;
-            border: none;
-            cursor: pointer;
-            transition: background .18s ease;
-            padding: 0;
-        }
-
-        .toggle.on {
-            background: var(--accent-bright);
-        }
-
-        .toggle .knob {
-            position: absolute;
-            top: 2.5px;
-            left: 2.5px;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: #fff;
-            transition: transform .18s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
-        }
-
-        .toggle.on .knob {
-            transform: translateX(19px);
-        }
-
-        .verified-pill {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(63, 174, 92, .15);
-            color: var(--green);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12.5px;
-            border: 1px solid rgba(63, 174, 92, .3);
-        }
-
-        .verified-pill.off {
-            background: rgba(224, 82, 87, .13);
-            color: var(--danger);
-            border-color: rgba(224, 82, 87, .3);
-        }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        .logout-wrap {
-            margin: 30px 14px 8px;
-        }
-
-        .logout-btn {
-            width: 100%;
-            background: rgba(224, 82, 87, .10);
-            border: 1px solid rgba(224, 82, 87, .35);
-            color: var(--danger);
-            font-size: 15px;
-            font-weight: 600;
-            padding: 14px;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: inherit;
-        }
-
-        .logout-btn:active {
-            background: rgba(224, 82, 87, .18);
-        }
-
-        .version {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-faint);
-            margin-top: 14px;
-        }
-
-        /* option list (language / theme) */
-        .option-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px;
-            font-size: 14.5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            color: var(--text);
-            font-family: inherit;
-        }
-
-        .option-row+.option-row {
-            border-top: 1px solid var(--border);
-        }
-
-        .check {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1.5px solid var(--text-faint);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .check.checked {
-            border-color: var(--accent-bright);
-            background: var(--accent-bright);
-        }
-
-        .check svg {
-            width: 11px;
-            height: 11px;
-        }
-
-        .info-block {
-            margin: 8px 18px 0;
-            color: var(--text-dim);
-            font-size: 13.5px;
-            line-height: 1.6;
-        }
-
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 26px;
-            transform: translateX(-50%) translateY(20px);
-            background: #241614;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px 18px;
-            border-radius: 12px;
-            font-size: 13.5px;
-            opacity: 0;
-            transition: all .25s ease;
-            pointer-events: none;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
-            z-index: 50;
-            max-width: 320px;
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .confirm-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .55);
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 60;
-        }
-
-        .confirm-overlay.show {
-            display: flex;
-        }
-
-        .confirm-sheet {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            width: 100%;
-            max-width: 420px;
-            border-radius: 20px 20px 0 0;
-            padding: 22px 20px 26px;
-            text-align: center;
-            animation: slideUp .22s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
+                transform: translateX(-50%) translateY(0);
             }
 
-            to {
-                transform: translateY(0);
-                opacity: 1;
+            .confirm-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .55);
+                display: none;
+                align-items: flex-end;
+                justify-content: center;
+                z-index: 60;
             }
-        }
 
-        .confirm-sheet h3 {
-            margin: 0 0 8px;
-            font-size: 16px;
-        }
+            .confirm-overlay.show {
+                display: flex;
+            }
 
-        .confirm-sheet p {
-            margin: 0 0 20px;
-            font-size: 13.5px;
-            color: var(--text-dim);
-            line-height: 1.5;
-        }
+            .confirm-sheet {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                width: 100%;
+                max-width: 420px;
+                border-radius: 20px 20px 0 0;
+                padding: 22px 20px 26px;
+                text-align: center;
+                animation: slideUp .22s ease;
+            }
 
-        .confirm-actions {
-            display: flex;
-            gap: 10px;
-        }
+            @keyframes slideUp {
+                from {
+                    transform: translateY(30px);
+                    opacity: 0;
+                }
 
-        .confirm-actions button {
-            flex: 1;
-            padding: 13px;
-            border-radius: 12px;
-            font-size: 14.5px;
-            font-weight: 600;
-            border: 1px solid var(--border);
-            font-family: inherit;
-            cursor: pointer;
-        }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
 
-        .btn-cancel {
-            background: var(--bg-card-2);
-            color: var(--text);
-        }
+            .confirm-sheet h3 {
+                margin: 0 0 8px;
+                font-size: 16px;
+            }
 
-        .btn-danger {
-            background: var(--danger);
-            color: #fff;
-            border-color: var(--danger);
-        }
+            .confirm-sheet p {
+                margin: 0 0 20px;
+                font-size: 13.5px;
+                color: var(--text-dim);
+                line-height: 1.5;
+            }
 
-        .cache-size {
-            color: var(--text-dim);
-            font-size: 13.5px;
-        }
+            .confirm-actions {
+                display: flex;
+                gap: 10px;
+            }
 
-        input.text-input {
-            width: 100%;
-            background: var(--bg-card-2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 14.5px;
-            padding: 12px 13px;
-            border-radius: 12px;
-            font-family: inherit;
-            margin-top: 8px;
-        }
+            .confirm-actions button {
+                flex: 1;
+                padding: 13px;
+                border-radius: 12px;
+                font-size: 14.5px;
+                font-weight: 600;
+                border: 1px solid var(--border);
+                font-family: inherit;
+                cursor: pointer;
+            }
 
-        input.text-input:focus {
-            outline: 1.5px solid var(--accent-bright);
-        }
+            .btn-cancel {
+                background: var(--bg-card-2);
+                color: var(--text);
+            }
 
-        .field-label {
-            font-size: 12.5px;
-            color: var(--text-faint);
-            margin: 16px 18px 0;
-        }
+            .btn-danger {
+                background: var(--danger);
+                color: #fff;
+                border-color: var(--danger);
+            }
 
-        .save-btn {
-            margin: 24px 14px 0;
-            width: calc(100% - 28px);
-            background: var(--accent-bright);
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
-        }
+            .cache-size {
+                color: var(--text-dim);
+                font-size: 13.5px;
+            }
 
-        .save-btn:active {
-            opacity: .85;
-        }
-    </style>
-</head>
+            input.text-input {
+                width: 100%;
+                background: var(--bg-card-2);
+                border: 1px solid var(--border);
+                color: var(--text);
+                font-size: 14.5px;
+                padding: 12px 13px;
+                border-radius: 12px;
+                font-family: inherit;
+                margin-top: 8px;
+            }
 
-<body>
-    <div id="app">
+            input.text-input:focus {
+                outline: 1.5px solid var(--accent-bright);
+            }
 
-        <!-- MAIN SETTINGS SCREEN -->
-        <div class="screen active" id="screen-main">
-            <div class="topbar">
-                <button class="back-btn" onclick="sendPromptSafe()"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg><a href="./profil.html">Orqaga</a></button>
-                <h1>Sozlamalar</h1>
-                <div class="avatar-btn"></div>
-            </div>
+            .field-label {
+                font-size: 12.5px;
+                color: var(--text-faint);
+                margin: 16px 18px 0;
+            }
 
-            <div class="section-label">Hisob</div>
-            <div class="card">
-                <button class="row" onclick="go('screen-profile')">
-                    <div class="row-left"><span class="row-title">Profilni tahrirlash</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+            .save-btn {
+                margin: 24px 14px 0;
+                width: calc(100% - 28px);
+                background: var(--accent-bright);
+                color: #fff;
+                border: none;
+                padding: 14px;
+                border-radius: 14px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                font-family: inherit;
+            }
+
+            .save-btn:active {
+                opacity: .85;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="app">
+
+            <!-- MAIN SETTINGS SCREEN -->
+            <div class="screen active" id="screen-main">
+                <div class="topbar">
+                    <button class="back-btn" onclick="sendPromptSafe()"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
                                 stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-phone')">
-                    <div class="row-left"><span class="row-title">Telefon raqami</span></div>
-                    <div class="row-right"><span>+998 90 •• 01 02</span><svg class="chev" viewBox="0 0 7 12"
-                            fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-cards')">
-                    <div class="row-left"><span class="row-title">To'lov kartalarim</span></div>
-                    <div class="row-right"><span class="badge">Yo'q</span><svg class="chev" viewBox="0 0 7 12"
-                            fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="toast('Siz allaqachon verifikatsiyadan o‘tgansiz')">
-                    <div class="row-left"><span class="row-title">Verifikatsiya</span></div>
-                    <div class="row-right"><span class="verified-pill"><span class="dot"></span>Tasdiqlangan</span>
+                        </svg><a href="./profil.html">Orqaga</a></button>
+                    <h1>Sozlamalar</h1>
+                    <div class="avatar-btn"></div>
+                </div>
+
+                <div class="section-label">Hisob</div>
+                <div class="card">
+                    <button class="row" onclick="go('screen-profile')">
+                        <div class="row-left"><span class="row-title">Profilni tahrirlash</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-phone')">
+                        <div class="row-left"><span class="row-title">Telefon raqami</span></div>
+                        <div class="row-right"><span>+998 90 •• 01 02</span><svg class="chev" viewBox="0 0 7 12"
+                                fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-cards')">
+                        <div class="row-left"><span class="row-title">To'lov kartalarim</span></div>
+                        <div class="row-right"><span class="badge">Yo'q</span><svg class="chev" viewBox="0 0 7 12"
+                                fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="toast('Siz allaqachon verifikatsiyadan o‘tgansiz')">
+                        <div class="row-left"><span class="row-title">Verifikatsiya</span></div>
+                        <div class="row-right"><span class="verified-pill"><span class="dot"></span>Tasdiqlangan</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="section-label">Bildirishnomalar</div>
+                <div class="card">
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Yangi reklamalar</span></div>
+                        <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
                     </div>
-                </button>
-            </div>
-
-            <div class="section-label">Bildirishnomalar</div>
-            <div class="card">
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Yangi reklamalar</span></div>
-                    <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Ball tushishi</span></div>
+                        <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    </div>
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Pul o'tkazmalari</span></div>
+                        <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    </div>
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Do'stlar faoliyati</span></div>
+                        <button class="toggle" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    </div>
                 </div>
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Ball tushishi</span></div>
-                    <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+
+                <div class="section-label">Litsenziya</div>
+                <div class="card">
+                    <button class="row" onclick="toast('Bloklangan foydalanuvchilar ro‘yxati bo‘sh')">
+                        <div class="row-left"><span class="row-title">Maxfiylik</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="toast('Bloklangan foydalanuvchilar ro‘yxati bo‘sh')">
+                        <div class="row-left"><span class="row-title">Bloklangan foydalanuvchilar</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="toast('Izohlarni boshqarish sozlamalari yangilandi')">
+                        <div class="row-left"><span class="row-title">Izohlarni boshqarish</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
                 </div>
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Pul o'tkazmalari</span></div>
-                    <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+
+                <div class="section-label">Ilova</div>
+                <div class="card">
+                    <button class="row" onclick="go('screen-language')">
+                        <div class="row-left"><span class="row-title">Til</span></div>
+                        <div class="row-right"><span id="lang-current">O'zbekcha</span><svg class="chev" viewBox="0 0 7 12"
+                                fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-theme')">
+                        <div class="row-left"><span class="row-title">Mavzu</span></div>
+                        <div class="row-right"><span id="theme-current">Tungi</span><svg class="chev" viewBox="0 0 7 12"
+                                fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Videolarni avtomatik ijro etish</span></div>
+                        <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    </div>
+                    <div class="row" style="cursor:default">
+                        <div class="row-left"><span class="row-title">Faqat Wi-Fi orqali yuklash</span></div>
+                        <button class="toggle" onclick="toggleThis(this)"><span class="knob"></span></button>
+                    </div>
+                    <button class="row" onclick="openCacheConfirm()">
+                        <div class="row-left"><span class="row-title">Xotirani tozalash</span></div>
+                        <div class="row-right"><span class="cache-size" id="cache-size">248 MB</span><svg class="chev"
+                                viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
                 </div>
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Do'stlar faoliyati</span></div>
-                    <button class="toggle" onclick="toggleThis(this)"><span class="knob"></span></button>
+
+                <div class="section-label">Yordam</div>
+                <div class="card">
+                    <button class="row" onclick="go('screen-faq')">
+                        <div class="row-left"><span class="row-title">Savol-javob</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-support')">
+                        <div class="row-left"><span class="row-title">Qo'llab-quvvatlash</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-terms')">
+                        <div class="row-left"><span class="row-title">Foydalanish shartlari</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-privacy')">
+                        <div class="row-left"><span class="row-title">Maxfiylik siyosati</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                    <button class="row" onclick="go('screen-about')">
+                        <div class="row-left"><span class="row-title">Ilova haqida</span></div>
+                        <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
+                                <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></div>
+                    </button>
+                </div>
+
+                <div class="logout-wrap">
+                    <button class="logout-btn" onclick="openLogoutConfirm()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M16 17l5-5-5-5M21 12H9M13 21H7a2 2 0 01-2-2V5a2 2 0 012-2h6" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Chiqish
+                    </button>
+                </div>
+                <div class="version">Ilova versiyasi v1.0.4</div>
+            </div>
+
+            <!-- PROFILE EDIT -->
+            <div class="screen" id="screen-profile">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Profilni tahrirlash</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="field-label">Ism</div>
+                <div style="margin:0 18px;"><input class="text-input" id="input-name" type="text" value="Aziz"
+                        placeholder="Ismingiz"></div>
+                <div class="field-label">Familiya</div>
+                <div style="margin:0 18px;"><input class="text-input" id="input-surname" type="text" value="Karimov"
+                        placeholder="Familiyangiz"></div>
+                <div class="field-label">Foydalanuvchi nomi</div>
+                <div style="margin:0 18px;"><input class="text-input" id="input-username" type="text" value="aziz_k"
+                        placeholder="@foydalanuvchi"></div>
+                <button class="save-btn" onclick="saveProfile()">Saqlash</button>
+            </div>
+
+            <!-- PHONE -->
+            <div class="screen" id="screen-phone">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Telefon raqami</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="field-label">Joriy raqam</div>
+                <div style="margin:0 18px;"><input class="text-input" id="input-phone" type="tel" value="+998 90 123 01 02">
+                </div>
+                <div class="info-block">Raqamni o'zgartirish uchun yangi raqamga tasdiqlash kodi yuboriladi.</div>
+                <button class="save-btn" onclick="savePhone()">Kod yuborish</button>
+            </div>
+
+            <!-- CARDS -->
+            <div class="screen" id="screen-cards">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>To'lov kartalarim</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="info-block" style="text-align:center; margin-top:60px;">Hozircha bog'langan kartalar yo'q.</div>
+                <button class="save-btn" onclick="toast('Karta qo‘shish oynasi (namuna)')">+ Karta qo'shish</button>
+            </div>
+
+            <!-- LANGUAGE -->
+            <div class="screen" id="screen-language">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Til</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="card" id="lang-list" style="margin-top:6px;">
+                    <button class="option-row" onclick="selectLang(this,'O\'zbekcha')">O'zbekcha<span
+                            class="check checked"><svg viewBox="0 0 12 9" fill="none">
+                                <path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></span></button>
+                    <button class="option-row" onclick="selectLang(this,'Русский')">Русский<span
+                            class="check"></span></button>
+                    <button class="option-row" onclick="selectLang(this,'English')">English<span
+                            class="check"></span></button>
                 </div>
             </div>
 
-            <div class="section-label">Litsenziya</div>
-            <div class="card">
-                <button class="row" onclick="toast('Bloklangan foydalanuvchilar ro‘yxati bo‘sh')">
-                    <div class="row-left"><span class="row-title">Maxfiylik</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+            <!-- THEME -->
+            <div class="screen" id="screen-theme">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
                                 stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="toast('Bloklangan foydalanuvchilar ro‘yxati bo‘sh')">
-                    <div class="row-left"><span class="row-title">Bloklangan foydalanuvchilar</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="toast('Izohlarni boshqarish sozlamalari yangilandi')">
-                    <div class="row-left"><span class="row-title">Izohlarni boshqarish</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-            </div>
-
-            <div class="section-label">Ilova</div>
-            <div class="card">
-                <button class="row" onclick="go('screen-language')">
-                    <div class="row-left"><span class="row-title">Til</span></div>
-                    <div class="row-right"><span id="lang-current">O'zbekcha</span><svg class="chev" viewBox="0 0 7 12"
-                            fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-theme')">
-                    <div class="row-left"><span class="row-title">Mavzu</span></div>
-                    <div class="row-right"><span id="theme-current">Tungi</span><svg class="chev" viewBox="0 0 7 12"
-                            fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Videolarni avtomatik ijro etish</span></div>
-                    <button class="toggle on" onclick="toggleThis(this)"><span class="knob"></span></button>
+                        </svg>Orqaga</button>
+                    <h1>Mavzu</h1>
+                    <div class="spacer30"></div>
                 </div>
-                <div class="row" style="cursor:default">
-                    <div class="row-left"><span class="row-title">Faqat Wi-Fi orqali yuklash</span></div>
-                    <button class="toggle" onclick="toggleThis(this)"><span class="knob"></span></button>
+                <div class="card" id="theme-list" style="margin-top:6px;">
+                    <button class="option-row" onclick="selectTheme(this,'Tungi')">Tungi<span class="check checked"><svg
+                                viewBox="0 0 12 9" fill="none">
+                                <path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg></span></button>
+                    <button class="option-row" onclick="selectTheme(this,'Kunduzgi')">Kunduzgi<span
+                            class="check"></span></button>
+                    <button class="option-row" onclick="selectTheme(this,'Tizim')">Tizim bo'yicha</span><span
+                            class="check"></span></button>
                 </div>
-                <button class="row" onclick="openCacheConfirm()">
-                    <div class="row-left"><span class="row-title">Xotirani tozalash</span></div>
-                    <div class="row-right"><span class="cache-size" id="cache-size">248 MB</span><svg class="chev"
-                            viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
+            </div>
+
+            <!-- FAQ -->
+            <div class="screen" id="screen-faq">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
                                 stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-            </div>
-
-            <div class="section-label">Yordam</div>
-            <div class="card">
-                <button class="row" onclick="go('screen-faq')">
-                    <div class="row-left"><span class="row-title">Savol-javob</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-support')">
-                    <div class="row-left"><span class="row-title">Qo'llab-quvvatlash</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-terms')">
-                    <div class="row-left"><span class="row-title">Foydalanish shartlari</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-privacy')">
-                    <div class="row-left"><span class="row-title">Maxfiylik siyosati</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-                <button class="row" onclick="go('screen-about')">
-                    <div class="row-left"><span class="row-title">Ilova haqida</span></div>
-                    <div class="row-right"><svg class="chev" viewBox="0 0 7 12" fill="none">
-                            <path d="M1 1L6 6L1 11" stroke="#a89791" stroke-width="1.4" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></div>
-                </button>
-            </div>
-
-            <div class="logout-wrap">
-                <button class="logout-btn" onclick="openLogoutConfirm()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M16 17l5-5-5-5M21 12H9M13 21H7a2 2 0 01-2-2V5a2 2 0 012-2h6" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    Chiqish
-                </button>
-            </div>
-            <div class="version">Ilova versiyasi v1.0.4</div>
-        </div>
-
-        <!-- PROFILE EDIT -->
-        <div class="screen" id="screen-profile">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Profilni tahrirlash</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="field-label">Ism</div>
-            <div style="margin:0 18px;"><input class="text-input" id="input-name" type="text" value="Aziz"
-                    placeholder="Ismingiz"></div>
-            <div class="field-label">Familiya</div>
-            <div style="margin:0 18px;"><input class="text-input" id="input-surname" type="text" value="Karimov"
-                    placeholder="Familiyangiz"></div>
-            <div class="field-label">Foydalanuvchi nomi</div>
-            <div style="margin:0 18px;"><input class="text-input" id="input-username" type="text" value="aziz_k"
-                    placeholder="@foydalanuvchi"></div>
-            <button class="save-btn" onclick="saveProfile()">Saqlash</button>
-        </div>
-
-        <!-- PHONE -->
-        <div class="screen" id="screen-phone">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Telefon raqami</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="field-label">Joriy raqam</div>
-            <div style="margin:0 18px;"><input class="text-input" id="input-phone" type="tel" value="+998 90 123 01 02">
-            </div>
-            <div class="info-block">Raqamni o'zgartirish uchun yangi raqamga tasdiqlash kodi yuboriladi.</div>
-            <button class="save-btn" onclick="savePhone()">Kod yuborish</button>
-        </div>
-
-        <!-- CARDS -->
-        <div class="screen" id="screen-cards">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>To'lov kartalarim</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="info-block" style="text-align:center; margin-top:60px;">Hozircha bog'langan kartalar yo'q.</div>
-            <button class="save-btn" onclick="toast('Karta qo‘shish oynasi (namuna)')">+ Karta qo'shish</button>
-        </div>
-
-        <!-- LANGUAGE -->
-        <div class="screen" id="screen-language">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Til</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="card" id="lang-list" style="margin-top:6px;">
-                <button class="option-row" onclick="selectLang(this,'O\'zbekcha')">O'zbekcha<span
-                        class="check checked"><svg viewBox="0 0 12 9" fill="none">
-                            <path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></span></button>
-                <button class="option-row" onclick="selectLang(this,'Русский')">Русский<span
-                        class="check"></span></button>
-                <button class="option-row" onclick="selectLang(this,'English')">English<span
-                        class="check"></span></button>
-            </div>
-        </div>
-
-        <!-- THEME -->
-        <div class="screen" id="screen-theme">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Mavzu</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="card" id="theme-list" style="margin-top:6px;">
-                <button class="option-row" onclick="selectTheme(this,'Tungi')">Tungi<span class="check checked"><svg
-                            viewBox="0 0 12 9" fill="none">
-                            <path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg></span></button>
-                <button class="option-row" onclick="selectTheme(this,'Kunduzgi')">Kunduzgi<span
-                        class="check"></span></button>
-                <button class="option-row" onclick="selectTheme(this,'Tizim')">Tizim bo'yicha</span><span
-                        class="check"></span></button>
-            </div>
-        </div>
-
-        <!-- FAQ -->
-        <div class="screen" id="screen-faq">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Savol-javob</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="card" style="margin-top:6px;">
-                <button class="row" onclick="toast('Kartani qanday bog‘lash kerak: Sozlamalar → To‘lov kartalarim')">
-                    <div class="row-title">Kartani qanday bog'lash mumkin?</div>
-                </button>
-                <button class="row" onclick="toast('Parolni tiklash: kirish oynasida “Parolni unutdingizmi”ni bosing')">
-                    <div class="row-title">Parolni qanday tiklash mumkin?</div>
-                </button>
-                <button class="row" onclick="toast('Hisobni o‘chirish: Qo‘llab-quvvatlashga murojaat qiling')">
-                    <div class="row-title">Hisobni qanday o'chirish mumkin?</div>
-                </button>
-            </div>
-        </div>
-
-        <!-- SUPPORT -->
-        <div class="screen" id="screen-support">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Qo'llab-quvvatlash</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="field-label">Xabaringiz</div>
-            <div style="margin:0 18px;"><input class="text-input" id="support-msg" type="text"
-                    placeholder="Muammoingizni yozing..."></div>
-            <button class="save-btn" onclick="sendSupport()">Yuborish</button>
-        </div>
-
-        <!-- TERMS -->
-        <div class="screen" id="screen-terms">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Foydalanish shartlari</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="info-block">Ilovadan foydalanish orqali siz uning qoidalariga rozilik bildirasiz. To'liq matn
-                keyinroq shu yerda ko'rsatiladi.</div>
-        </div>
-
-        <!-- PRIVACY -->
-        <div class="screen" id="screen-privacy">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Maxfiylik siyosati</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="info-block">Sizning shaxsiy ma'lumotlaringiz xavfsiz saqlanadi va uchinchi shaxslarga
-                berilmaydi. To'liq matn keyinroq shu yerda ko'rsatiladi.</div>
-        </div>
-
-        <!-- ABOUT -->
-        <div class="screen" id="screen-about">
-            <div class="topbar">
-                <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
-                        <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>Orqaga</button>
-                <h1>Ilova haqida</h1>
-                <div class="spacer30"></div>
-            </div>
-            <div class="info-block" style="text-align:center; margin-top:40px;">
-                <div
-                    style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#c8323f,#5e131c);margin:0 auto 14px;">
+                        </svg>Orqaga</button>
+                    <h1>Savol-javob</h1>
+                    <div class="spacer30"></div>
                 </div>
-                <div style="color:var(--text); font-size:15px; font-weight:600;">Ilova nomi</div>
-                <div style="margin-top:4px;">Versiya v1.0.4</div>
-                <div style="margin-top:10px;">© 2026. Barcha huquqlar himoyalangan.</div>
+                <div class="card" style="margin-top:6px;">
+                    <button class="row" onclick="toast('Kartani qanday bog‘lash kerak: Sozlamalar → To‘lov kartalarim')">
+                        <div class="row-title">Kartani qanday bog'lash mumkin?</div>
+                    </button>
+                    <button class="row" onclick="toast('Parolni tiklash: kirish oynasida “Parolni unutdingizmi”ni bosing')">
+                        <div class="row-title">Parolni qanday tiklash mumkin?</div>
+                    </button>
+                    <button class="row" onclick="toast('Hisobni o‘chirish: Qo‘llab-quvvatlashga murojaat qiling')">
+                        <div class="row-title">Hisobni qanday o'chirish mumkin?</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUPPORT -->
+            <div class="screen" id="screen-support">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Qo'llab-quvvatlash</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="field-label">Xabaringiz</div>
+                <div style="margin:0 18px;"><input class="text-input" id="support-msg" type="text"
+                        placeholder="Muammoingizni yozing..."></div>
+                <button class="save-btn" onclick="sendSupport()">Yuborish</button>
+            </div>
+
+            <!-- TERMS -->
+            <div class="screen" id="screen-terms">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Foydalanish shartlari</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="info-block">Ilovadan foydalanish orqali siz uning qoidalariga rozilik bildirasiz. To'liq matn
+                    keyinroq shu yerda ko'rsatiladi.</div>
+            </div>
+
+            <!-- PRIVACY -->
+            <div class="screen" id="screen-privacy">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Maxfiylik siyosati</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="info-block">Sizning shaxsiy ma'lumotlaringiz xavfsiz saqlanadi va uchinchi shaxslarga
+                    berilmaydi. To'liq matn keyinroq shu yerda ko'rsatiladi.</div>
+            </div>
+
+            <!-- ABOUT -->
+            <div class="screen" id="screen-about">
+                <div class="topbar">
+                    <button class="back-btn" onclick="go('screen-main')"><svg viewBox="0 0 9 15" fill="none">
+                            <path d="M8 1L1 7.5L8 14" stroke="#d9a441" stroke-width="1.6" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>Orqaga</button>
+                    <h1>Ilova haqida</h1>
+                    <div class="spacer30"></div>
+                </div>
+                <div class="info-block" style="text-align:center; margin-top:40px;">
+                    <div
+                        style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#c8323f,#5e131c);margin:0 auto 14px;">
+                    </div>
+                    <div style="color:var(--text); font-size:15px; font-weight:600;">Ilova nomi</div>
+                    <div style="margin-top:4px;">Versiya v1.0.4</div>
+                    <div style="margin-top:10px;">© 2026. Barcha huquqlar himoyalangan.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="toast" id="toast"></div>
+
+        <div class="confirm-overlay" id="logout-overlay">
+            <div class="confirm-sheet">
+                <h3>Chiqishni tasdiqlaysizmi?</h3>
+                <p>Hisobingizdan chiqasiz, qayta kirish uchun telefon raqamingiz kerak bo'ladi.</p>
+                <div class="confirm-actions">
+                    <button class="btn-cancel" onclick="closeOverlay('logout-overlay')">Bekor qilish</button>
+                    <button class="btn-danger" onclick="doLogout()">Chiqish</button>
+                </div>
             </div>
         </div>
 
-    </div>
-
-    <div class="toast" id="toast"></div>
-
-    <div class="confirm-overlay" id="logout-overlay">
-        <div class="confirm-sheet">
-            <h3>Chiqishni tasdiqlaysizmi?</h3>
-            <p>Hisobingizdan chiqasiz, qayta kirish uchun telefon raqamingiz kerak bo'ladi.</p>
-            <div class="confirm-actions">
-                <button class="btn-cancel" onclick="closeOverlay('logout-overlay')">Bekor qilish</button>
-                <button class="btn-danger" onclick="doLogout()">Chiqish</button>
+        <div class="confirm-overlay" id="cache-overlay">
+            <div class="confirm-sheet">
+                <h3>Xotirani tozalash</h3>
+                <p>Vaqtinchalik fayllar (248 MB) o'chiriladi. Hisob ma'lumotlaringizga ta'sir qilmaydi.</p>
+                <div class="confirm-actions">
+                    <button class="btn-cancel" onclick="closeOverlay('cache-overlay')">Bekor qilish</button>
+                    <button class="btn-danger" style="background:var(--accent-bright); border-color:var(--accent-bright);"
+                        onclick="doClearCache()">Tozalash</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="confirm-overlay" id="cache-overlay">
-        <div class="confirm-sheet">
-            <h3>Xotirani tozalash</h3>
-            <p>Vaqtinchalik fayllar (248 MB) o'chiriladi. Hisob ma'lumotlaringizga ta'sir qilmaydi.</p>
-            <div class="confirm-actions">
-                <button class="btn-cancel" onclick="closeOverlay('cache-overlay')">Bekor qilish</button>
-                <button class="btn-danger" style="background:var(--accent-bright); border-color:var(--accent-bright);"
-                    onclick="doClearCache()">Tozalash</button>
-            </div>
-        </div>
-    </div>
+        <script>
+            function go(id) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                window.scrollTo(0, 0);
+            }
+            function sendPromptSafe() {
+                if (typeof sendPrompt === 'function') { sendPrompt('Sozlamalar sahifasidan chiqmoqchiman'); }
+            }
+            function toggleThis(el) {
+                el.classList.toggle('on');
+            }
+            function toast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.classList.add('show');
+                clearTimeout(window._toastTimer);
+                window._toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+            }
+            function openLogoutConfirm() { document.getElementById('logout-overlay').classList.add('show'); }
+            function openCacheConfirm() { document.getElementById('cache-overlay').classList.add('show'); }
+            function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
+            function doLogout() {
+                closeOverlay('logout-overlay');
+                toast('Hisobdan chiqildi');
+            }
+            function doClearCache() {
+                closeOverlay('cache-overlay');
+                document.getElementById('cache-size').textContent = '0 MB';
+                toast('Xotira tozalandi');
+            }
+            function saveProfile() {
+                toast('Profil ma\'lumotlari saqlandi');
+                go('screen-main');
+            }
+            function savePhone() {
+                toast('Tasdiqlash kodi yuborildi');
+                go('screen-main');
+            }
+            function sendSupport() {
+                const val = document.getElementById('support-msg').value.trim();
+                if (!val) { toast('Iltimos, xabar yozing'); return; }
+                document.getElementById('support-msg').value = '';
+                toast('Xabaringiz yuborildi, tez orada javob beramiz');
+                go('screen-main');
+            }
+            function selectLang(el, name) {
+                document.querySelectorAll('#lang-list .check').forEach(c => { c.classList.remove('checked'); c.innerHTML = ''; });
+                el.querySelector('.check').classList.add('checked');
+                el.querySelector('.check').innerHTML = '<svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                document.getElementById('lang-current').textContent = name;
+                toast('Til o\'zgartirildi: ' + name);
+                go('screen-main');
+            }
+            function selectTheme(el, name) {
+                document.querySelectorAll('#theme-list .check').forEach(c => { c.classList.remove('checked'); c.innerHTML = ''; });
+                el.querySelector('.check').classList.add('checked');
+                el.querySelector('.check').innerHTML = '<svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                document.getElementById('theme-current').textContent = name;
+                toast('Mavzu o\'zgartirildi: ' + name);
+                go('screen-main');
+            }
+        </script>
+    </body>
 
-    <script>
-        function go(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        function sendPromptSafe() {
-            if (typeof sendPrompt === 'function') { sendPrompt('Sozlamalar sahifasidan chiqmoqchiman'); }
-        }
-        function toggleThis(el) {
-            el.classList.toggle('on');
-        }
-        function toast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            clearTimeout(window._toastTimer);
-            window._toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
-        }
-        function openLogoutConfirm() { document.getElementById('logout-overlay').classList.add('show'); }
-        function openCacheConfirm() { document.getElementById('cache-overlay').classList.add('show'); }
-        function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
-        function doLogout() {
-            closeOverlay('logout-overlay');
-            toast('Hisobdan chiqildi');
-        }
-        function doClearCache() {
-            closeOverlay('cache-overlay');
-            document.getElementById('cache-size').textContent = '0 MB';
-            toast('Xotira tozalandi');
-        }
-        function saveProfile() {
-            toast('Profil ma\'lumotlari saqlandi');
-            go('screen-main');
-        }
-        function savePhone() {
-            toast('Tasdiqlash kodi yuborildi');
-            go('screen-main');
-        }
-        function sendSupport() {
-            const val = document.getElementById('support-msg').value.trim();
-            if (!val) { toast('Iltimos, xabar yozing'); return; }
-            document.getElementById('support-msg').value = '';
-            toast('Xabaringiz yuborildi, tez orada javob beramiz');
-            go('screen-main');
-        }
-        function selectLang(el, name) {
-            document.querySelectorAll('#lang-list .check').forEach(c => { c.classList.remove('checked'); c.innerHTML = ''; });
-            el.querySelector('.check').classList.add('checked');
-            el.querySelector('.check').innerHTML = '<svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-            document.getElementById('lang-current').textContent = name;
-            toast('Til o\'zgartirildi: ' + name);
-            go('screen-main');
-        }
-        function selectTheme(el, name) {
-            document.querySelectorAll('#theme-list .check').forEach(c => { c.classList.remove('checked'); c.innerHTML = ''; });
-            el.querySelector('.check').classList.add('checked');
-            el.querySelector('.check').innerHTML = '<svg viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.2 7.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-            document.getElementById('theme-current').textContent = name;
-            toast('Mavzu o\'zgartirildi: ' + name);
-            go('screen-main');
-        }
-    </script>
-</body>
-
-</html>
+    </html>
