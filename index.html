@@ -777,6 +777,36 @@
     margin-bottom:16px;
     text-align:center;
   }
+  .share-link-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 12px;
+    margin-bottom:16px;
+  }
+  .share-link-box input{
+    flex:1;
+    min-width:0;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--text-dim);
+    font-size:11.5px;
+  }
+  .share-link-box button{
+    flex-shrink:0;
+    border:none;
+    background:linear-gradient(180deg, var(--gold-1), var(--gold-2));
+    color:#2b1c02;
+    font-weight:700;
+    font-size:11px;
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+  }
   .share-options{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
@@ -1187,11 +1217,15 @@
 <div class="share-menu-overlay" id="shareMenuOverlay">
   <div class="share-menu">
     <div class="share-menu-title">Ulashish</div>
+    <div class="share-link-box">
+      <input type="text" id="shareLinkInput" readonly>
+      <button id="shareLinkOpenBtn">Ochish</button>
+    </div>
     <div class="share-options">
       <div class="share-opt" data-share="telegram" role="button" tabindex="0"><div class="share-opt-icon">✈️</div>Telegram</div>
       <div class="share-opt" data-share="whatsapp" role="button" tabindex="0"><div class="share-opt-icon">🟢</div>WhatsApp</div>
-      <div class="share-opt" data-share="instagram" role="button" tabindex="0"><div class="share-opt-icon">📷</div>Instagram</div>
-      <div class="share-opt" data-share="copy" role="button" tabindex="0"><div class="share-opt-icon">🔗</div>Havolani nusxalash</div>
+      <div class="share-opt" data-share="open" role="button" tabindex="0"><div class="share-opt-icon">🔗</div>Videoni ochish</div>
+      <div class="share-opt" data-share="copy" role="button" tabindex="0"><div class="share-opt-icon">📋</div>Nusxalash</div>
     </div>
     <div class="share-menu-close" id="shareMenuClose">Bekor qilish</div>
   </div>
@@ -1320,12 +1354,11 @@
 
   /* ================= DASHBOARD LOGIC ================= */
 
+  // Sizning shorts linklaringizdagi video ID'lar
   const reelVideoIds = [
-    "0Pj5KvK3BGE","BUG4SoXFhpk","sKwx-h6rAiA","YsgiMsuApLk","_xkvev33Ffo",
-    "YAUMkE6-tkY","2KuC8X4WfH0","kY29aBerY3w","dEtW-bQjRlI","5kRKjDL8ivE",
-    "uPIXwjSdtDI","Ix5cKThAa3E","h7ac2ujO6uA","eEJ8_1TqHvU","NisYWhLPXY8",
-    "8VW7Mhb48gc","kRAsPkosZ94","EkmxLfuKC-Y","DNG-sp9mJKU","sQ9ltirbWhE",
-    "2ANEDyDR-68"
+    "e615ktqob64","jKl0-lrTLso","zbDGyPpEVuc","hn4alg5Ym88","JvAUuAZtXqY",
+    "93flUi9ln6k","EZ2Rjx9FinI","IqKBGh1R6nU","vMYaGEQi6E4","4oPBBg9vzRs",
+    "I28bpQxsTTQ","tf8R70kcl5g","mu2Z2kmoXIg","vlav_s5_8CA"
   ];
 
   const reelUsers = [
@@ -1609,11 +1642,11 @@
     showToast(nowSaved ? 'Saqlandi ⇧' : "Saqlanganlardan o'chirildi");
   });
 
-  /* ---- Share ---- */
+  /* ---- Share (to'liq ishlaydi: haqiqiy YouTube Shorts havolasi, bosilganda yangi tabda ochiladi) ---- */
   function currentShareData(){
     const id = reelVideoIds[reelIndex];
     return {
-      url: `https://www.youtube.com/watch?v=${id}`,
+      url: `https://youtube.com/shorts/${id}`,
       title: `ZAR — ${reelUsers[reelIndex]}`,
       text: reelCaptions[reelIndex]
     };
@@ -1631,6 +1664,7 @@
         if(err && err.name === 'AbortError') return;
       }
     }
+    document.getElementById('shareLinkInput').value = data.url;
     document.getElementById('shareMenuOverlay').classList.add('open');
   }
   function closeShareMenu(){
@@ -1647,8 +1681,14 @@
     }
   }
 
+  function openShareLinkDirect(){
+    const data = currentShareData();
+    window.open(data.url, '_blank', 'noopener');
+  }
+
   document.getElementById('shareBtn').addEventListener('click', openShare);
   document.getElementById('shareMenuClose').addEventListener('click', closeShareMenu);
+  document.getElementById('shareLinkOpenBtn').addEventListener('click', openShareLinkDirect);
   document.getElementById('shareMenuOverlay').addEventListener('click', (e) => {
     if(e.target.id === 'shareMenuOverlay') closeShareMenu();
   });
@@ -1661,12 +1701,11 @@
       const encodedText = encodeURIComponent(`${data.title} — ${data.text}`);
 
       if(kind === 'telegram'){
-        window.open(`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`, '_blank');
+        window.open(`https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`, '_blank', 'noopener');
       } else if(kind === 'whatsapp'){
-        window.open(`https://wa.me/?text=${encodedText}%20${encodedUrl}`, '_blank');
-      } else if(kind === 'instagram'){
-        copyShareLink();
-        showToast("Havola nusxalandi — Instagram'da ulashing");
+        window.open(`https://wa.me/?text=${encodedText}%20${encodedUrl}`, '_blank', 'noopener');
+      } else if(kind === 'open'){
+        openShareLinkDirect();
       } else if(kind === 'copy'){
         copyShareLink();
       }
@@ -1773,6 +1812,25 @@
     if(e.key === 'Enter') postComment();
   });
 
+  const SESSION_KEY = 'zar_session';
+
+  function saveSession(phone){
+    try{
+      localStorage.setItem(SESSION_KEY, JSON.stringify({ phone: phone || '', loggedInAt: Date.now() }));
+    }catch(err){
+      console.warn('Sessiyani saqlab bo\'lmadi:', err);
+    }
+  }
+  function getSession(){
+    try{
+      const raw = localStorage.getItem(SESSION_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(err){ return null; }
+  }
+  function clearSession(){
+    try{ localStorage.removeItem(SESSION_KEY); }catch(err){}
+  }
+
   function openDashboard(){
     document.querySelector('.app-shell').style.display = 'none';
     document.querySelector('.restart').style.display = 'none';
@@ -1788,6 +1846,13 @@
     if(mainPlayer){ try{ mainPlayer.destroy(); }catch(e){} mainPlayer = null; }
     document.querySelector('.app-shell').style.display = '';
     document.querySelector('.restart').style.display = '';
+  }
+
+  /* Kirilgandan so'ng sessiya localStorage'da saqlanadi; keyingi safar sahifa
+     ochilganda splash/onboarding/login/OTP bosqichlari o'tkazib yuboriladi. */
+  const existingSession = getSession();
+  if(existingSession){
+    openDashboard();
   }
 
   /* ---- Fullscreen modal (works via expand button; swipe/drag/wheel/keys) ---- */
