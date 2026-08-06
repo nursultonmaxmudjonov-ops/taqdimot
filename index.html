@@ -6,6 +6,7 @@
 <title>ZAR — Kirish</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="./assets/zar-app.css">
+<script src="./assets/zar-tailwind-config.js"></script>
 <style>
   :root{
     --gold-1:#F7CB63;
@@ -483,7 +484,7 @@
     overflow:hidden;
   }
   @media (max-width:1023px){
-    .dash-main{ margin-left:0; padding-top:70px; }
+    .dash-main{ margin-left:0; padding-top:70px; padding-bottom:calc(70px + env(safe-area-inset-bottom)); }
   }
   .reel-wrap{
     display:flex;
@@ -982,14 +983,15 @@
 
   @media (max-width:1023px){
     .dash-right{ border-left:none; }
-    .reel-frame{ width:min(400px, 92vw); max-height:80vh; }
+    .reel-frame{ width:min(400px, 92vw); max-height:70vh; }
+    .reel-hint{ display:none; }
   }
 
   @media (max-width:480px){
     .reel-row{ gap:8px; }
     .reel-actions{ right:8px; bottom:84px; gap:12px; }
     .ract-circle{ width:38px; height:38px; font-size:15px; }
-    .reel-frame{ width:min(360px, 94vw); max-height:76vh; }
+    .reel-frame{ width:min(360px, 94vw); max-height:66vh; }
     .reel-bottom{ right:66px; }
   }
 
@@ -1098,99 +1100,13 @@
 <!-- ================= DASHBOARD (video feed) ================= -->
 <div class="dash" id="dashboard">
   <!-- SIDEBAR (desktop) -->
-  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-[#0c0b14] fixed inset-y-0 left-0 z-40">
-    <div class="px-8 mb-10">
-      <h1 class="text-[#f0b34a] font-bold text-3xl tracking-wide">ZAR</h1>
-      <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-    </div>
-
-    <nav class="flex-1 px-4 space-y-1">
-      <a href="./index.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./pages/qidiruv.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./pages/hamyon.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./pages/bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./pages/profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./pages/sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-
-    <div class="px-6">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-sidebar fixed inset-y-0 left-0 z-40" data-zar-sidebar></aside>
 
   <!-- MOBILE TOP BAR -->
-  <header class="lg:hidden fixed top-0 inset-x-0 z-40 flex items-center justify-between px-4 h-14 bg-[#0c0b14]/95 backdrop-blur border-b border-white/5">
-    <button type="button" data-zar-drawer-open class="p-2 -ml-2 text-white/60 hover:text-white transition" aria-label="Menyu">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-    <span class="font-semibold text-[15px]">ZAR</span>
-    <span class="text-[#f0b34a] text-[13px] font-bold"><span data-zar-balance>12 480</span></span>
-  </header>
+  <header class="zar-topbar lg:hidden" data-zar-topbar></header>
 
-  <!-- MOBILE DRAWER -->
-  <div data-zar-drawer-overlay class="zar-drawer-overlay lg:hidden fixed inset-0 bg-black/60 z-50"></div>
-  <aside data-zar-drawer class="zar-drawer lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[82vw] bg-[#0c0b14] border-r border-white/5 flex flex-col py-8">
-    <div class="px-6 mb-8 flex items-center justify-between">
-      <div>
-        <h1 class="text-[#f0b34a] font-bold text-2xl tracking-wide">ZAR</h1>
-        <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-      </div>
-      <button type="button" data-zar-drawer-close class="text-white/50 hover:text-white p-2" aria-label="Yopish">✕</button>
-    </div>
-    <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
-      <a href="./index.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./pages/qidiruv.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./pages/hamyon.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./pages/bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./pages/profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./pages/sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-    <div class="px-6 mt-4">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <!-- MOBILE BOTTOM TAB BAR -->
+  <nav class="zar-tabbar lg:hidden" data-zar-tabbar></nav>
 
   <main class="dash-main">
     <div class="reel-wrap">
@@ -1204,15 +1120,15 @@
           </div>
 
           <div class="reel-topright">
-            <div class="reel-topbtn" id="muteBtn" title="Ovozni yoqish/o'chirish">🔊</div>
-            <div class="reel-topbtn" id="expandBtn" title="Kattalashtirish">⛶</div>
+            <div class="reel-topbtn" id="muteBtn" role="button" tabindex="0" title="Ovozni yoqish/o'chirish" aria-label="Ovozni yoqish/o'chirish">🔊</div>
+            <div class="reel-topbtn" id="expandBtn" role="button" tabindex="0" title="Kattalashtirish" aria-label="Kattalashtirish">⛶</div>
           </div>
 
           <div class="reel-actions">
-            <div class="ract" id="likeBtn"><div class="ract-circle">♥</div><span id="likeCount">42.9k</span></div>
-            <div class="ract" id="commentToggleBtn"><div class="ract-circle">💬</div><span id="commentCount">1.2k</span></div>
-            <div class="ract" id="shareBtn"><div class="ract-circle">↗</div><span>Ulashish</span></div>
-            <div class="ract" id="saveBtn"><div class="ract-circle">⇧</div><span id="saveLabel">Saqlash</span></div>
+            <div class="ract" id="likeBtn" role="button" tabindex="0" aria-label="Yoqtirish"><div class="ract-circle">♥</div><span id="likeCount">42.9k</span></div>
+            <div class="ract" id="commentToggleBtn" role="button" tabindex="0" aria-label="Izohlar"><div class="ract-circle">💬</div><span id="commentCount">1.2k</span></div>
+            <div class="ract" id="shareBtn" role="button" tabindex="0"><div class="ract-circle">↗</div><span>Ulashish</span></div>
+            <div class="ract" id="saveBtn" role="button" tabindex="0"><div class="ract-circle">⇧</div><span id="saveLabel">Saqlash</span></div>
           </div>
 
           <div class="reel-toast" id="reelToast"></div>
@@ -1272,10 +1188,10 @@
   <div class="share-menu">
     <div class="share-menu-title">Ulashish</div>
     <div class="share-options">
-      <div class="share-opt" data-share="telegram"><div class="share-opt-icon">✈️</div>Telegram</div>
-      <div class="share-opt" data-share="whatsapp"><div class="share-opt-icon">🟢</div>WhatsApp</div>
-      <div class="share-opt" data-share="instagram"><div class="share-opt-icon">📷</div>Instagram</div>
-      <div class="share-opt" data-share="copy"><div class="share-opt-icon">🔗</div>Havolani nusxalash</div>
+      <div class="share-opt" data-share="telegram" role="button" tabindex="0"><div class="share-opt-icon">✈️</div>Telegram</div>
+      <div class="share-opt" data-share="whatsapp" role="button" tabindex="0"><div class="share-opt-icon">🟢</div>WhatsApp</div>
+      <div class="share-opt" data-share="instagram" role="button" tabindex="0"><div class="share-opt-icon">📷</div>Instagram</div>
+      <div class="share-opt" data-share="copy" role="button" tabindex="0"><div class="share-opt-icon">🔗</div>Havolani nusxalash</div>
     </div>
     <div class="share-menu-close" id="shareMenuClose">Bekor qilish</div>
   </div>
@@ -1285,7 +1201,7 @@
 <div class="reel-modal-overlay" id="reelModalOverlay">
   <div class="reel-modal-box" id="reelModalBox">
     <div class="reel-modal-progress"><div class="reel-modal-progress-fill" id="modalProgress"></div></div>
-    <div class="reel-modal-close" id="modalCloseBtn">✕</div>
+    <div class="reel-modal-close" id="modalCloseBtn" role="button" tabindex="0" aria-label="Yopish">✕</div>
     <div class="reel-video" id="modalVideo"></div>
     <div class="reel-modal-info">
       <div class="reel-avatar"></div>
@@ -1298,6 +1214,7 @@
 </div>
 
 <script src="./assets/zar-app.js"></script>
+<script>ZarNav.mount({ active: 'asosiy', title: 'ZAR' });</script>
 <script async src="https://www.youtube.com/iframe_api"></script>
 <script>
   function go(id){
@@ -1446,8 +1363,6 @@
   let reelIndex = 0;
   let isMuted = true; // brauzer siyosati: ovozli avtoplay bloklanmasligi uchun boshida ovozsiz boshlanadi
   let liked = false;
-  const likedStates = reelVideoIds.map(() => false);
-  const savedStates = reelVideoIds.map(() => false);
   let toastTimer = null;
 
   const commentNames = ["Mansur S.","Aziza_71","Olor Travel","Dilnoza K.","Sherzod M.","Kamola R.","Bekzod_77","Nodira T.","Jasur A.","Malika S.","Rustam B.","Feruza N.","Ulug'bek D.","Sanjar_pro","Gulnora M."];
@@ -1506,7 +1421,7 @@
           <div class="c-text">${c.text}</div>
           <div class="c-reply">Javob berish</div>
         </div>
-        <div class="c-like ${c.liked ? 'liked' : ''}" onclick="toggleCommentLike(${index}, ${ci})">
+        <div class="c-like ${c.liked ? 'liked' : ''}" role="button" tabindex="0" aria-label="Izohni yoqtirish" onclick="toggleCommentLike(${index}, ${ci})">
           <svg viewBox="0 0 24 24"><path d="M12 21s-6.7-4.35-9.3-8.1C.8 9.9 2 6.3 5.4 5.3c2-.6 3.9.2 5.1 1.9.3.4.5.7.5.7s.2-.3.5-.7c1.2-1.7 3.1-2.5 5.1-1.9 3.4 1 4.6 4.6 2.7 7.6C18.7 16.65 12 21 12 21z"/></svg>
           <span>${c.likes}</span>
         </div>
@@ -1580,62 +1495,71 @@
     }, 350);
   }
 
-  function attachMainPlayer(index){
+  /* One player-attach routine shared by the inline reel and the fullscreen
+     modal — they only differ in which iframe/watch-state/progress-bar they
+     target, and whether the reward badge (main view only) needs seeding. */
+  function attachPlayer(iframeId, watchState, index, progressFillId, onReady){
     whenYtReady(() => {
-      if(mainWatch.timer){ clearInterval(mainWatch.timer); mainWatch.timer = null; }
-      if(mainPlayer){ try{ mainPlayer.destroy(); }catch(e){} mainPlayer = null; }
-      mainPlayer = new YT.Player('mainReelIframe', {
+      const isMain = watchState === mainWatch;
+      if(watchState.timer){ clearInterval(watchState.timer); watchState.timer = null; }
+      const existing = isMain ? mainPlayer : modalPlayer;
+      if(existing){ try{ existing.destroy(); }catch(e){} }
+      const player = new YT.Player(iframeId, {
         events: {
           onReady: function(e){
-            updateRewardBadge(e.target.getDuration());
-            watchForCompletion(() => mainPlayer, mainWatch, index, 'reelProgress');
+            if(onReady) onReady(e);
+            watchForCompletion(() => (isMain ? mainPlayer : modalPlayer), watchState, index, progressFillId);
           }
         }
       });
+      if(isMain) mainPlayer = player; else modalPlayer = player;
     });
   }
 
+  function attachMainPlayer(index){
+    attachPlayer('mainReelIframe', mainWatch, index, 'reelProgress', (e) => updateRewardBadge(e.target.getDuration()));
+  }
   function attachModalPlayer(index){
-    whenYtReady(() => {
-      if(modalWatch.timer){ clearInterval(modalWatch.timer); modalWatch.timer = null; }
-      if(modalPlayer){ try{ modalPlayer.destroy(); }catch(e){} modalPlayer = null; }
-      modalPlayer = new YT.Player('modalReelIframe', {
-        events: {
-          onReady: function(){
-            watchForCompletion(() => modalPlayer, modalWatch, index, 'modalProgress');
-          }
-        }
-      });
-    });
+    attachPlayer('modalReelIframe', modalWatch, index, 'modalProgress');
   }
 
-  function loadReel(index){
-    const id = reelVideoIds[index];
-    const muteParam = isMuted ? 1 : 0;
-    const reelVideoEl = document.getElementById('reelVideo');
-    reelVideoEl.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
-    reelVideoEl.innerHTML = `
+  /* Iframe + thumbnail-while-loading markup shared by the inline reel and the fullscreen modal. */
+  function reelIframeHtml(iframeId, id, muteParam){
+    return `
       <iframe
-        id="mainReelIframe"
+        id="${iframeId}"
         src="https://www.youtube.com/embed/${id}?autoplay=1&mute=${muteParam}&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0&enablejsapi=1"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
     `;
-    document.getElementById('reelUser').textContent = reelUsers[index];
-    document.getElementById('reelCaption').textContent = reelCaptions[index];
+  }
+
+  function renderReelMedia({ containerId, iframeId, userElId, captionElId, progressElId, index }){
+    const id = reelVideoIds[index];
+    const el = document.getElementById(containerId);
+    el.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
+    el.innerHTML = reelIframeHtml(iframeId, id, isMuted ? 1 : 0);
+    document.getElementById(userElId).textContent = reelUsers[index];
+    document.getElementById(captionElId).textContent = reelCaptions[index];
+    document.getElementById(progressElId).style.width = '0%';
+  }
+
+  function loadReel(index){
+    renderReelMedia({ containerId: 'reelVideo', iframeId: 'mainReelIframe', userElId: 'reelUser', captionElId: 'reelCaption', progressElId: 'reelProgress', index });
     document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
     document.getElementById('muteBtn').classList.toggle('pulse', isMuted);
-    document.getElementById('reelProgress').style.width = '0%';
     attachMainPlayer(index);
 
-    liked = likedStates[index];
+    const id = reelVideoIds[index];
+    liked = ZarReels.isLiked(id);
     const likeBase = 42.9 + index*0.3;
     document.getElementById('likeBtn').classList.toggle('liked', liked);
     document.getElementById('likeCount').textContent = (liked ? (likeBase + 0.1) : likeBase).toFixed(1) + 'k';
 
-    document.getElementById('saveBtn').classList.toggle('saved', savedStates[index]);
-    document.getElementById('saveLabel').textContent = savedStates[index] ? 'Saqlandi' : 'Saqlash';
+    const saved = ZarReels.isSaved(id);
+    document.getElementById('saveBtn').classList.toggle('saved', saved);
+    document.getElementById('saveLabel').textContent = saved ? 'Saqlandi' : 'Saqlash';
 
     document.getElementById('commentCount').textContent = (1.0 + index*0.05).toFixed(1) + 'k';
 
@@ -1667,8 +1591,9 @@
   });
 
   document.getElementById('likeBtn').addEventListener('click', () => {
+    const id = reelVideoIds[reelIndex];
     liked = !liked;
-    likedStates[reelIndex] = liked;
+    ZarReels.setLiked(id, liked);
     document.getElementById('likeBtn').classList.toggle('liked', liked);
     const base = 42.9 + reelIndex*0.3;
     document.getElementById('likeCount').textContent = (liked ? (base + 0.1) : base).toFixed(1) + 'k';
@@ -1676,8 +1601,9 @@
   });
 
   document.getElementById('saveBtn').addEventListener('click', () => {
-    const nowSaved = !savedStates[reelIndex];
-    savedStates[reelIndex] = nowSaved;
+    const id = reelVideoIds[reelIndex];
+    const nowSaved = !ZarReels.isSaved(id);
+    ZarReels.setSaved(id, nowSaved);
     document.getElementById('saveBtn').classList.toggle('saved', nowSaved);
     document.getElementById('saveLabel').textContent = nowSaved ? 'Saqlandi' : 'Saqlash';
     showToast(nowSaved ? 'Saqlandi ⇧' : "Saqlanganlardan o'chirildi");
@@ -1866,21 +1792,7 @@
 
   /* ---- Fullscreen modal (works via expand button; swipe/drag/wheel/keys) ---- */
   function loadModalReel(index){
-    const id = reelVideoIds[index];
-    const muteParam = isMuted ? 1 : 0;
-    const modalVideoEl = document.getElementById('modalVideo');
-    modalVideoEl.style.background = `#000 url('https://img.youtube.com/vi/${id}/hqdefault.jpg') center/cover no-repeat`;
-    modalVideoEl.innerHTML = `
-      <iframe
-        id="modalReelIframe"
-        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=${muteParam}&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0&enablejsapi=1"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    `;
-    document.getElementById('modalUser').textContent = reelUsers[index];
-    document.getElementById('modalCaption').textContent = reelCaptions[index];
-    document.getElementById('modalProgress').style.width = '0%';
+    renderReelMedia({ containerId: 'modalVideo', iframeId: 'modalReelIframe', userElId: 'modalUser', captionElId: 'modalCaption', progressElId: 'modalProgress', index });
     attachModalPlayer(index);
   }
 

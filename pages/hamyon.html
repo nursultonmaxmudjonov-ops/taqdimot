@@ -6,23 +6,11 @@
 <title>ZAR — Hamyon Dashboard</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="../assets/zar-app.css">
+<script src="../assets/zar-tailwind-config.js"></script>
 <style>
-  :root {
-    --bg: #090c15;
-    --sidebar-bg: #0d111d;
-    --card-bg: #131926;
-    --card-bg-2: #182030;
-    --border: #1f283d;
-    --gold: #e5b23e;
-    --gold-light: #f3c968;
-    --gold-gradient: linear-gradient(135deg, #e5b23e, #b8831a);
-    --text: #f0f3f8;
-    --muted: #7e899d;
-    --green: #22c55e;
-    --red: #ef4444;
-  }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { overflow-x: hidden; max-width: 100%; }
 
   body {
     background: var(--bg);
@@ -225,8 +213,13 @@
   .trans-title { font-weight: 700; font-size: 16px; }
   .trans-link { color: var(--gold); font-size: 12px; text-decoration: none; }
 
+  .trans-table-wrap {
+    overflow-x: auto;
+  }
+
   .trans-table {
     width: 100%;
+    min-width: 460px;
     border-collapse: collapse;
     text-align: left;
   }
@@ -449,10 +442,18 @@
   }
 
   @media (max-width: 980px) {
-    .dashboard-grid { grid-template-columns: 1fr; padding: 0 20px 28px; }
+    .dashboard-grid { grid-template-columns: 1fr; padding: 0 20px calc(84px + env(safe-area-inset-bottom)); }
     .stats-row { grid-template-columns: 1fr 1fr; }
     .chart-card { grid-column: span 2; }
     .top-header { padding: 16px 20px; }
+  }
+  @media (max-width: 640px) {
+    .balance-card { flex-direction: column; align-items: stretch; gap: 18px; }
+    .bal-actions { width: 100%; }
+    .bal-btn { width: 100%; }
+    .trans-table th:nth-child(2), .trans-table td:nth-child(2),
+    .trans-table th:nth-child(3), .trans-table td:nth-child(3) { display: none; }
+    .trans-table { min-width: 0; }
   }
   @media (max-width: 560px) {
     .stats-row { grid-template-columns: 1fr; }
@@ -465,99 +466,13 @@
 
 <div class="flex min-h-screen">
   <!-- SIDEBAR (desktop) -->
-  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-[#0c0b14] fixed inset-y-0 z-40">
-    <div class="px-8 mb-10">
-      <h1 class="text-[#f0b34a] font-bold text-3xl tracking-wide">ZAR</h1>
-      <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-    </div>
-
-    <nav class="flex-1 px-4 space-y-1">
-      <a href="../index.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./qidiruv.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./hamyon.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-
-    <div class="px-6">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-sidebar fixed inset-y-0 z-40" data-zar-sidebar></aside>
 
   <!-- MOBILE TOP BAR -->
-  <header class="lg:hidden fixed top-0 inset-x-0 z-40 flex items-center justify-between px-4 h-14 bg-[#0c0b14]/95 backdrop-blur border-b border-white/5">
-    <button type="button" data-zar-drawer-open class="p-2 -ml-2 text-white/60 hover:text-white transition" aria-label="Menyu">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-    <span class="font-semibold text-[15px]">Hamyon</span>
-    <span class="text-[#f0b34a] text-[13px] font-bold"><span data-zar-balance>12 480</span></span>
-  </header>
+  <header class="zar-topbar lg:hidden" data-zar-topbar></header>
 
-  <!-- MOBILE DRAWER -->
-  <div data-zar-drawer-overlay class="zar-drawer-overlay lg:hidden fixed inset-0 bg-black/60 z-50"></div>
-  <aside data-zar-drawer class="zar-drawer lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[82vw] bg-[#0c0b14] border-r border-white/5 flex flex-col py-8">
-    <div class="px-6 mb-8 flex items-center justify-between">
-      <div>
-        <h1 class="text-[#f0b34a] font-bold text-2xl tracking-wide">ZAR</h1>
-        <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-      </div>
-      <button type="button" data-zar-drawer-close class="text-white/50 hover:text-white p-2" aria-label="Yopish">✕</button>
-    </div>
-    <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
-      <a href="../index.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./qidiruv.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./hamyon.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-    <div class="px-6 mt-4">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <!-- MOBILE BOTTOM TAB BAR -->
+  <nav class="zar-tabbar lg:hidden" data-zar-tabbar></nav>
 
   <!-- MAIN WRAPPER -->
   <div class="main-wrapper lg:ml-64 pt-14 lg:pt-0">
@@ -565,10 +480,9 @@
     <header class="top-header">
       <h1 class="page-title">Hamyon Dashboard</h1>
       <div class="header-actions">
-        <button class="icon-btn">?</button>
-        <button class="icon-btn">🌐</button>
-        <button class="connect-wallet-btn">Connect Wallet</button>
-        <div class="user-avatar"></div>
+        <button type="button" class="icon-btn" id="walletHelpBtn" aria-label="Yordam" title="Yordam">?</button>
+        <button type="button" class="connect-wallet-btn" id="connectWalletBtn">Connect Wallet</button>
+        <div class="user-avatar" data-zar-avatar></div>
       </div>
     </header>
 
@@ -581,11 +495,11 @@
           <div>
             <div class="bal-label">MAVJUD BALANS</div>
             <div class="bal-amount"><span data-zar-balance>12 480</span> <span>ball</span></div>
-            <div class="bal-converted">≈ 124 800 so‘m</div>
+            <div class="bal-converted" data-zar-som>≈ 124 800 so‘m</div>
           </div>
           <div class="bal-actions">
-            <button class="bal-btn primary">⇆ Pulga o‘tkazish</button>
-            <button class="bal-btn secondary">🕒 Batafsil ko‘rish</button>
+            <button type="button" class="bal-btn primary" id="balPrimaryBtn">⇆ Pulga o‘tkazish</button>
+            <button type="button" class="bal-btn secondary" id="balSecondaryBtn">🕒 Batafsil ko‘rish</button>
           </div>
         </div>
 
@@ -616,63 +530,22 @@
         <div class="transactions-card">
           <div class="trans-header">
             <div class="trans-title">So‘nggi amallar</div>
-            <a href="#" class="trans-link">Barcha tranzaksiyalar</a>
+            <a href="#" class="trans-link" id="transAllLink">Barcha tranzaksiyalar</a>
           </div>
 
-          <table class="trans-table">
-            <thead>
-              <tr>
-                <th>Tranzaksiya turi</th>
-                <th>Sana va vaqt</th>
-                <th>Status</th>
-                <th style="text-align: right;">Qiymat</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div class="tx-info">
-                    <div class="tx-icon">🎬</div>
-                    <div>
-                      <div class="tx-name">Artel Media mukofoti</div>
-                      <div class="tx-sub">Video ko'rish uchun bonus</div>
-                    </div>
-                  </div>
-                </td>
-                <td style="color:var(--muted);">Bugun, 14:20</td>
-                <td><span class="badge success">BAJARILDI</span></td>
-                <td style="text-align: right;" class="amount-plus">+45 ball</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tx-info">
-                    <div class="tx-icon">💸</div>
-                    <div>
-                      <div class="tx-name">Payme yechib olish</div>
-                      <div class="tx-sub">Shaxsiy kartaga o'tkazma</div>
-                    </div>
-                  </div>
-                </td>
-                <td style="color:var(--muted);">Kecha, 09:15</td>
-                <td><span class="badge danger">CHIQIM</span></td>
-                <td style="text-align: right;" class="amount-minus">-50 000 s.</td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="tx-info">
-                    <div class="tx-icon">👥</div>
-                    <div>
-                      <div class="tx-name">Referal tizimi</div>
-                      <div class="tx-sub">Azizbek'dan kelgan bonus</div>
-                    </div>
-                  </div>
-                </td>
-                <td style="color:var(--muted);">12 Okt, 18:45</td>
-                <td><span class="badge success">BAJARILDI</span></td>
-                <td style="text-align: right;" class="amount-plus">+200 ball</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="trans-table-wrap">
+            <table class="trans-table">
+              <thead>
+                <tr>
+                  <th>Tranzaksiya turi</th>
+                  <th>Sana va vaqt</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Qiymat</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -685,11 +558,11 @@
 
           <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
             <span style="font-size:11px; color:var(--muted);">MENING KARTALARIM</span>
-            <span style="font-size:11px; color:var(--gold); cursor:pointer;">+ Yangi</span>
+            <span style="font-size:11px; color:var(--gold); cursor:pointer;" id="addCardBtn" role="button" tabindex="0">+ Yangi</span>
           </div>
 
-          <div class="cards-list">
-            <div class="card-item active">
+          <div class="cards-list" id="cardsList">
+            <div class="card-item active" data-card="Humo Private **** 6621" role="button" tabindex="0" aria-label="Humo Private, **** 6621">
               <div class="card-left">
                 <div class="card-chip"></div>
                 <div>
@@ -700,7 +573,7 @@
               <div class="check-icon">✓</div>
             </div>
 
-            <div class="card-item">
+            <div class="card-item" data-card="UzCard Classic **** 8600" role="button" tabindex="0" aria-label="UzCard Classic, **** 8600">
               <div class="card-left">
                 <div class="card-chip uzcard"></div>
                 <div>
@@ -708,25 +581,25 @@
                   <div class="card-num">**** 8600</div>
                 </div>
               </div>
-              <span style="color:var(--muted);">⋮</span>
+              <span class="card-menu" style="color:var(--muted);">⋮</span>
             </div>
           </div>
 
           <div class="input-group">
             <label class="input-label">O‘TKAZMA SUMMASI</label>
             <div class="amount-input-wrap">
-              <input type="text" value="50 000">
+              <input type="text" id="transferAmountInput" value="50 000" inputmode="numeric">
               <span>so‘m</span>
             </div>
           </div>
 
-          <div class="quick-amounts">
-            <button class="q-btn">20k</button>
-            <button class="q-btn active">50k</button>
-            <button class="q-btn">100k</button>
+          <div class="quick-amounts" id="quickAmounts">
+            <button type="button" class="q-btn" data-amount="20000">20k</button>
+            <button type="button" class="q-btn active" data-amount="50000">50k</button>
+            <button type="button" class="q-btn" data-amount="100000">100k</button>
           </div>
 
-          <button class="submit-btn">O‘tkazmani tasdiqlash</button>
+          <button type="button" class="submit-btn" id="transferSubmitBtn">O‘tkazmani tasdiqlash</button>
         </div>
 
         <!-- Ad / Promo Banner -->
@@ -740,5 +613,145 @@
 </div>
 
 <script src="../assets/zar-app.js"></script>
+<script>ZarNav.mount({ active: 'hamyon', title: 'Hamyon' });</script>
+<script>
+  function parseAmount(str){
+    return parseInt(String(str).replace(/[^\d]/g, ''), 10) || 0;
+  }
+  function formatSom(n){
+    return ZarWallet.formatBall(n);
+  }
+
+  /* ---- Transactions — rendered straight from ZarWallet.getHistory(), so this
+     table always matches what actually happened instead of three fixed rows. ---- */
+  const TX_ICONS = { video: '🎬', withdraw: '💸', referral: '👥', deposit: '➕' };
+  let txVisibleCount = 5;
+
+  function formatTxDate(ts){
+    const d = new Date(ts);
+    const now = new Date();
+    const time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    if(d.toDateString() === now.toDateString()) return `Bugun, ${time}`;
+    const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+    if(d.toDateString() === yesterday.toDateString()) return `Kecha, ${time}`;
+    return d.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'short' }) + ', ' + time;
+  }
+
+  function txRowHtml(entry){
+    const isPositive = entry.amount >= 0;
+    return `
+      <tr>
+        <td>
+          <div class="tx-info">
+            <div class="tx-icon">${TX_ICONS[entry.type] || '🔔'}</div>
+            <div>
+              <div class="tx-name">${entry.label}</div>
+              <div class="tx-sub">${isPositive ? "Hisobingizga qo'shildi" : "Hisobingizdan yechildi"}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--muted);">${formatTxDate(entry.at)}</td>
+        <td><span class="badge success">BAJARILDI</span></td>
+        <td style="text-align: right;" class="${isPositive ? 'amount-plus' : 'amount-minus'}">${isPositive ? '+' : '-'}${ZarWallet.formatBall(Math.abs(entry.amount))} ball</td>
+      </tr>`;
+  }
+
+  function renderTransactions(){
+    const tbody = document.getElementById('txTableBody');
+    const link = document.getElementById('transAllLink');
+    const history = ZarWallet.getHistory();
+    if(!history.length){
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--muted); padding:28px 0;">Hali tranzaksiyalar yo\'q — birinchi videongizni tomosha qiling</td></tr>';
+      link.style.display = 'none';
+      return;
+    }
+    tbody.innerHTML = history.slice(0, txVisibleCount).map(txRowHtml).join('');
+    link.style.display = history.length > txVisibleCount ? '' : 'none';
+    link.textContent = 'Yana ko\'rsatish';
+  }
+
+  document.getElementById('transAllLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    txVisibleCount += 10;
+    renderTransactions();
+  });
+
+  document.addEventListener('zar:balance-changed', renderTransactions);
+  renderTransactions();
+
+  /* ---- Header actions ---- */
+  document.getElementById('walletHelpBtn').addEventListener('click', () => {
+    ZarUI.toast("Video ko'rib ball yig'ing, so'ngra ballarni kartangizga o'tkazing");
+  });
+  document.getElementById('connectWalletBtn').addEventListener('click', () => {
+    ZarUI.toast("Tashqi hamyon ulash tez kunda qo'shiladi");
+  });
+
+  const amountInput = document.getElementById('transferAmountInput');
+
+  document.getElementById('addCardBtn').addEventListener('click', () => {
+    ZarUI.toast("Yangi karta qo'shish tez kunda qo'shiladi");
+  });
+
+  // Karta tanlash
+  document.getElementById('cardsList').addEventListener('click', (e) => {
+    const item = e.target.closest('.card-item');
+    if(!item) return;
+    document.querySelectorAll('.card-item').forEach(c => {
+      c.classList.remove('active');
+      const menu = c.querySelector('.check-icon, .card-menu');
+      if(menu) menu.outerHTML = '<span class="card-menu" style="color:var(--muted);">⋮</span>';
+    });
+    item.classList.add('active');
+    const menu = item.querySelector('.card-menu');
+    if(menu) menu.outerHTML = '<div class="check-icon">✓</div>';
+  });
+
+  // Tezkor summalar
+  document.getElementById('quickAmounts').addEventListener('click', (e) => {
+    const btn = e.target.closest('.q-btn');
+    if(!btn) return;
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    amountInput.value = formatSom(parseInt(btn.dataset.amount, 10));
+  });
+
+  amountInput.addEventListener('input', () => {
+    document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+  });
+  amountInput.addEventListener('blur', () => {
+    const val = parseAmount(amountInput.value);
+    amountInput.value = val ? formatSom(val) : '';
+  });
+
+  // O'tkazmani tasdiqlash — ball hisobidan yechib, kartaga o'tkazish (simulyatsiya).
+  // The transaction table re-renders itself via the zar:balance-changed listener above.
+  document.getElementById('transferSubmitBtn').addEventListener('click', () => {
+    const somAmount = parseAmount(amountInput.value);
+    if(somAmount <= 0){
+      ZarUI.toast("Summani to'g'ri kiriting");
+      return;
+    }
+    const ballNeeded = Math.ceil(somAmount / ZarWallet.somPerBall);
+    const activeCard = document.querySelector('.card-item.active .card-name');
+    const cardName = activeCard ? activeCard.textContent : 'kartangiz';
+
+    const ok = ZarWallet.spendPoints(ballNeeded, { type: 'withdraw', label: `${cardName}ga o'tkazma` });
+    if(!ok){
+      ZarUI.toast(`Balansingiz yetarli emas — ${ZarWallet.formatBall(ballNeeded)} ball kerak`);
+      return;
+    }
+
+    ZarUI.toast(`✅ ${formatSom(somAmount)} so'm ${cardName}ga o'tkazildi`);
+  });
+
+  document.getElementById('balPrimaryBtn').addEventListener('click', () => {
+    document.querySelector('.transfer-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    amountInput.focus();
+  });
+  document.getElementById('balSecondaryBtn').addEventListener('click', () => {
+    document.querySelector('.transactions-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
 </body>
 </html>

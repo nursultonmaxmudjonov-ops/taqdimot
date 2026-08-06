@@ -5,20 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZAR — Qidiruv</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          bg: '#0a0d12', sidebar: '#0d1119', panel: '#12161f', card: '#141a24', 
-          border: '#232936', gold: '#e8b64a', golddim: '#a9812f', txt: '#eef0f3', 
-          txtdim: '#8b93a1', txtfaint: '#5b6472'
-        }
-      }
-    }
-  }
-</script>
 <link rel="stylesheet" href="../assets/zar-app.css">
+<script src="../assets/zar-tailwind-config.js"></script>
 <style>
   ::placeholder{ color:#5b6472; }
   .card-thumb{ aspect-ratio: 9/16; }
@@ -29,102 +17,16 @@
 
 <div class="flex min-h-screen">
   <!-- SIDEBAR (desktop) -->
-  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-[#0c0b14] fixed inset-y-0 z-40">
-    <div class="px-8 mb-10">
-      <h1 class="text-[#f0b34a] font-bold text-3xl tracking-wide">ZAR</h1>
-      <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-    </div>
-
-    <nav class="flex-1 px-4 space-y-1">
-      <a href="../index.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./qidiruv.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./hamyon.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-
-    <div class="px-6">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <aside class="hidden lg:flex w-64 flex-col justify-between py-8 border-r border-white/5 bg-sidebar fixed inset-y-0 z-40" data-zar-sidebar></aside>
 
   <!-- MOBILE TOP BAR -->
-  <header class="lg:hidden fixed top-0 inset-x-0 z-40 flex items-center justify-between px-4 h-14 bg-[#0c0b14]/95 backdrop-blur border-b border-white/5">
-    <button type="button" data-zar-drawer-open class="p-2 -ml-2 text-white/60 hover:text-white transition" aria-label="Menyu">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-    <span class="font-semibold text-[15px]">Qidiruv</span>
-    <span class="text-[#f0b34a] text-[13px] font-bold"><span data-zar-balance>12 480</span></span>
-  </header>
+  <header class="zar-topbar lg:hidden" data-zar-topbar></header>
 
-  <!-- MOBILE DRAWER -->
-  <div data-zar-drawer-overlay class="zar-drawer-overlay lg:hidden fixed inset-0 bg-black/60 z-50"></div>
-  <aside data-zar-drawer class="zar-drawer lg:hidden fixed inset-y-0 left-0 z-50 w-72 max-w-[82vw] bg-[#0c0b14] border-r border-white/5 flex flex-col py-8">
-    <div class="px-6 mb-8 flex items-center justify-between">
-      <div>
-        <h1 class="text-[#f0b34a] font-bold text-2xl tracking-wide">ZAR</h1>
-        <p class="text-white/30 text-[10px] tracking-[0.2em] uppercase mt-1">Private member</p>
-      </div>
-      <button type="button" data-zar-drawer-close class="text-white/50 hover:text-white p-2" aria-label="Yopish">✕</button>
-    </div>
-    <nav class="flex-1 px-4 space-y-1 overflow-y-auto">
-      <a href="../index.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Asosiy
-      </a>
-      <a href="./qidiruv.html" class="zar-nav-link active">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        Qidiruv
-      </a>
-      <a href="./hamyon.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h11a2 2 0 012 2v1h1a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 13h2"/></svg>
-        Hamyon
-      </a>
-      <a href="./bildirishnomalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        Bildirishnoma
-      </a>
-      <a href="./profil.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        Profil
-      </a>
-      <a href="./sozlamalar.html" class="zar-nav-link">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        Sozlamalar
-      </a>
-    </nav>
-    <div class="px-6 mt-4">
-      <div class="zar-balance-card">
-        <p class="label">Hisobingiz</p>
-        <p class="value"><span data-zar-balance>12 480</span> <span class="unit">ball</span></p>
-      </div>
-    </div>
-  </aside>
+  <!-- MOBILE BOTTOM TAB BAR -->
+  <nav class="zar-tabbar lg:hidden" data-zar-tabbar></nav>
 
 <!-- MAIN -->
-<main class="lg:ml-64 flex-1 px-5 md:px-9 py-7 pt-20 lg:pt-7 pb-16 min-w-0">
+<main class="lg:ml-64 flex-1 px-5 md:px-9 py-7 pt-20 lg:pt-7 pb-24 lg:pb-16 min-w-0">
   <div class="mt-10 lg:mt-0">
     <h1 class="text-xl font-bold">Qidiruv</h1>
     <p class="text-txtdim text-sm mt-1">Videolar, foydalanuvchilar va hashtaglar bo'yicha qidiring</p>
@@ -134,7 +36,7 @@
     <svg class="w-[18px] h-[18px] text-txtfaint flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="searchInput" type="text" placeholder="Foydalanuvchi, hashtag yoki so'z kiriting..." autocomplete="off" class="flex-1 bg-transparent border-none outline-none text-txt text-sm placeholder:text-txtfaint">
     <button id="clearBtn" class="hidden text-txtfaint text-xs hover:text-txt">Tozalash</button>
-    <button id="micBtn" type="button" class="flex items-center justify-center w-8 h-8 rounded-lg text-txtdim hover:text-gold hover:bg-[#1b2230] transition flex-shrink-0"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 19v3"/></svg></button>
+    <button id="micBtn" type="button" aria-label="Ovozli qidiruv" class="flex items-center justify-center w-8 h-8 rounded-lg text-txtdim hover:text-gold hover:bg-panel-2 transition flex-shrink-0"><svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 19v3"/></svg></button>
   </div>
   <div id="micStatus" class="hidden mt-2 text-xs text-gold flex items-center gap-2 max-w-xl">
     <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
@@ -167,6 +69,7 @@
 </div>
 
 <script src="../assets/zar-app.js"></script>
+<script>ZarNav.mount({ active: 'qidiruv', title: 'Qidiruv' });</script>
 <script>
   // JS KODI
   const USERNAMES = ["Bek_vines","dilnoza.travel","Ozodbek_official","Sardor_life","Kamola_beauty","Jasur_sport","Nigora_cook","Aziz_moto","Malika_dance","Shaxzod_gym","Feruza_style","Otabek_music","Sevinch_art","Diyor_travel","Gulnoza_fit","Bahrom_food","Zarina_makeup","Umid_football","Madina_vlog","Sherzod_car"];
@@ -262,7 +165,7 @@
 
     resultCount.textContent = filtered.length;
     grid.innerHTML = filtered.slice(0, visibleCount).map(it => `
-      <div onclick="openModal('${it.vidId}')" class="card-thumb relative rounded-xl overflow-hidden bg-card border border-border cursor-pointer hover:-translate-y-0.5 hover:border-golddim transition">
+      <div onclick="openModal('${it.vidId}')" role="button" tabindex="0" aria-label="${it.user} videosi" class="card-thumb relative rounded-xl overflow-hidden bg-card border border-border cursor-pointer hover:-translate-y-0.5 hover:border-golddim transition">
         <img src="https://picsum.photos/seed/zar${it.seed}/300/500" loading="lazy" class="w-full h-full object-cover">
         <div class="absolute top-2 left-2 ${it.live ? 'bg-red-500' : 'hidden'} text-[10px] font-bold px-1.5 py-0.5 rounded text-white">JONLI</div>
         <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent">
@@ -281,6 +184,8 @@
     const div = document.createElement('div');
     div.className = "px-3.5 py-1.5 rounded-full border cursor-pointer text-sm transition" + (cat === activeCategory ? " bg-gold/10 border-golddim text-gold" : " border-border text-txtdim");
     div.textContent = cat;
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
     div.onclick = () => {
       activeCategory = cat;
       document.querySelectorAll('#chipRow div').forEach(c => {
