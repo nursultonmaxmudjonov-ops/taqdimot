@@ -109,6 +109,43 @@
   .field-input:focus, .field-select:focus{
     border-color:var(--gold-2);
   }
+  .field-input:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+  }
+
+  /* Phone field with fixed +998 prefix, matches login screen styling */
+  .phone-field{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--bg-mid);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:0 14px;
+    transition:border-color .2s;
+  }
+  .phone-field:focus-within{ border-color:var(--gold-2); }
+  .phone-field .phone-code{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    border-right:1px solid var(--line);
+    padding-right:10px;
+    flex-shrink:0;
+  }
+  .phone-field input{
+    flex:1;
+    min-width:0;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--text);
+    font-size:13.5px;
+    padding:11px 0;
+    letter-spacing:.02em;
+  }
+  .phone-field input::placeholder{ color:var(--text-dim); }
 
   /* Switch Toggle Option Row */
   .setting-row{
@@ -219,7 +256,10 @@
             </div>
             <div class="field-group">
               <label class="field-label">Telefon Raqam</label>
-              <input type="tel" class="field-input" id="userPhone" placeholder="+998 •• ••• •• ••" disabled>
+              <div class="phone-field">
+                <span class="phone-code">+998</span>
+                <input type="tel" id="userPhone" placeholder="90 123 45 67" maxlength="12" inputmode="numeric">
+              </div>
             </div>
             <div class="field-group full">
               <label class="field-label">Email (Ixtiyoriy)</label>
@@ -305,6 +345,31 @@
 <script src="../assets/zar-app.js"></script>
 <script>ZarNav.mount({ active: 'sozlamalar', title: 'Sozlamalar' });</script>
 <script>
+  const SESSION_KEY = 'zar_session';
+
+  function getSession(){
+    try{
+      const raw = localStorage.getItem(SESSION_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(err){ return null; }
+  }
+
+  // Login ekranidagi kabi: faqat raqamlarni qabul qiladi va "90 123 45 67"
+  // ko'rinishida guruhlab formatlaydi.
+  function formatPhoneDigits(raw){
+    let v = raw.replace(/\D/g,'').slice(0,9);
+    let parts = [];
+    if(v.length > 0) parts.push(v.slice(0,2));
+    if(v.length > 2) parts.push(v.slice(2,5));
+    if(v.length > 5) parts.push(v.slice(5,7));
+    if(v.length > 7) parts.push(v.slice(7,9));
+    return parts.join(' ');
+  }
+
+  document.getElementById('userPhone').addEventListener('input', (e) => {
+    e.target.value = formatPhoneDigits(e.target.value);
+  });
+
   let pendingAvatarData = null;
 
   function applyAvatarPreview(dataUrl){
@@ -320,7 +385,7 @@
     }
   }
 
-  // Sahifa ochilganda mavjud profil va sozlamalarni formaga yuklash
+  // Sahifa ochilganda mavjud profil, sessiya (telefon) va sozlamalarni formaga yuklash
   document.addEventListener('DOMContentLoaded', () => {
     const profile = ZarProfile.getProfile();
     if(profile && profile.name){
@@ -329,6 +394,13 @@
     }
     if(profile && profile.avatar) applyAvatarPreview(profile.avatar);
     else applyAvatarPreview(null);
+
+    // Kirishda kiritilgan telefon raqamini (zar_session) shu yerga chiqaramiz.
+    // Profilda alohida saqlangan raqam bo'lsa, u ustunroq turadi.
+    const session = getSession();
+    const phoneFromProfile = profile && profile.phone ? profile.phone : '';
+    const phoneFromSession = session && session.phone ? session.phone : '';
+    document.getElementById('userPhone').value = formatPhoneDigits(phoneFromProfile || phoneFromSession);
 
     const settings = ZarSettings.getSettings();
     document.getElementById('pushNotify').checked = settings.pushNotify;
@@ -376,23 +448,39 @@
   });
 
   // Profil Saqlash Funksiyasi — umumiy ZarProfile xotirasiga yozadi,
-  // shu bilan Profil sahifasida ham darhol aks etadi
+  // shu bilan Profil sahifasida ham darhol aks etadi. Telefon raqami esa
+  // ZarProfile'ga ham, login sessiyasiga (zar_session) ham yoziladi —
+  // shunda tahrirlangan raqam boshqa sahifalarda ham to'g'ri ko'rinadi.
   function saveProfile(e) {
     e.preventDefault();
     const name = document.getElementById('userName').value.trim();
     if(!name) return;
+    const phone = document.getElementById('userPhone').value.trim();
+
     const current = ZarProfile.getProfile();
     ZarProfile.saveProfile({
       name,
+      phone,
       avatar: pendingAvatarData !== null ? pendingAvatarData : (current ? current.avatar : '')
     });
+
+    try{
+      const session = getSession() || {};
+      session.phone = phone;
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      localStorage.setItem('zar_last_phone', phone);
+    }catch(err){}
+
     document.getElementById('profileNameDisplay').innerText = name;
     ZarUI.toast('Sozlamalar muvaffaqiyatli saqlandi ✓');
   }
 
-  // Chiqish
+  // Chiqish — sessiyani tozalab, login ekraniga qaytaradi.
+  // Eslatma: telefon raqami (zar_last_phone) atayin o'chirilmaydi,
+  // shunda login ekraniga qaytganda raqam hali ham eslab qolingan bo'ladi.
   function logout() {
     if (confirm("Haqiqatdan ham hisobdan chiqmoqchimisiz?")) {
+      try { localStorage.removeItem('zar_session'); } catch(err) {}
       window.location.href = "../index.html";
     }
   }
@@ -405,6 +493,7 @@
         localStorage.removeItem('zar_wallet_balance');
         localStorage.removeItem('zar_wallet_history');
         localStorage.removeItem('zar_wallet_today');
+        localStorage.removeItem('zar_session');
       } catch(err) {}
       window.location.href = "../index.html";
     }
