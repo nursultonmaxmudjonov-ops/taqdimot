@@ -1125,7 +1125,7 @@
 
 </div>
 
-<button class="restart" onclick="closeDashboard(); go('s1'); resetAll();">↺ Qayta boshlash</button>
+<button class="restart" onclick="closeDashboard(); clearSession(); go('s1'); resetAll();">↺ Qayta boshlash</button>
 
 <!-- ================= DASHBOARD (video feed) ================= -->
 <div class="dash" id="dashboard">
@@ -1309,6 +1309,9 @@
 
     if(entered === currentCode){
       errorEl.classList.remove('show');
+      // Kirish muvaffaqiyatli — sessiyani localStorage'ga saqlaymiz,
+      // shunda keyingi safar login/OTP bosqichlari o'tkazib yuboriladi.
+      saveSession(document.getElementById('phoneInput').value.trim());
       go('s5');
     } else {
       errorEl.textContent = "Kod noto'g'ri, qaytadan urinib ko'ring";
