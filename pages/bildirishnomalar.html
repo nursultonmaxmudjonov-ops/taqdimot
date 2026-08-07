@@ -75,17 +75,49 @@
 
     <div id="groups" class="space-y-3"></div>
   </main>
+</div>    
+
+<div id="modalBackdrop" class="hidden fixed inset-0 z-[60] bg-black/60 flex items-end sm:items-center justify-center p-0 sm:p-6" onclick="if(event.target.id==='modalBackdrop') closeModal()">
+  <div class="w-full sm:max-w-lg bg-[#0c0b14] border border-white/10 rounded-t-3xl sm:rounded-3xl p-6 max-h-[85vh] overflow-y-auto scrollbar-hide">
+    <div class="flex items-start justify-between gap-4 mb-4">
+      <p id="modalTitle" class="text-lg font-semibold"></p>
+      <button onclick="closeModal()" class="shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-white/40 hover:text-white hover:bg-white/5 transition">✕</button>
+    </div>
+    <p id="modalText" class="text-white/60 text-sm leading-relaxed mb-6"></p>
+    <div id="modalReplies" class="space-y-2 mb-4"></div>
+    <div class="border-t border-white/5 pt-4">
+      <label class="text-white/30 text-[11px] uppercase tracking-wider mb-2 block">Javob yozish</label>
+      <div class="flex items-end gap-2">
+        <textarea id="replyInput" rows="1" placeholder="Javobingizni yozing..." class="flex-1 resize-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-white/25 outline-none focus:border-[#f0b34a]/50 transition"></textarea>
+        <button onclick="sendReply()" class="shrink-0 w-11 h-11 flex items-center justify-center rounded-xl bg-[#f0b34a] text-[#0c0b14] hover:bg-[#f5c46b] transition">➤</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-const notifications = Array.from({ length: 30 }, (_, i) => ({
-    id: i + 1, title: 'Yangi bildirishnoma #' + (i + 1), text: 'Bu yerda xabar matni joylashgan...', unread: i < 5 
-}));  
+const templates = [
+  { title: 'Reyting oshdi', text: 'Tabriklaymiz! Sizning reytingingiz yangi darajaga ko\'tarildi. Endi qo\'shimcha imkoniyatlar va bonuslarga ega bo\'lasiz.' },
+  { title: 'Ballaringiz qo\'shildi', text: 'Hisobingizga yangi ballar qo\'shildi. Ularni hamyon bo\'limida ko\'rishingiz va sarflashingiz mumkin.' },
+  { title: 'Maxsus taklif', text: 'Siz uchun maxsus chegirma tayyorlandi. Taklif cheklangan vaqt davomida amal qiladi, uni o\'tkazib yubormang.' },
+  { title: 'Profil tasdiqlandi', text: 'Sizning profilingiz muvaffaqiyatli tekshiruvdan o\'tdi va endi barcha xususiyatlardan foydalanishingiz mumkin.' },
+  { title: 'To\'lov qabul qilindi', text: 'So\'nggi to\'lovingiz muvaffaqiyatli amalga oshirildi. Tafsilotlarni hamyon tarixidan ko\'rishingiz mumkin.' },
+  { title: 'Xavfsizlik ogohlantirishi', text: 'Hisobingizga yangi qurilmadan kirish amalga oshirildi. Agar bu siz bo\'lmasangiz, darhol parolni almashtiring.' },
+  { title: 'Haftalik hisobot tayyor', text: 'O\'tgan hafta davomidagi faoliyatingiz bo\'yicha hisobot tayyor. Batafsil ma\'lumot uchun ustiga bosing.' },
+  { title: 'Funksiya qo\'shildi', text: 'Ilovaga qo\'shimcha imkoniyat qo\'shildi. Sozlamalar bo\'limida uni yoqib, sinab ko\'rishingiz mumkin.' },
+  { title: 'Eslatma: obuna muddati', text: 'Sizning obunangiz tez orada tugaydi. Xizmatdan uzluksiz foydalanish uchun uni yangilashni unutmang.' },
+  { title: 'Do\'stingiz qo\'shildi', text: 'Sizning taklifingiz orqali yangi foydalanuvchi ro\'yxatdan o\'tdi. Bonus ballaringiz hisobingizga tushdi.' }
+];
+const notifications = Array.from({ length: 30 }, (_, i) => {
+  const t = templates[i % templates.length];
+  return { id: i + 1, title: t.title, text: t.text, unread: i < 5 };
+});
 let data = [...notifications];
+data.forEach(n => { n.replies = n.replies || []; });
 
 function render() {
   document.getElementById('groups').innerHTML = data.map(n => `
-    <div class="card-enter flex gap-3 p-4 rounded-2xl border ${n.unread ? 'border-[#f0b34a]/20 bg-[#f0b34a]/5' : 'border-white/5 bg-white/[0.02]'} cursor-pointer" onclick="toggleRead(${n.id})">
+    <div class="card-enter flex gap-3 p-4 rounded-2xl border ${n.unread ? 'border-[#f0b34a]/20 bg-[#f0b34a]/5' : 'border-white/5 bg-white/[0.02]'} cursor-pointer" onclick="openNotification(${n.id})">
       <div class="flex-1">
         <p class="font-semibold ${n.unread ? 'text-white' : 'text-white/60'}">${n.title}</p>
         <p class="text-sm text-white/40">${n.text}</p>
@@ -94,6 +126,42 @@ function render() {
 }
 function toggleRead(id) { data.find(x => x.id === id).unread = false; render(); }
 function markAllRead() { data.forEach(n => n.unread = false); render(); }
+
+let activeId = null;
+
+function openNotification(id) {
+  activeId = id;
+  const n = data.find(x => x.id === id);
+  n.unread = false;
+  document.getElementById('modalTitle').textContent = n.title;
+  document.getElementById('modalText').textContent = n.text;
+  renderReplies(n);
+  document.getElementById('replyInput').value = '';
+  document.getElementById('modalBackdrop').classList.remove('hidden');
+  render();
+}
+
+function renderReplies(n) {
+  document.getElementById('modalReplies').innerHTML = n.replies.map(r => `
+    <div class="bg-white/5 rounded-xl px-4 py-3 text-sm text-white/70">${r}</div>
+  `).join('');
+}
+
+function sendReply() {
+  const input = document.getElementById('replyInput');
+  const text = input.value.trim();
+  if (!text || activeId === null) return;
+  const n = data.find(x => x.id === activeId);
+  n.replies.push(text);
+  input.value = '';
+  renderReplies(n);
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.add('hidden');
+  activeId = null;
+}
+
 render();
 </script>
 </body>
