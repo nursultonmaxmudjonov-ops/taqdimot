@@ -11,6 +11,11 @@
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .card-enter { animation: rise 0.35s ease both; }
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .notif-detail { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease; margin-top: 0; }
+  .notif-detail > div { overflow: hidden; min-height: 0; }
+  .notif-card.expanded .notif-detail { grid-template-rows: 1fr; opacity: 1; margin-top: 8px; }
+  .notif-card.expanded .chevron { transform: rotate(180deg); }
+  .chevron { transition: transform 0.2s ease; }
 </style>
 </head>
 <body>
@@ -48,12 +53,12 @@
 // Varied realistic notification templates instead of literal filler text,
 // cycled to build 30 entries with believable relative timestamps.
 const NOTIF_TEMPLATES = [
-  { icon: '🎉', title: "Video uchun mukofot", text: (n) => `Video to'liq ko'rildi — +${n} ball hisobingizga qo'shildi.` },
-  { icon: '👥', title: "Referal bonusi", text: () => "Do'stingiz taklifingiz orqali ro'yxatdan o'tdi — 500 ball ishladingiz." },
-  { icon: '🎬', title: "Yangi video mavjud", text: () => "Siz kuzatgan mavzuda yangi video qo'shildi, ko'rib ball yig'ing." },
-  { icon: '💸', title: "Yechib olish yakunlandi", text: () => "So'mga o'tkazma muvaffaqiyatli amalga oshirildi." },
-  { icon: '🏆', title: "Yangi daraja", text: () => "Tabriklaymiz! Siz Oltin darajaga yetdingiz." },
-  { icon: '🔔', title: "Kunlik eslatma", text: () => "Bugun hali video ko'rmadingiz — ballaringizni yo'qotmang." }
+  { icon: '🎉', title: "Video uchun mukofot", text: (n) => `Video to'liq ko'rildi — +${n} ball hisobingizga qo'shildi.`, detail: (n) => `Siz ko'rgan videongiz uchun +${n} ball hisobingizga qo'shildi. Ballaringizni "Yechib olish" bo'limidan pulga aylantirishingiz mumkin.` },
+  { icon: '👥', title: "Referal bonusi", text: () => "Do'stingiz taklifingiz orqali ro'yxatdan o'tdi — 500 ball ishladingiz.", detail: () => "Taklif havolangiz orqali yangi foydalanuvchi ro'yxatdan o'tdi va birinchi videoni ko'rdi. Buning evaziga hisobingizga 500 ball qo'shildi. Yana do'stlaringizni taklif qilib, ko'proq ball ishlashingiz mumkin." },
+  { icon: '🎬', title: "Yangi video mavjud", text: () => "Siz kuzatgan mavzuda yangi video qo'shildi, ko'rib ball yig'ing.", detail: () => "Siz obuna bo'lgan mavzuda yangi video e'lon qilindi. Uni to'liq ko'rib, qo'shimcha ball yig'ib olishga ulgurib qoling — takliflar cheklangan vaqt uchun amal qiladi." },
+  { icon: '💸', title: "Yechib olish yakunlandi", text: () => "So'mga o'tkazma muvaffaqiyatli amalga oshirildi.", detail: () => "So'rovingiz bo'yicha ballaringiz so'mga aylantirilib, ko'rsatilgan hisobingizga o'tkazildi. To'liq tarixni \"Tranzaksiyalar\" bo'limida ko'rishingiz mumkin." },
+  { icon: '🏆', title: "Yangi daraja", text: () => "Tabriklaymiz! Siz Oltin darajaga yetdingiz.", detail: () => "Faolligingiz uchun rahmat! Siz endi Oltin darajadasiz — bu esa yuqoriroq mukofotlar va eksklyuziv takliflarga kirish imkonini beradi." },
+  { icon: '🔔', title: "Kunlik eslatma", text: () => "Bugun hali video ko'rmadingiz — ballaringizni yo'qotmang.", detail: () => "Kundalik seriyangizni saqlab qolish uchun bugun kamida bitta videoni to'liq ko'ring. Seriya uzilsa, bonus koeffitsientingiz qayta boshidan hisoblanadi." }
 ];
 const RELATIVE_TIMES = ["hozir","12 daqiqa oldin","1 soat oldin","3 soat oldin","kecha","2 kun oldin"];
 
@@ -64,8 +69,10 @@ const notifications = Array.from({ length: 30 }, (_, i) => {
     icon: t.icon,
     title: t.title,
     text: t.text(10 + (i % 5) * 8),
+    detail: t.detail(10 + (i % 5) * 8),
     time: RELATIVE_TIMES[i % RELATIVE_TIMES.length],
-    unread: i < 5
+    unread: i < 5,
+    expanded: false
   };
 });
 let data = [...notifications];
@@ -77,18 +84,84 @@ function render() {
     return;
   }
   groupsEl.innerHTML = data.map(n => `
-    <div class="card-enter flex gap-3 p-4 rounded-2xl border ${n.unread ? 'border-gold/20 bg-gold/5' : 'border-white/5 bg-white/[0.02]'} cursor-pointer" role="button" tabindex="0" onclick="toggleRead(${n.id})">
-      <div class="text-xl leading-none">${n.icon}</div>
-      <div class="flex-1">
-        <div class="flex items-center justify-between gap-2">
-          <p class="font-semibold ${n.unread ? 'text-white' : 'text-white/60'}">${n.title}</p>
-          <span class="text-[10px] text-white/30 flex-shrink-0">${n.time}</span>
+    <div class="notif-card card-enter p-4 rounded-2xl border ${n.unread ? 'border-gold/20 bg-gold/5' : 'border-white/5 bg-white/[0.02]'} cursor-pointer ${n.expanded ? 'expanded' : ''}" role="button" tabindex="0" onclick="toggleExpand(event, ${n.id})">
+      <div class="flex gap-3">
+        <div class="text-xl leading-none">${n.icon}</div>
+        <div class="flex-1">
+          <div class="flex items-center justify-between gap-2">
+            <p class="font-semibold ${n.unread ? 'text-white' : 'text-white/60'}">${n.title}</p>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <span class="text-[10px] text-white/30">${n.time}</span>
+              <span class="chevron text-white/30 text-[10px]">▾</span>
+            </div>
+          </div>
+          <p class="text-sm text-white/40">${n.text}</p>
         </div>
-        <p class="text-sm text-white/40">${n.text}</p>
+      </div>
+      <div class="notif-detail">
+        <div class="pl-[calc(1.25rem+0.75rem)]">
+          <p class="text-sm text-white/60 leading-relaxed">${n.detail}</p>
+          ${n.replySent
+            ? `<div class="mt-3 flex items-start gap-2 rounded-xl bg-white/[0.04] border border-white/5 px-3 py-2">
+                 <span class="text-[10px] text-gold font-medium flex-shrink-0 mt-0.5">Siz:</span>
+                 <p class="text-sm text-white/70">${n.replyText}</p>
+               </div>`
+            : `<div class="mt-3 flex items-center gap-2" onclick="event.stopPropagation()">
+                 <input
+                   type="text"
+                   id="reply-input-${n.id}"
+                   value="${n.draft || ''}"
+                   oninput="data.find(x=>x.id===${n.id}).draft = this.value"
+                   onkeydown="if(event.key==='Enter'){ event.preventDefault(); sendReply(${n.id}); }"
+                   placeholder="Javob yozing..."
+                   class="flex-1 text-sm bg-white/[0.04] border border-white/10 rounded-xl px-3 py-2 text-white placeholder-white/30 outline-none focus:border-gold/40 transition"
+                 />
+                 <button
+                   onclick="sendReply(${n.id})"
+                   class="text-[13px] font-medium text-gold hover:text-white transition px-3 py-2 rounded-xl border border-gold/20 hover:border-gold/40 flex-shrink-0"
+                 >Yuborish</button>
+               </div>`
+          }
+        </div>
       </div>
     </div>`).join('');
 }
-function toggleRead(id) { data.find(x => x.id === id).unread = false; render(); }
+
+function sendReply(id) {
+  const input = document.getElementById(`reply-input-${id}`);
+  const value = (input ? input.value : (data.find(x => x.id === id).draft || '')).trim();
+  if (!value) return;
+  const item = data.find(x => x.id === id);
+  item.replySent = true;
+  item.replyText = value;
+  item.draft = '';
+  render();
+  ZarUI.toast("Javobingiz yuborildi");
+}
+
+function toggleExpand(evt, id) {
+  evt.stopPropagation();
+  const wasExpanded = data.find(x => x.id === id).expanded;
+  // Collapse all cards first (clicking elsewhere / another card closes the open one)
+  data.forEach(n => n.expanded = false);
+  const item = data.find(x => x.id === id);
+  // Toggle: if it was already open, this click closes it; otherwise open it and mark read
+  item.expanded = !wasExpanded;
+  if (item.expanded) item.unread = false;
+  render();
+}
+
+// Clicking anywhere outside a notification card collapses the open one
+document.addEventListener('click', (evt) => {
+  if (!evt.target.closest('.notif-card')) {
+    const anyExpanded = data.some(n => n.expanded);
+    if (anyExpanded) {
+      data.forEach(n => n.expanded = false);
+      render();
+    }
+  }
+});
+
 function markAllRead() { data.forEach(n => n.unread = false); render(); ZarUI.toast("Barchasi o'qilgan deb belgilandi"); }
 render();
 </script>
