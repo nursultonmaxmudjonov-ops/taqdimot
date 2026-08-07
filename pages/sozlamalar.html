@@ -164,6 +164,26 @@
   .setting-name{ font-size:13.5px; font-weight:600; }
   .setting-desc{ font-size:11px; color:var(--text-dim); }
 
+  /* Clickable row (for buttons that open something, styled like setting-row) */
+  .action-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    cursor:pointer;
+    background:none;
+    border-left:none; border-right:none; border-top:none;
+    width:100%;
+    text-align:left;
+    color:inherit;
+    font:inherit;
+    transition:opacity .15s;
+  }
+  .action-row:last-child{ border-bottom:none; }
+  .action-row:hover{ opacity:.8; }
+  .action-row .chev{ color:var(--text-dim); font-size:13px; flex-shrink:0; }
+
   /* UI Toggle Switch */
   .switch{
     position:relative;
@@ -198,6 +218,16 @@
   }
   .btn-gold:active{ transform:scale(.97); }
 
+  .btn-outline{
+    border:1px solid var(--line); cursor:pointer;
+    background:transparent;
+    color:var(--text); font-weight:600; font-size:12.5px;
+    padding:10px 18px; border-radius:10px;
+    display:inline-flex; align-items:center; gap:6px;
+    transition:border-color .15s, background .15s;
+  }
+  .btn-outline:hover{ border-color:var(--gold-2); background:rgba(231,169,58,.06); }
+
   .btn-danger{
     background:rgba(255, 93, 108, 0.1);
     color:var(--danger);
@@ -207,6 +237,58 @@
     cursor:pointer; transition:background .2s;
   }
   .btn-danger:hover{ background:var(--danger); color:#fff; }
+
+  /* Modal overlay (used for PIN setup, feedback, app info) */
+  .zar-modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(0,0,0,.55);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .zar-modal-overlay.open{ display:flex; }
+  .zar-modal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:22px;
+    width:100%; max-width:360px;
+    animation:modalRise .2s ease both;
+  }
+  @keyframes modalRise{ from{opacity:0; transform:translateY(8px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);} }
+  .zar-modal-title{ font-size:15.5px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .zar-modal-sub{ font-size:12px; color:var(--text-dim); margin-bottom:18px; line-height:1.5; }
+  .pin-boxes{ display:flex; gap:10px; justify-content:center; margin-bottom:18px; }
+  .pin-boxes input{
+    width:44px; height:52px;
+    text-align:center;
+    font-size:20px; font-weight:700;
+    background:var(--bg-mid);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--text);
+    outline:none;
+  }
+  .pin-boxes input:focus{ border-color:var(--gold-2); }
+  .zar-modal-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:4px; }
+  .zar-modal textarea{
+    width:100%;
+    background:var(--bg-mid);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:12px 14px;
+    color:var(--text);
+    font-size:13.5px;
+    outline:none;
+    resize:none;
+    min-height:100px;
+    margin-bottom:16px;
+    font-family:inherit;
+  }
+  .zar-modal textarea:focus{ border-color:var(--gold-2); }
+  .app-info-row{ display:flex; justify-content:space-between; padding:8px 0; font-size:13px; border-bottom:1px solid rgba(255,255,255,.05); }
+  .app-info-row:last-child{ border-bottom:none; }
+  .app-info-row span:first-child{ color:var(--text-dim); }
 
   @media (max-width:800px){
     .settings-container{ padding:18px 14px calc(84px + env(safe-area-inset-bottom)); }
@@ -294,6 +376,17 @@
             <span class="slider"></span>
           </label>
         </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-name">Ovozli signal</div>
+            <div class="setting-desc">Bildirishnoma kelganda tovush chiqarish</div>
+          </div>
+          <label class="switch zar-switch">
+            <input type="checkbox" id="soundNotify">
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="settings-section">
@@ -316,6 +409,30 @@
             </select>
           </div>
         </div>
+
+        <div class="action-row" onclick="openAppInfoModal()">
+          <div class="setting-info">
+            <div class="setting-name">Ilova haqida</div>
+            <div class="setting-desc">Versiya, build va litsenziya ma'lumotlari</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+
+        <div class="action-row" onclick="exportUserData()">
+          <div class="setting-info">
+            <div class="setting-name">Ma'lumotlarni yuklab olish</div>
+            <div class="setting-desc">Profil va sozlamalaringizni .json fayl sifatida saqlash</div>
+          </div>
+          <span class="chev">⬇</span>
+        </div>
+
+        <div class="action-row" onclick="clearCache()">
+          <div class="setting-info">
+            <div class="setting-name">Keshni tozalash</div>
+            <div class="setting-desc">Vaqtinchalik saqlangan ma'lumotlarni tozalash</div>
+          </div>
+          <span class="chev">🧹</span>
+        </div>
       </div>
 
       <div class="settings-section">
@@ -332,7 +449,20 @@
           </label>
         </div>
 
-        <div style="margin-top:14px; display:flex; gap:10px;">
+        <div class="action-row" id="changePinRow" style="display:none;" onclick="openPinModal(false)">
+          <div class="setting-info">
+            <div class="setting-name">PIN-kodni o'zgartirish</div>
+            <div class="setting-desc">Joriy PIN-kodni yangisiga almashtirish</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-outline" onclick="openFeedbackModal()">💬 Fikr-mulohaza yuborish</button>
+          <button class="btn-outline" onclick="openHelpCenter()">🆘 Yordam markazi</button>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
           <button class="btn-danger" onclick="logout()">Chiqish (Logout)</button>
           <button class="btn-danger" style="border-color:#666; color:#aaa; background:transparent;" onclick="deleteAccount()">Hisobni o'chirish</button>
         </div>
@@ -342,10 +472,57 @@
   </main>
 </div>
 
+<!-- PIN SETUP MODAL -->
+<div class="zar-modal-overlay" id="pinModalOverlay">
+  <div class="zar-modal">
+    <div class="zar-modal-title">🔒 <span id="pinModalTitle">PIN-kod o'rnatish</span></div>
+    <div class="zar-modal-sub">4 xonali PIN-kod kiriting. Bu kod ilovaga kirishda so'raladi.</div>
+    <div class="pin-boxes">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="0">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="1">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="2">
+      <input type="tel" maxlength="1" inputmode="numeric" class="pin-digit" data-idx="3">
+    </div>
+    <div class="zar-modal-actions">
+      <button class="btn-outline" onclick="closePinModal(true)">Bekor qilish</button>
+      <button class="btn-gold" onclick="confirmPin()">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="zar-modal-overlay" id="feedbackModalOverlay">
+  <div class="zar-modal">
+    <div class="zar-modal-title">💬 Fikr-mulohaza</div>
+    <div class="zar-modal-sub">Taklif yoki muammo haqida yozing — jamoamiz ko'rib chiqadi.</div>
+    <textarea id="feedbackText" placeholder="Fikringizni shu yerga yozing..."></textarea>
+    <div class="zar-modal-actions">
+      <button class="btn-outline" onclick="closeModal('feedbackModalOverlay')">Bekor qilish</button>
+      <button class="btn-gold" onclick="submitFeedback()">Yuborish</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP INFO MODAL -->
+<div class="zar-modal-overlay" id="appInfoModalOverlay">
+  <div class="zar-modal">
+    <div class="zar-modal-title">ℹ️ Ilova haqida</div>
+    <div class="zar-modal-sub">ZAR — video ko'rib ball yig'ish va yechib olish ilovasi.</div>
+    <div class="app-info-row"><span>Versiya</span><span>1.0.0</span></div>
+    <div class="app-info-row"><span>Build</span><span id="appBuildId">—</span></div>
+    <div class="app-info-row"><span>Platforma</span><span>Web</span></div>
+    <div class="zar-modal-actions">
+      <button class="btn-gold" onclick="closeModal('appInfoModalOverlay')">Yopish</button>
+    </div>
+  </div>
+</div>
+
 <script src="../assets/zar-app.js"></script>
 <script>ZarNav.mount({ active: 'sozlamalar', title: 'Sozlamalar' });</script>
 <script>
   const SESSION_KEY = 'zar_session';
+  const PIN_KEY = 'zar_pin';
+  const FEEDBACK_KEY = 'zar_feedback';
 
   function getSession(){
     try{
@@ -408,6 +585,16 @@
     document.getElementById('pinSecurity').checked = settings.pinSecurity;
     document.getElementById('appLanguage').value = settings.language;
     document.getElementById('appTheme').value = settings.theme;
+
+    try{
+      document.getElementById('soundNotify').checked = !!settings.soundNotify;
+    }catch(err){}
+
+    // PIN qatorini faqat PIN yoqilgan bo'lsa ko'rsatish
+    toggleChangePinRowVisibility(settings.pinSecurity);
+
+    // Build ID — sahifa har ochilganda sodda ravishda joriy sanaga asoslanadi
+    document.getElementById('appBuildId').innerText = new Date().toISOString().slice(0,10).replace(/-/g,'.');
   });
 
   /* ---- Settings toggles/selects — persisted via ZarSettings. Options that
@@ -421,9 +608,25 @@
     ZarSettings.setSetting('smsNotify', e.target.checked);
     ZarUI.toast(e.target.checked ? 'SMS ogohlantirishlar yoqildi' : "SMS ogohlantirishlar o'chirildi");
   });
+  document.getElementById('soundNotify').addEventListener('change', (e) => {
+    try{ ZarSettings.setSetting('soundNotify', e.target.checked); }catch(err){}
+    ZarUI.toast(e.target.checked ? 'Ovozli signal yoqildi' : "Ovozli signal o'chirildi");
+  });
   document.getElementById('pinSecurity').addEventListener('change', (e) => {
-    ZarSettings.setSetting('pinSecurity', e.target.checked);
-    ZarUI.toast(e.target.checked ? 'PIN/biometriya talab qilinadi' : "PIN/biometriya o'chirildi");
+    if(e.target.checked){
+      // Yoqishdan oldin PIN o'rnatilishi shart — toggle vaqtincha true holatda,
+      // agar foydalanuvchi modalni bekor qilsa qaytarib qo'yiladi.
+      openPinModal(true);
+    } else {
+      if(confirm("PIN-kod/biometriyani o'chirmoqchimisiz?")){
+        ZarSettings.setSetting('pinSecurity', false);
+        try{ localStorage.removeItem(PIN_KEY); }catch(err){}
+        toggleChangePinRowVisibility(false);
+        ZarUI.toast("PIN/biometriya o'chirildi");
+      } else {
+        e.target.checked = true;
+      }
+    }
   });
   document.getElementById('appLanguage').addEventListener('change', (e) => {
     ZarSettings.setSetting('language', e.target.value);
@@ -432,6 +635,135 @@
   document.getElementById('appTheme').addEventListener('change', (e) => {
     ZarSettings.setSetting('theme', e.target.value);
     ZarUI.toast(ZarSettings.isThemeLive(e.target.value) ? 'Mavzu saqlandi' : "Bu mavzu tez kunda qo'shiladi — tanlovingiz saqlab qo'yildi");
+  });
+
+  function toggleChangePinRowVisibility(show){
+    document.getElementById('changePinRow').style.display = show ? 'flex' : 'none';
+  }
+
+  /* ---------------- PIN MODAL ---------------- */
+  let pinModalIsFirstSetup = false;
+
+  function openPinModal(isFirstSetup){
+    pinModalIsFirstSetup = isFirstSetup;
+    document.getElementById('pinModalTitle').innerText = isFirstSetup ? "PIN-kod o'rnatish" : "PIN-kodni o'zgartirish";
+    document.querySelectorAll('.pin-digit').forEach(inp => inp.value = '');
+    document.getElementById('pinModalOverlay').classList.add('open');
+    setTimeout(() => document.querySelector('.pin-digit[data-idx="0"]').focus(), 50);
+  }
+
+  function closePinModal(isCancel){
+    document.getElementById('pinModalOverlay').classList.remove('open');
+    if(isCancel && pinModalIsFirstSetup){
+      // Foydalanuvchi PIN o'rnatishni bekor qildi — togglni qaytarib qo'yamiz
+      document.getElementById('pinSecurity').checked = false;
+    }
+  }
+
+  function closeModal(id){
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Raqam kiritilganda avtomatik keyingi katakchaga o'tish
+  document.querySelectorAll('.pin-digit').forEach((inp, i, all) => {
+    inp.addEventListener('input', () => {
+      inp.value = inp.value.replace(/\D/g,'').slice(0,1);
+      if(inp.value && i < all.length - 1) all[i+1].focus();
+    });
+    inp.addEventListener('keydown', (e) => {
+      if(e.key === 'Backspace' && !inp.value && i > 0) all[i-1].focus();
+    });
+  });
+
+  function confirmPin(){
+    const digits = Array.from(document.querySelectorAll('.pin-digit')).map(i => i.value);
+    if(digits.some(d => d === '')){
+      ZarUI.toast("Iltimos, 4 ta raqamni ham kiriting");
+      return;
+    }
+    const pin = digits.join('');
+    try{ localStorage.setItem(PIN_KEY, pin); }catch(err){}
+    ZarSettings.setSetting('pinSecurity', true);
+    document.getElementById('pinSecurity').checked = true;
+    toggleChangePinRowVisibility(true);
+    document.getElementById('pinModalOverlay').classList.remove('open');
+    ZarUI.toast(pinModalIsFirstSetup ? "PIN-kod o'rnatildi ✓" : "PIN-kod yangilandi ✓");
+  }
+
+  /* ---------------- FEEDBACK MODAL ---------------- */
+  function openFeedbackModal(){
+    document.getElementById('feedbackText').value = '';
+    document.getElementById('feedbackModalOverlay').classList.add('open');
+  }
+
+  function submitFeedback(){
+    const text = document.getElementById('feedbackText').value.trim();
+    if(!text){
+      ZarUI.toast("Iltimos, fikringizni yozing");
+      return;
+    }
+    try{
+      const list = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+      list.push({ text, date: new Date().toISOString() });
+      localStorage.setItem(FEEDBACK_KEY, JSON.stringify(list));
+    }catch(err){}
+    closeModal('feedbackModalOverlay');
+    ZarUI.toast("Rahmat! Fikringiz yuborildi ✓");
+  }
+
+  function openHelpCenter(){
+    ZarUI.toast("Yordam markazi tez kunda ishga tushadi — hozircha fikr-mulohaza orqali murojaat qiling");
+  }
+
+  /* ---------------- APP INFO MODAL ---------------- */
+  function openAppInfoModal(){
+    document.getElementById('appInfoModalOverlay').classList.add('open');
+  }
+
+  /* ---------------- EXPORT DATA ---------------- */
+  function exportUserData(){
+    try{
+      const payload = {
+        profile: ZarProfile.getProfile(),
+        settings: ZarSettings.getSettings(),
+        session: getSession(),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'zar-malumotlarim.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      ZarUI.toast("Ma'lumotlar yuklab olindi ✓");
+    }catch(err){
+      ZarUI.toast("Yuklab olishda xatolik yuz berdi");
+    }
+  }
+
+  /* ---------------- CLEAR CACHE ---------------- */
+  function clearCache(){
+    if(!confirm("Vaqtinchalik saqlangan ma'lumotlarni tozalamoqchimisiz? Profil va balansingiz saqlanib qoladi.")) return;
+    try{
+      // Faqat vaqtinchalik/kesh xarakteridagi kalitlarni tozalaymiz —
+      // profil, balans va sessiya tegilmaydi.
+      const cacheKeys = ['zar_video_cache', 'zar_feed_cache', 'zar_last_search'];
+      cacheKeys.forEach(k => localStorage.removeItem(k));
+    }catch(err){}
+    ZarUI.toast("Kesh tozalandi ✓");
+  }
+
+  // Modal foniga bosilganda yopish
+  document.querySelectorAll('.zar-modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay){
+        if(overlay.id === 'pinModalOverlay') closePinModal(true);
+        else overlay.classList.remove('open');
+      }
+    });
   });
 
   // Rasm yuklanganda yangilash
@@ -494,6 +826,7 @@
         localStorage.removeItem('zar_wallet_history');
         localStorage.removeItem('zar_wallet_today');
         localStorage.removeItem('zar_session');
+        localStorage.removeItem(PIN_KEY);
       } catch(err) {}
       window.location.href = "../index.html";
     }
