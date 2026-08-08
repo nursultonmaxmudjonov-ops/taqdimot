@@ -585,6 +585,27 @@
   .reel-frame.dragging{ cursor:grabbing; }
   .reel-video, .reel-video iframe{ pointer-events:none; }
 
+  /* Center play/pause feedback icon */
+  .pause-icon{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    width:64px; height:64px;
+    border-radius:50%;
+    background:rgba(0,0,0,.5);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff;
+    font-size:26px;
+    z-index:7;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .pause-icon.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+  }
+
   /* ================= FULLSCREEN MODAL ================= */
   .reel-modal-overlay{
     position:fixed;
@@ -1170,6 +1191,8 @@
         <div class="reel-frame" id="reelFrame">
           <div class="reel-video" id="reelVideo"></div>
 
+          <div class="pause-icon" id="reelPauseIcon">⏸</div>
+
           <div class="reel-reward">
             <div class="reel-reward-icon">⚡</div>
             <div class="reel-reward-badge" id="reelRewardBadge">+15</div>
@@ -1267,6 +1290,7 @@
 <div class="reel-modal-overlay" id="reelModalOverlay">
   <div class="reel-modal-box" id="reelModalBox">
     <div class="reel-modal-progress"><div class="reel-modal-progress-fill" id="modalProgress"></div></div>
+    <div class="pause-icon" id="modalPauseIcon">⏸</div>
     <div class="reel-modal-close" id="modalCloseBtn" role="button" tabindex="0" aria-label="Yopish">✕</div>
     <div class="reel-video" id="modalVideo"></div>
     <div class="reel-modal-info">
@@ -1524,6 +1548,7 @@
   const reelRewardGiven = Object.create(null); // reelIndex -> already rewarded for this view
   let mainPlayer = null, mainWatch = { timer: null, index: -1 };
   let modalPlayer = null, modalWatch = { timer: null, index: -1 };
+  let mainPaused = false, modalPaused = false;
 
   function updateRewardBadge(duration){
     const badge = document.getElementById('reelRewardBadge');
@@ -1618,6 +1643,7 @@
     renderReelMedia({ containerId: 'reelVideo', iframeId: 'mainReelIframe', userElId: 'reelUser', captionElId: 'reelCaption', progressElId: 'reelProgress', index });
     document.getElementById('muteBtn').textContent = isMuted ? '🔇' : '🔊';
     document.getElementById('muteBtn').classList.toggle('pulse', isMuted);
+    mainPaused = false;
     attachMainPlayer(index);
 
     const id = reelVideoIds[index];
@@ -1641,6 +1667,33 @@
     toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  function showPauseIcon(iconId, paused){
+    const icon = document.getElementById(iconId);
+    if(!icon) return;
+    icon.textContent = paused ? '⏸' : '▶';
+    icon.classList.add('show');
+    clearTimeout(icon._t);
+    icon._t = setTimeout(() => icon.classList.remove('show'), 550);
+  }
+
+  function toggleMainPlay(){
+    if(!mainPlayer || typeof mainPlayer.pauseVideo !== 'function') return;
+    try{
+      if(mainPaused){ mainPlayer.playVideo(); } else { mainPlayer.pauseVideo(); }
+      mainPaused = !mainPaused;
+      showPauseIcon('reelPauseIcon', mainPaused);
+    }catch(e){ /* player not ready yet */ }
+  }
+
+  function toggleModalPlay(){
+    if(!modalPlayer || typeof modalPlayer.pauseVideo !== 'function') return;
+    try{
+      if(modalPaused){ modalPlayer.playVideo(); } else { modalPlayer.pauseVideo(); }
+      modalPaused = !modalPaused;
+      showPauseIcon('modalPauseIcon', modalPaused);
+    }catch(e){ /* player not ready yet */ }
   }
 
   function nextReel(){
@@ -1779,17 +1832,28 @@
       if(e.key === 'ArrowDown'){ e.preventDefault(); modalNext(); }
       if(e.key === 'ArrowUp'){ e.preventDefault(); modalPrev(); }
       if(e.key === 'Escape'){ closeReelModal(); }
+      if(e.key === ' '){ e.preventDefault(); toggleModalPlay(); }
       return;
     }
     if(!document.getElementById('dashboard').classList.contains('open')) return;
     if(e.key === 'ArrowDown'){ e.preventDefault(); nextReel(); }
     if(e.key === 'ArrowUp'){ e.preventDefault(); prevReel(); }
     if(e.key.toLowerCase() === 'm'){ document.getElementById('muteBtn').click(); }
+    if(e.key === ' '){ e.preventDefault(); toggleMainPlay(); }
   });
 
-  // ---- Universal swipe/drag helper: works with touch AND mouse (PC) ----
-  function addSwipeNav(el, onNext, onPrev){
+  // ---- Universal swipe/drag/tap helper: works with touch AND mouse (PC) ----
+  // A quick tap (no drag) fires onTap — used to pause/resume the video, just
+  // like the "bir marta bossa to'xtaydi" behaviour on mobile.
+  function addSwipeNav(el, onNext, onPrev, onTap){
     let startY = 0, startX = 0, dragging = false, moved = false;
+    // Taps that land on interactive controls (buttons, bottom info bar, etc.)
+    // should not also toggle play/pause — let those elements handle themselves.
+    const ignoreSelector = '.reel-topbtn, .reel-topright, .ract, .reel-actions, .reel-bottom, .reel-modal-close, .reel-toast, .reel-reward';
+
+    function shouldIgnore(target){
+      return !!(target && target.closest && target.closest(ignoreSelector));
+    }
 
     function start(y, x){
       dragging = true; moved = false;
@@ -1807,24 +1871,30 @@
       const dy = startY - y;
       if(moved && Math.abs(dy) > 40){
         if(dy > 0) onNext(); else onPrev();
+      } else if(!moved && onTap){
+        onTap();
       }
     }
 
     // Touch (mobile)
     el.addEventListener('touchstart', (e) => {
+      if(shouldIgnore(e.target)) return;
       const t = e.touches[0];
       start(t.clientY, t.clientX);
     }, {passive:true});
     el.addEventListener('touchmove', (e) => {
+      if(!dragging) return;
       const t = e.touches[0];
       move(t.clientY, t.clientX);
     }, {passive:true});
     el.addEventListener('touchend', (e) => {
+      if(!dragging) return;
       end(e.changedTouches[0].clientY);
     });
 
-    // Mouse (PC drag)
+    // Mouse (PC drag / click)
     el.addEventListener('mousedown', (e) => {
+      if(shouldIgnore(e.target)) return;
       start(e.clientY, e.clientX);
       e.preventDefault();
     });
@@ -1846,7 +1916,7 @@
     }, {passive:false});
   }
 
-  addSwipeNav(document.getElementById('reelFrame'), nextReel, prevReel);
+  addSwipeNav(document.getElementById('reelFrame'), nextReel, prevReel, toggleMainPlay);
 
 
   function postComment(){
@@ -1921,6 +1991,7 @@
   /* ---- Fullscreen modal (works via expand button; swipe/drag/wheel/keys) ---- */
   function loadModalReel(index){
     renderReelMedia({ containerId: 'modalVideo', iframeId: 'modalReelIframe', userElId: 'modalUser', captionElId: 'modalCaption', progressElId: 'modalProgress', index });
+    modalPaused = false;
     attachModalPlayer(index);
   }
 
@@ -1953,7 +2024,7 @@
     if(e.target.id === 'reelModalOverlay') closeReelModal();
   });
 
-  addSwipeNav(document.getElementById('reelModalBox'), modalNext, modalPrev);
+  addSwipeNav(document.getElementById('reelModalBox'), modalNext, modalPrev, toggleModalPlay);
 </script>
 
 </body>
